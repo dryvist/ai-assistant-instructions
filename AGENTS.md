@@ -155,7 +155,7 @@ See soul.md section 4 — no emoji; conventional-commit prefixes for subjects/ti
 
 | Use case | Format | Placement |
 | --- | --- | --- |
-| Inline with Markdown | Fenced ` ```mermaid ``` ` block | Inside the `.md` file |
+| Inline with Markdown | Fenced `mermaid` code block | Inside the `.md` file |
 | Standalone high-level diagram | SVG file | `docs/assets/` |
 | Diagram source | `.mmd` file | `docs/assets/` (alongside SVG) |
 
@@ -180,7 +180,9 @@ Every repository with meaningful architecture must keep current:
 - **Sequence diagrams** — for complex multi-party interactions (auth flows, API chains, CI pipelines)
 - **Component / deployment diagrams** — for infrastructure with non-trivial topology
 
-Inline Mermaid for every architectural doc section. Standalone SVG for top-level overviews linked from README or docs index. Most repos warrant several diagrams — resist collapsing everything into one; a diagram that shows everything shows nothing. Keep all diagrams in sync with code — a stale diagram is worse than none.
+- **Placement**: inline Mermaid per architectural doc section; standalone SVG for top-level overviews linked from README or docs index.
+- **Granularity**: one diagram per distinct concern — a diagram that shows everything shows nothing.
+- **Freshness**: keep all diagrams in sync with code — a stale diagram is worse than none.
 
 ## Model Routing
 

@@ -1,0 +1,28 @@
+---
+title: AI Agent Session Lifecycle
+---
+sequenceDiagram
+    actor Dev as Developer
+    participant CC as Claude Code
+    participant Repo as Per-repo CLAUDE.md
+    participant AAI as ai-assistant-instructions
+    participant Plugins as claude-code-plugins
+
+    Dev->>CC: Start session
+    CC->>Repo: Read CLAUDE.md
+    Repo->>AAI: @AGENTS.md import resolves
+    AAI-->>CC: Canonical rules + routing loaded
+    CC->>AAI: Auto-load agentsmd/rules/
+    AAI-->>CC: tool-use, soul, no-scripts, secrets-policy, …
+    CC->>Plugins: Load installed skills & hooks
+    Plugins-->>CC: PreToolUse / PostToolUse hooks active
+
+    Dev->>CC: /refresh-repo (or other slash command)
+    CC->>Plugins: Invoke skill
+    Plugins-->>Dev: Result
+
+    Dev->>CC: Implement feature
+    CC->>CC: Apply rules (no-scripts, surgical changes, …)
+    CC-->>Dev: Code + commit
+
+    Note over CC,AAI: Rules re-read from disk each session — no stale cache
