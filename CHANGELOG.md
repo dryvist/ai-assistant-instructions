@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.10.1...v1.11.0) (2026-05-10)
+
+
+### Features
+
+* **agents:** add diagramming practices section ([#620](https://github.com/JacobPEvans/ai-assistant-instructions/issues/620)) ([2d79a0a](https://github.com/JacobPEvans/ai-assistant-instructions/commit/2d79a0af21edad8f870870ab0a59e1b440159c97))
+
 ## [1.10.1](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.10.0...v1.10.1) (2026-05-07)
 
 
