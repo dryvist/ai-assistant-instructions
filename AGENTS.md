@@ -156,8 +156,8 @@ See soul.md section 4 — no emoji; conventional-commit prefixes for subjects/ti
 | Use case | Format | Placement |
 | --- | --- | --- |
 | Inline with Markdown | Fenced `mermaid` code block | Inside the `.md` file |
-| Standalone high-level diagram | SVG file | `docs/assets/` |
-| Diagram source | `.mmd` file | `docs/assets/` (alongside SVG) |
+| Standalone diagram source | `.mmd` file | `docs/assets/` |
+| Standalone rendered diagram | SVG (generated from `.mmd`) | `docs/assets/` |
 
 GitHub renders fenced `mermaid` blocks natively — no image upload or external service needed.
 Generate SVG from source: `nix run nixpkgs#mermaid-cli -- -i diagram.mmd -o diagram.svg`

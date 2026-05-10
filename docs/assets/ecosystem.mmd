@@ -1,6 +1,4 @@
----
-title: JacobPEvans AI Ecosystem
----
+%% Ecosystem context: how ai-assistant-instructions fits into the JacobPEvans nix-ai system
 graph TD
     AAI["**ai-assistant-instructions**\nUniversal AI config layer\n(AGENTS.md · rules · workflows · permissions)"]
 
@@ -14,7 +12,7 @@ graph TD
     PerRepo["**Per-repo CLAUDE.md**\n@AGENTS.md import"]
 
     AAI -->|"dispatch webhook\n(trigger-nix-update)"| NixAI
-    AAI -->|"@AGENTS.md\ncanonicalsource"| PerRepo
+    AAI -->|"@AGENTS.md\ncanonical source"| PerRepo
     Plugins -->|"marketplace install\nskills · slash commands"| PerRepo
 
     NixAI -->|"home.packages"| NixHome

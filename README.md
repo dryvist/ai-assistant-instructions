@@ -29,7 +29,7 @@ This repo is the universal config layer for the JacobPEvans AI ecosystem, sittin
 graph TD
     AAI["**ai-assistant-instructions**\nUniversal AI config layer"]
 
-    NixAI["**nix-ai**\nAI tool ecosystem\nClaude Code · MCP servers · Whisper"]
+    NixAI["**nix-ai**\nAI tool ecosystem\nClaude Code · Gemini · MCP servers · Whisper"]
     NixHome["**nix-home** / **nix-darwin**\nUser + system environments"]
 
     Plugins["**claude-code-plugins**\nCommands · skills · hooks"]
@@ -41,7 +41,7 @@ graph TD
     NixAI --> NixHome
 ```
 
-See [`docs/assets/`](docs/assets/) for full architecture and session-lifecycle diagrams.
+See [`docs/diagrams.md`](docs/diagrams.md) for full architecture and session-lifecycle diagrams.
 
 ## Prerequisites
 

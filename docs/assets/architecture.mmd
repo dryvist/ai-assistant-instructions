@@ -1,9 +1,8 @@
----
-title: ai-assistant-instructions Repository Architecture
----
+%% Internal architecture of the ai-assistant-instructions repository
 graph TD
     AGENTS["**AGENTS.md**\nCanonical config source"]
-    CLAUDE["CLAUDE.md / GEMINI.md\n(symlinks → AGENTS.md)"]
+    CLAUDE["CLAUDE.md\n(@AGENTS.md import)"]
+    GEMINI["GEMINI.md\n(synced document)"]
     COPILOT[".copilot/instructions.md\n(symlink → AGENTS.md)"]
 
     Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul · no-scripts\n· secrets-policy · bifrost-routing\n· nix-tool-policy · ci-cd-policy …"]
@@ -11,11 +10,12 @@ graph TD
     Permissions["**agentsmd/permissions/**\nTool access control\nallow / ask / deny (JSON)"]
 
     Docs["**docs/**\nUser-facing guides\n· codex-quick-start\n· troubleshooting\n· github-actions"]
-    Assets["**docs/assets/**\nDiagram sources (.mmd)\nand rendered SVG files"]
+    Assets["**docs/assets/**\nDiagram sources (.mmd)\nSVG rendered on demand"]
 
     CI[".github/workflows/\nCI validation gates\n· markdownlint · token-limits\n· link-check · CodeQL · release"]
 
     AGENTS --> CLAUDE
+    AGENTS --> GEMINI
     AGENTS --> COPILOT
     AGENTS -->|"auto-loaded"| Rules
     AGENTS -->|"governs"| Workflows
