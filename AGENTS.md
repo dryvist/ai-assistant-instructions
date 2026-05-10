@@ -147,6 +147,19 @@ See the `tool-use` rule.
 
 See soul.md section 4 — no emoji; conventional-commit prefixes for subjects/titles; plain prose everywhere else.
 
+## Diagramming
+
+Required for any repo with meaningful architecture; keep in sync with code — stale is worse than none.
+
+- **Format**: inline fenced `mermaid` blocks (GitHub renders natively — no upload); standalone `.mmd` sources in `docs/assets/`.
+  Render: `nix run nixpkgs#mermaid-cli -- -i x.mmd -o x.svg`.
+- **Placement**: conventional docs (README, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT) at repo root; other docs in `docs/`;
+  diagram sources and SVG in `docs/assets/`.
+- **Maintain**: system overview; cross-repo context; one diagram per major data flow (don't collapse); sequence diagrams for
+  complex multi-party interactions (auth, API chains, CI); component/deployment diagrams for non-trivial topology.
+- **Style**: inline Mermaid per doc section; standalone SVG for top-level overviews linked from README.
+  One diagram per concern — a diagram showing everything shows nothing.
+
 ## Model Routing
 
 Resolve model names at call time via `listmodels`.

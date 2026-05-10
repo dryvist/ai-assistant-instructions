@@ -21,6 +21,28 @@ Drop these into your projects and get consistent, high-quality AI assistance acr
 
 Think of it as a style guide, but for your AI pair programmer.
 
+### Ecosystem Context
+
+This repo is the universal config layer for the JacobPEvans AI ecosystem, sitting above the Nix infrastructure repos and feeding rules into every per-repo AI session:
+
+```mermaid
+graph TD
+    AAI["**ai-assistant-instructions**\nUniversal AI config layer"]
+
+    NixAI["**nix-ai**\nAI tool ecosystem\nClaude Code · Gemini · MCP servers · Whisper"]
+    NixHome["**nix-home** / **nix-darwin**\nUser + system environments"]
+
+    Plugins["**claude-code-plugins**\nCommands · skills · hooks"]
+    PerRepo["**Per-repo CLAUDE.md**\n@AGENTS.md import"]
+
+    AAI -->|"dispatch webhook"| NixAI
+    AAI -->|"@AGENTS.md"| PerRepo
+    Plugins -->|"marketplace install"| PerRepo
+    NixAI --> NixHome
+```
+
+See [`docs/diagrams.md`](docs/diagrams.md) for full architecture and session-lifecycle diagrams.
+
 ## Prerequisites
 
 - **Git 2.30+** (for worktree support)
