@@ -37,6 +37,7 @@ repos:
           - "--exclude"
           - "gist.github.com"
         files: \.md$
+        stages: [pre-push]
   - repo: local
     hooks:
       - id: check-markdown-links
