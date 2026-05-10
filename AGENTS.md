@@ -149,40 +149,16 @@ See soul.md section 4 — no emoji; conventional-commit prefixes for subjects/ti
 
 ## Diagramming
 
-**Architecture diagrams are required documentation.** A repo with meaningful architecture and no diagram has missing docs.
+Required for any repo with meaningful architecture; keep in sync with code — stale is worse than none.
 
-### Formats
-
-| Use case | Format | Placement |
-| --- | --- | --- |
-| Inline with Markdown | Fenced `mermaid` code block | Inside the `.md` file |
-| Standalone diagram source | `.mmd` file | `docs/assets/` |
-| Standalone rendered diagram | SVG (generated from `.mmd`) | `docs/assets/` |
-
-GitHub renders fenced `mermaid` blocks natively — no image upload or external service needed.
-Generate SVG from source: `nix run nixpkgs#mermaid-cli -- -i diagram.mmd -o diagram.svg`
-
-### File Placement
-
-| Content | Location |
-| --- | --- |
-| Root conventional docs (README.md, SECURITY.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md) | `/` (repo root) |
-| Additional documentation | `docs/` |
-| Diagram assets (`.mmd` sources, `.svg` outputs, images) | `docs/assets/` |
-
-### What to Maintain
-
-Every repository with meaningful architecture must keep current:
-
-- **System overview** — internal components and their relationships
-- **Cross-repo / ecosystem context** — where this repo fits within a broader system of repos, services, or teams
-- **Primary data flows** — one diagram per major use case (not all flows collapsed into one)
-- **Sequence diagrams** — for complex multi-party interactions (auth flows, API chains, CI pipelines)
-- **Component / deployment diagrams** — for infrastructure with non-trivial topology
-
-- **Placement**: inline Mermaid per architectural doc section; standalone SVG for top-level overviews linked from README or docs index.
-- **Granularity**: one diagram per distinct concern — a diagram that shows everything shows nothing.
-- **Freshness**: keep all diagrams in sync with code — a stale diagram is worse than none.
+- **Format**: inline fenced `mermaid` blocks (GitHub renders natively — no upload); standalone `.mmd` sources in `docs/assets/`.
+  Render: `nix run nixpkgs#mermaid-cli -- -i x.mmd -o x.svg`.
+- **Placement**: conventional docs (README, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT) at repo root; other docs in `docs/`;
+  diagram sources and SVG in `docs/assets/`.
+- **Maintain**: system overview; cross-repo context; one diagram per major data flow (don't collapse); sequence diagrams for
+  complex multi-party interactions (auth, API chains, CI); component/deployment diagrams for non-trivial topology.
+- **Style**: inline Mermaid per doc section; standalone SVG for top-level overviews linked from README.
+  One diagram per concern — a diagram showing everything shows nothing.
 
 ## Model Routing
 
