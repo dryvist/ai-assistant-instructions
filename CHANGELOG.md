@@ -124,7 +124,7 @@
 
 ### Bug Fixes
 
-* **cspell:** migrate to shared org-wide dictionary hierarchy ([3715223](https://github.com/JacobPEvans/ai-assistant-instructions/commit/3715223b3a989c38c4612e06b647afd23cd8d325))
+* **cspell:** migrate to shared org-wide dictionary hierarchy ([3715223](https://github.com/JacobPEvans/ai-assistant-instructions/commit/3715223b3a989c38c4612e06b647afd23cd8d325)) *(cspell subsequently removed in v1.7.6)*
 
 ## [1.7.1](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.7.0...v1.7.1) (2026-04-12)
 
@@ -258,7 +258,6 @@
 ### Features
 
 * add 'defaults read' to system command permissions ([#396](https://github.com/JacobPEvans/ai-assistant-instructions/issues/396)) ([13733f3](https://github.com/JacobPEvans/ai-assistant-instructions/commit/13733f3f8a8990135a54ac5300bdf4a3dfdf8ef3))
-* add cspell pre-commit hook to prevent spelling errors ([6b7daf4](https://github.com/JacobPEvans/ai-assistant-instructions/commit/6b7daf47b2e5e1696b13fc3b61c2fbacfe1f80a2))
 * add direct-execution rule to prevent script generation ([#456](https://github.com/JacobPEvans/ai-assistant-instructions/issues/456)) ([bca3fd3](https://github.com/JacobPEvans/ai-assistant-instructions/commit/bca3fd37e9876c4a9d0a78420257249db5ca0668))
 * add four Copilot agentic workflows to gh-aw collection ([#478](https://github.com/JacobPEvans/ai-assistant-instructions/issues/478)) ([007c60f](https://github.com/JacobPEvans/ai-assistant-instructions/commit/007c60f8fc1e930bd0f247d00ef7683f1c7b8fbe))
 * add github.github.io to WebFetch allow list ([9421a7f](https://github.com/JacobPEvans/ai-assistant-instructions/commit/9421a7f315d7e1c9fb291d5e2f9bca185c1cf149))
@@ -290,8 +289,6 @@
 
 ### Bug Fixes
 
-* add 'pushable' to cspell dictionary ([58f82ed](https://github.com/JacobPEvans/ai-assistant-instructions/commit/58f82ed9ba821341d94fc46729475e1ea017ae75))
-* add 'pushable' to cspell dictionary ([70474ec](https://github.com/JacobPEvans/ai-assistant-instructions/commit/70474ec723d0af17d115d5cf6a633ba17c574f36))
 * add minimal allowed-tools to deprecated init-change command ([9d07bdc](https://github.com/JacobPEvans/ai-assistant-instructions/commit/9d07bdc05303726aebbc8ffa5321cee857165dbb))
 * add missing technical terms to spell check dictionary ([6f7c524](https://github.com/JacobPEvans/ai-assistant-instructions/commit/6f7c5243b0d0b9986e31ba66b5019c367f8a377d))
 * add pip install variants to allow list ([d6974a1](https://github.com/JacobPEvans/ai-assistant-instructions/commit/d6974a122539844acd0c5d03ad0e2822fdf100e1)), closes [#339](https://github.com/JacobPEvans/ai-assistant-instructions/issues/339)

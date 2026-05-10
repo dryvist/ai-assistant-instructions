@@ -28,6 +28,8 @@ repos:
         description: "Check for broken links in markdown files"
         args:
           - "--no-progress"
+          - "--accept"
+          - "200,429"
           - "--exclude"
           - "shields.io"
           - "--exclude"
@@ -35,6 +37,7 @@ repos:
           - "--exclude"
           - "gist.github.com"
         files: \.md$
+        stages: [pre-push]
   - repo: local
     hooks:
       - id: check-markdown-links
