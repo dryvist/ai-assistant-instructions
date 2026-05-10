@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.11.0...v1.11.1) (2026-05-10)
+
+
+### Bug Fixes
+
+* **permissions:** add head and tail to core allow list ([#621](https://github.com/JacobPEvans/ai-assistant-instructions/issues/621)) ([b69996d](https://github.com/JacobPEvans/ai-assistant-instructions/commit/b69996d4159afb425ba44854b7af397e4fe4d38e))
+
 ## [1.11.0](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.10.1...v1.11.0) (2026-05-10)
 
 
