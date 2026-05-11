@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.12.1...v1.12.2) (2026-05-11)
+
+
+### Bug Fixes
+
+* **docs:** shorten Rules mermaid label to fix MD013 line-length ([#630](https://github.com/JacobPEvans/ai-assistant-instructions/issues/630)) ([02e0519](https://github.com/JacobPEvans/ai-assistant-instructions/commit/02e05198697bf92c31d7e207a79d4e6d2b217dc0))
+
 ## [1.12.1](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.12.0...v1.12.1) (2026-05-11)
 
 
