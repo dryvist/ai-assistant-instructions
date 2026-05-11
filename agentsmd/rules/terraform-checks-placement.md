@@ -1,4 +1,5 @@
 ---
+name: terraform-checks-placement
 description: Static checks in pre-commit; cloud actions in CI via OIDC; aws-vault never appears in repo automation
 paths:
   - "**/terraform-*/**"
@@ -100,7 +101,7 @@ same masking.
 Run before opening any PR that touches hooks, workflows, Makefiles, or scripts:
 
 ```bash
-git grep -nE 'aws-vault' -- ':!*.md' ':!docs/**' ':!CLAUDE.md' ':!AGENTS.md'
+git grep -nE 'aws-vault' -- ':!*.md' ':!*.nix' ':!docs/**' ':!CLAUDE.md' ':!AGENTS.md'
 ```
 
 Expected output in any non-Nix repo: empty. Any match is a violation.
