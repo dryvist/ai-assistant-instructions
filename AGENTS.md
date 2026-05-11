@@ -179,7 +179,7 @@ Bifrost routing details in the `bifrost-routing` rule (lazy-loaded).
 Sources: `agentsmd/rules/` via `.claude/rules/`.
 
 **Universal:** `tool-use`, `soul`, `skill-execution-integrity`, `secrets-policy`, `no-scripts`
-**Path-scoped:** `nix-tool-policy`, `nix-package-placement`, `ci-cd-policy`, `config-secrets`, `bifrost-routing`
+**Path-scoped:** `ci-cd-policy`, `config-secrets`
 
 ## On-Demand Standards (Plugins)
 
