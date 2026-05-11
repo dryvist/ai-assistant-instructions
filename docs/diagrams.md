@@ -46,7 +46,7 @@ graph TD
     GEMINI["GEMINI.md\n(synced document)"]
     COPILOT[".copilot/instructions.md\n(symlink → AGENTS.md)"]
 
-    Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul · no-scripts\n· secrets-policy · bifrost-routing\n· nix-tool-policy · ci-cd-policy …"]
+    Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul · no-scripts\n· secrets-policy · bifrost-routing\n· nix-tool-policy …"]
     Workflows["**agentsmd/workflows/**\n5-step development process\n1 Research → 2 Plan → 3 Define\n4 Implement → 5 Finalize"]
     Permissions["**agentsmd/permissions/**\nTool access control\nallow / ask / deny (JSON)"]
 
