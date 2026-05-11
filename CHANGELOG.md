@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.11.1...v1.12.0) (2026-05-11)
+
+
+### Features
+
+* terraform-checks-placement rule; trim AGENTS.md index ([#625](https://github.com/JacobPEvans/ai-assistant-instructions/issues/625)) ([586a725](https://github.com/JacobPEvans/ai-assistant-instructions/commit/586a725e77090dcdac418f2f05717712912d276f))
+
 ## [1.11.1](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.11.0...v1.11.1) (2026-05-10)
 
 
