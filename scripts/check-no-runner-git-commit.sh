@@ -39,11 +39,13 @@
 
 set -euo pipefail
 
-if ! command -v yq >/dev/null 2>&1; then
-  echo "check-no-runner-git-commit: yq is required but not installed." >&2
-  echo "  Install via Nix (nixpkgs.yq) or 'brew install python-yq'." >&2
-  exit 2
-fi
+for cmd in yq jq; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "check-no-runner-git-commit: $cmd is required but not installed." >&2
+    echo "  Install via Nix (nixpkgs.$cmd) or 'brew install $cmd'." >&2
+    exit 2
+  fi
+done
 
 # ---------------------------------------------------------------------------
 # Path filter: only YAML under .github/workflows/ or .github/actions/.
@@ -52,13 +54,17 @@ fi
 # ---------------------------------------------------------------------------
 path_is_in_scope() {
   local path="$1"
-  # `*` matches empty so these globs also cover the leading-./ and bare
-  # relative forms (`./.github/workflows/x.yml`, `.github/workflows/x.yml`).
+  # Workflow files: flat directory, single-segment glob.
   case "$path" in
     *.github/workflows/*.yml | *.github/workflows/*.yaml) return 0 ;;
-    *.github/actions/*/action.yml | *.github/actions/*/action.yaml) return 0 ;;
-    *) return 1 ;;
   esac
+  # Composite-action files: match any depth under .github/actions/, since the
+  # pre-commit `files:` regex is `actions/.+/action\.ya?ml`. Without `shopt -s
+  # globstar` (which isn't portable), use a regex on the substring.
+  if [[ "$path" =~ \.github/actions/.+/action\.(yml|yaml)$ ]]; then
+    return 0
+  fi
+  return 1
 }
 
 # ---------------------------------------------------------------------------
@@ -90,8 +96,8 @@ scan_file() {
   fi
 
   # Extract every `run:` scalar from workflow jobs and composite actions.
-  # yq -j emits a single JSON array of run-scalar strings; we then iterate
-  # with `jq -r '.[]'` and split by a control character we know cannot occur
+  # `yq -c` emits a single compact-JSON array of run-scalar strings; we then
+  # iterate with `jq` and split by a control character we know cannot occur
   # in YAML scalar content. ASCII 0x1F (Unit Separator) is the canonical
   # choice and survives bash command substitution intact.
   local runs_json
@@ -103,8 +109,11 @@ scan_file() {
       | map(select(.run != null))
       | map(.run)
     ' "$file" 2>/dev/null)"; then
+    # Per the header contract: malformed input → exit 2, not a violation.
+    # Use return 2 so the outer loop can distinguish from a clean violation
+    # (return 1) and propagate the right script-level exit code.
     echo "check-no-runner-git-commit: failed to parse $file (invalid YAML?)" >&2
-    return 1
+    return 2
   fi
 
   case "$runs_json" in
@@ -180,16 +189,30 @@ if [ "${#files[@]}" -eq 0 ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Scan and aggregate.
+# Scan and aggregate. Track parse errors (exit 2) separately from violations
+# (exit 1) so a malformed YAML file doesn't get reported as a `git commit`
+# offender — which would point the author at the wrong fix.
 # ---------------------------------------------------------------------------
-failed=0
+violated=0
+parse_errored=0
 for f in "${files[@]}"; do
-  if ! scan_file "$f"; then
-    failed=1
+  # `set -e` would abort on scan_file's nonzero return; use `||` so the rc
+  # capture survives. Default rc=0; reassigned only when scan_file fails.
+  rc=0
+  scan_file "$f" || rc=$?
+  if [ "$rc" -eq 1 ]; then
+    violated=1
+  elif [ "$rc" -eq 2 ]; then
+    parse_errored=1
   fi
 done
 
-if [ "$failed" -eq 1 ]; then
+if [ "$parse_errored" -eq 1 ] && [ "$violated" -eq 0 ]; then
+  # Pure parse error, no violations — surface as the contracted exit code 2.
+  exit 2
+fi
+
+if [ "$violated" -eq 1 ]; then
   cat >&2 <<'GUIDANCE'
 
 Raw `git commit` / `git push` from a workflow runner cannot be signed —
