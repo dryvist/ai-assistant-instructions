@@ -63,3 +63,10 @@ repos:
         files: ^agentsmd/permissions/(?!valid-tools\.json).*\.json$
         pass_filenames: false
         stages: [pre-commit]
+      - id: no-runner-git-commit
+        name: no-runner-git-commit
+        description: "Block raw git commit/push in workflow YAML (Layer 5 of signed-commits initiative)"
+        entry: bash scripts/check-no-runner-git-commit.sh
+        language: system
+        files: '\.github/(workflows/.*\.ya?ml|actions/.+/action\.ya?ml)$'
+        stages: [pre-commit]
