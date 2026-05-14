@@ -32,15 +32,16 @@ whether AI generates the diff:
 | --- | --- | --- | --- |
 | Local Mac | `JacobPEvans` | local user | GPG (key `31652F22BF6AC286`); nix-home reads identity from `$XDG_CONFIG_HOME/nix-home/local.nix` |
 | GitHub Actions — AI-driven | `JacobPEvans` signer + bot Co-authored-by trailer | App token + `GH_APP_CLAUDE_SSH_SIGNING_KEY` | SSH via the wrapper composite action's `ssh_signing_key` input |
-| GitHub Actions — deterministic | `JacobPEvans-github-actions[bot]` | App token | web-flow via Git Data API (createBlob + createTree + createCommit + updateRef) |
+| GitHub Actions — deterministic | `JacobPEvans-github-actions[bot]` | App token | web-flow via the marketplace action that fits the workflow (`peter-evans/create-pull-request@v8` with `sign-commits: true`, or built-in commit features like `lowlighter/metrics`'s `output_action: commit`) |
 | Anthropic Cloud Routines | `JacobPEvans-claude[bot]` | `GH_TOKEN` (long-lived PAT) | web-flow via `gh api .../contents/...` with a nested `committer` object |
 | GitHub bots (Renovate, release-please) | the bot's GitHub identity | managed by GitHub | web-flow |
 
 For AI workflows, the entry point is the composite action
 `JacobPEvans/ai-workflows/.github/actions/ai-action-with-signing@main`. For
-deterministic workflows in `JacobPEvans/JacobPEvans`, see
-`.github/scripts/commit-files-to-branch.js`. For cloud routines, see the
-shape below.
+deterministic workflows, pick the marketplace action that already does the
+work signed (see the table); never build a custom Contents/Git-Data API
+helper for content the runner can hand off to a trusted action. For cloud
+routines, see the shape below.
 
 ## SSH-signed AI workflows
 
@@ -97,17 +98,12 @@ jq -n \
 
 Branch creation: `gh api repos/.../git/refs`. PR creation: `gh pr create`. Result: `verification.verified: true, reason: "valid"`, `author.login: "JacobPEvans-claude[bot]"`.
 
-## Defense in depth — four enforcement layers
+## Enforcement
 
-A single regression in any layer below would have caught the snake.yml / 3d-contrib.yml unsigned-commit incident:
-
-1. **Pre-commit hook** (`ai-assistant-instructions/scripts/check-no-runner-git-commit.sh`) blocks raw `git commit` / `git push` in workflow YAML at author time.
-2. **PR-level CI gate** (`JacobPEvans/.github/.github/workflows/_signed-commits-check.yml`) fails any PR whose commits aren't `verified:true`.
-3. **Repository Rulesets** with `required_signatures` on every default branch in both orgs reject unsigned pushes at the API level.
-4. **Weekly audit** (`JacobPEvans/.github/.github/workflows/audit-unsigned-commits.yml`) sweeps both orgs and posts to `#github-ci-failures` if any
-   unsigned commit lands.
-
-Adding a new workflow that commits? Make sure it goes through one of the two paths in the table above. The pre-commit hook will tell you immediately if it doesn't.
+Branch-level `required_signatures` Repository Rulesets reject unsigned pushes
+at the API. Adding a new workflow that commits? Make sure it goes through one
+of the two paths in the table above; the ruleset will reject anything else at
+push time.
 
 ## Canonical sources (single source of truth, link don't duplicate)
 
@@ -116,7 +112,6 @@ Adding a new workflow that commits? Make sure it goes through one of the two pat
 - Local Mac identity values: `$XDG_CONFIG_HOME/nix-home/local.nix` (gitignored, out-of-tree).
 - AI-action signing wrapper: `.github/actions/ai-action-with-signing/action.yml` in `JacobPEvans/ai-workflows` (composite action; supersedes the
   never-built `_ai-action-with-signing.yml` reusable workflow this rule referenced before 2026-05).
-- Contents-API helper for deterministic content: `.github/scripts/commit-files-to-branch.js` in `JacobPEvans/JacobPEvans`.
 
 If you're about to copy-paste signing prose into another file, link here instead.
 
