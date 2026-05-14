@@ -78,7 +78,7 @@ Plugins, commands, skills, agents, hooks: [JacobPEvans/claude-code-plugins](http
 
 ## No Scripts
 
-See `agentsmd/rules/no-scripts.md`. Iron law: search first, script as last resort, never inline.
+See `no-scripts.md`. Iron law: search first, script as last resort, never inline.
 
 ## Starting any change
 
