@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.3](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.12.2...v1.12.3) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** refresh gh-aw action SHA pins ([#634](https://github.com/JacobPEvans/ai-assistant-instructions/issues/634)) ([6bd2b4f](https://github.com/JacobPEvans/ai-assistant-instructions/commit/6bd2b4fb2a66189610ebda9b96668abb79488880))
+
 ## [1.12.2](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.12.1...v1.12.2) (2026-05-11)
 
 
