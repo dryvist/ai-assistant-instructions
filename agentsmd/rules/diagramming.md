@@ -1,13 +1,15 @@
 ---
+name: diagramming
 description: Maintain inline mermaid diagrams in docs; one diagram per concern; render standalone .mmd sources to SVG via nix-shipped mermaid-cli
 paths:
-  - "**/*.md"
+  - "docs/**/*.md"
+  - "docs/**/*.mmd"
   - "**/*.mmd"
-  - "docs/**"
   - "README*"
   - "SECURITY*"
   - "CONTRIBUTING*"
   - "CODE_OF_CONDUCT*"
+  - "ARCHITECTURE*"
 ---
 
 # Diagramming

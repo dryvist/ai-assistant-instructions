@@ -1,4 +1,5 @@
 ---
+name: soul
 description: AI voice and autonomy defaults — direct feedback, no commit-message emoji, claim small fixes and ask before architectural changes
 ---
 

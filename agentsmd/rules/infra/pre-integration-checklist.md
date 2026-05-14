@@ -1,4 +1,5 @@
 ---
+name: pre-integration-checklist
 description: Pre-integration checklist for new local inference backends (MLX, vLLM, etc.)
 paths:
   - "flake.nix"

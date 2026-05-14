@@ -1,5 +1,6 @@
 ---
-description: Never commit secrets, credentials, or sensitive data — use variable references; keep private repo identifiers out of public content
+name: secrets-policy
+description: Never commit secrets, credentials, or sensitive data — use variable references; keep private repo identifiers out of public docs and READMEs
 paths:
   - "**/.env*"
   - "**/*.json"
@@ -13,6 +14,10 @@ paths:
   - "**/.github/**"
   - "**/docker-compose*"
   - "**/Dockerfile*"
+  - "**/*.md"
+  - "**/*.mdx"
+  - "README*"
+  - "docs/**"
 ---
 
 # Secrets Policy

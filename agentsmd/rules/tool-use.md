@@ -1,4 +1,5 @@
 ---
+name: tool-use
 description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glob). Use general-purpose subagent when files are edited.
 ---
 

@@ -1,5 +1,6 @@
 ---
-description: Scripts are LAST RESORT — live in dedicated files under scripts/ or .github/scripts/; never inlined in YAML, Bash one-liners, heredocs, or markdown
+name: no-scripts
+description: Scripts are LAST RESORT — dedicated files only. Single-line pipelines fine; multi-line logic and inline interpreters are not.
 ---
 
 # No Scripts
@@ -13,7 +14,8 @@ Scripts MUST live in `.sh`, `.py`, `.ts`, `.js`, `.rb`, `.pl` files under `scrip
 Never inlined elsewhere.
 
 **Banned in non-script files:**
-- YAML `run:` with control flow (`if`/`for`/`while`/`case`) or 3+ lines
+
+- YAML `run:` with control flow (`if`/`for`/`while`/`case`) or 4+ lines
 - Multi-line Bash control flow in a single command
 - Heredocs carrying logic (`bash <<EOF`, `python <<EOF`, generated commit bodies)
 - Inline interpreters: `python -c`, `node -e`, `perl -e`, `ruby -e`, multi-line `bash -c`
