@@ -1,5 +1,18 @@
 ---
 description: Never commit secrets, credentials, or sensitive data — use variable references; keep private repo identifiers out of public content
+paths:
+  - "**/.env*"
+  - "**/*.json"
+  - "**/*.yaml"
+  - "**/*.yml"
+  - "**/*.toml"
+  - "**/*.tf"
+  - "**/*.tfvars"
+  - "**/*.nix"
+  - "**/Makefile"
+  - "**/.github/**"
+  - "**/docker-compose*"
+  - "**/Dockerfile*"
 ---
 
 # Secrets Policy

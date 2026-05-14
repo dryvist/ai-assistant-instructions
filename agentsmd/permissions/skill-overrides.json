@@ -1,0 +1,18 @@
+{
+  "skillOverrides": {
+    "better-auth:better-auth": "off",
+    "better-auth:setup": "off",
+    "better-auth:add-plugin": "off",
+    "better-auth:explain-error": "off",
+    "better-auth:providers": "off",
+    "saga-orchestration": "name-only",
+    "cqrs-implementation": "name-only",
+    "event-store-design": "name-only",
+    "projection-patterns": "name-only",
+    "workflow-orchestration-patterns": "name-only",
+    "temporal-python-testing": "name-only",
+    "django-pro": "off",
+    "fastapi-pro": "off",
+    "graphql-architect": "off"
+  }
+}

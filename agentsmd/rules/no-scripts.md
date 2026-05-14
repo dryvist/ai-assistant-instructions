@@ -1,17 +1,41 @@
 ---
-description: Scripts MUST live in dedicated script files; never inlined in YAML, Markdown, Bash one-liners, or heredocs
+description: Scripts are LAST RESORT — live in dedicated files under scripts/ or .github/scripts/; never inlined in YAML, Bash one-liners, heredocs, or markdown
 ---
 
-# No Scripts — Detailed Rule
+# No Scripts
 
-Companion to `AGENTS.md`: rationale, worked examples, allow-list.
+## Iron law
 
-## Why
+Search first; script only when every search tier is empty AND the 10-line gate passes.
 
-Native CLIs have tests, releases, docs, stable behavior. Inline scripts have
-none of that, hide from linters when buried in YAML/Markdown/heredocs, and
-rot fast. A "script" is anything with logic — conditionals, loops, branching,
-multi-step state — regardless of container.
+Scripts MUST live in `.sh`, `.py`, `.ts`, `.js`, `.rb`, `.pl` files under `scripts/`,
+`.github/scripts/`, `.claude/hooks/`, `tests/`, or `plugins/<name>/hooks/`.
+Never inlined elsewhere.
+
+**Banned in non-script files:**
+- YAML `run:` with control flow (`if`/`for`/`while`/`case`) or 3+ lines
+- Multi-line Bash control flow in a single command
+- Heredocs carrying logic (`bash <<EOF`, `python <<EOF`, generated commit bodies)
+- Inline interpreters: `python -c`, `node -e`, `perl -e`, `ruby -e`, multi-line `bash -c`
+- Markdown copy-paste-execute blocks with logic
+
+**Allowed:** single-line pipelines (`|`/`&&`/`xargs`), 1–3 line YAML `run:` without control flow, one-line heredocs feeding static prose.
+
+## Four-tier search (required before any new script)
+
+Log one line per tier (`<tier>: <tool> — found/not-found, reason`). Empty rows reject the search.
+
+1. Native CLIs / builtins (`jq`, `gh`, `git`, `curl`)
+2. Ecosystem primitives (Ansible modules, Terraform resources, marketplace Actions, pre-commit)
+3. Third-party packaged tools (Homebrew, apt, pip, npm, cargo)
+4. Popular community solutions (GitHub projects, official plugins, awesome-* lists)
+
+## 10-line gate
+
+After an empty search: <10 non-comment lines auto-approved; 10+ requires explicit yes.
+Code/shebang/heredoc/continuation count; blanks/comments don't; no semicolon-stuffing.
+
+Hook blocks are TERMINAL DENIALS — do not route around them.
 
 ## Worked examples
 
@@ -28,14 +52,14 @@ Wrong:
     done
 ```
 
-Right — extract, or use a native action:
+Right — extract to a script file, or use a native action:
 
 ```yaml
 - run: .github/scripts/merge-if-quiet.sh
 - uses: peter-evans/enable-pull-request-automerge@v3
 ```
 
-### Bash with multi-line control flow
+### Multi-line Bash control flow
 
 Wrong:
 
@@ -63,30 +87,3 @@ Right: `git commit -m "feat: standard release"`
 Wrong: `python -c "import json; print(json.load(open('x.json'))['key'])"`
 
 Right: `jq -r .key x.json`
-
-## Allowed dedicated-script directories
-
-| Directory | Purpose |
-| --- | --- |
-| `scripts/` | Project utility scripts |
-| `.github/scripts/` | Called from Actions workflows |
-| `.claude/hooks/` | Claude Code hook scripts |
-| `tests/` | Test fixtures and runners |
-| `plugins/<name>/hooks/` | Plugin-supplied hook scripts |
-
-Proper extension (`.sh`, `.py`, `.ts`, `.js`, `.rb`, `.pl`) and shebang required.
-
-## Search log example
-
-```text
-Native CLIs: gh pr merge --auto - found, but lacks quiet-window logic
-Ecosystem primitives: peter-evans/enable-pull-request-automerge@v3 - found, no time-of-day gate
-Third-party packaged tools: cargo-release - not found, doesn't apply
-Popular community solutions: release-please-action - found, no quiet-window
-```
-
-## When blocked
-
-Stop. Don't switch tools to bypass — re-run the search; usually a native
-option was missed. If still stuck, ask the user. Routing around a hook is
-bad-faith.
