@@ -11,98 +11,83 @@ paths:
 
 # Git Signing — Identity Per Context
 
-Every commit lands GitHub-verified. Workflows pick one of two paths depending on
-whether AI generates the diff:
-
-- **Local `git commit` with SSH signing** — canonical for AI-driven work. The
-  runner imports `GH_APP_CLAUDE_SSH_SIGNING_KEY`, configures git for SSH
-  signing, and Claude (or any human) commits normally. The author is set to the
-  GitHub user that owns the public counterpart of the SSH key. Reason for the
-  preference: AI produces malformed JSON / base64 payloads when asked to
-  construct Contents-API calls directly, but produces clean diffs when editing
-  files locally.
-- **Contents API via `gh api .../contents/...` or
-  `octokit.repos.createOrUpdateFileContents`** — canonical for deterministic
-  non-AI workflows (snake.yml, 3d-contrib.yml, cloud routines). GitHub web-flow
-  signs commits made through these endpoints automatically when the call
-  authenticates as a GitHub App. Use this when no AI generates content — the
-  action / routine constructs the API payload, never the model.
+Every commit lands GitHub-verified. The mechanism is uniform — Contents API
+web-flow signing — but the *identity* behind the API call depends on who's
+making it.
 
 | Context | Identity | Auth | Signing path |
 | --- | --- | --- | --- |
 | Local Mac | `JacobPEvans` | local user | GPG (key `31652F22BF6AC286`); nix-home reads identity from `$XDG_CONFIG_HOME/nix-home/local.nix` |
-| GitHub Actions — AI-driven | `JacobPEvans` signer + bot Co-authored-by trailer | App token + `GH_APP_CLAUDE_SSH_SIGNING_KEY` | SSH via the wrapper composite action's `ssh_signing_key` input |
-| GitHub Actions — deterministic | `JacobPEvans-github-actions[bot]` | App token | web-flow via the marketplace action that fits the workflow (`peter-evans/create-pull-request@v8` with `sign-commits: true`, or built-in commit features like `lowlighter/metrics`'s `output_action: commit`) |
-| Anthropic Cloud Routines | `JacobPEvans-claude[bot]` | `GH_TOKEN` (long-lived PAT) | web-flow via `gh api .../contents/...` with a nested `committer` object |
-| GitHub bots (Renovate, release-please) | the bot's GitHub identity | managed by GitHub | web-flow |
+| GitHub Actions — deterministic (snake, 3d-contrib, peter-evans/create-pull-request, release-please) | `JacobPEvans-github-actions[bot]` | default `GITHUB_TOKEN` | web-flow via the action's Contents API call |
+| GitHub Actions — AI workflows | `JacobPEvans-claude[bot]` | `JacobPEvans-claude` App installation token (`actions/create-github-app-token@v2`) | web-flow via `anthropics/claude-code-action@v1` with `use_commit_signing: true` and `github_token` set to the App token |
+| Native cloud-routine workflows (claude-code-routines) | `JacobPEvans-claude[bot]` | same App installation token as above | same Contents API path; routine bodies run inside a regular GHA workflow now (not the Anthropic Cloud Routines sandbox, which can't mint App-class tokens) |
+| GitHub bots (Renovate, release-please releases, dependabot) | the bot's GitHub identity | managed by GitHub | web-flow |
 
-For AI workflows, the entry point is the composite action
-`JacobPEvans/ai-workflows/.github/actions/ai-action-with-signing@main`. For
-deterministic workflows, pick the marketplace action that already does the
-work signed (see the table); never build a custom Contents/Git-Data API
-helper for content the runner can hand off to a trusted action. For cloud
-routines, see the shape below.
+Verification for any commit: `gh api repos/<owner>/<repo>/commits/<sha>
+--jq '{verified: .commit.verification.verified, reason:
+.commit.verification.reason, login: .author.login}'`. Expect
+`verified: true, reason: "valid"` and the `login` from the table above.
 
-## SSH-signed AI workflows
+## AI workflow App-token pattern
 
-The composite action
-`JacobPEvans/ai-workflows/.github/actions/ai-action-with-signing@main` is the
-canonical entry point. It takes `ssh_signing_key`, `bot_id`, `bot_name` as
-inputs and configures `anthropics/claude-code-action@v1` to sign locally:
+Every reusable AI workflow in `JacobPEvans/ai-workflows` mints a
+`JacobPEvans-claude` installation token immediately before calling
+`anthropics/claude-code-action@v1`, then hands the token in as
+`github_token`. The action's `use_commit_signing: true` sends edits through
+the Contents API, which web-flow-signs every commit and attributes it to
+whichever bot owns the token.
 
 ```yaml
-- uses: JacobPEvans/ai-workflows/.github/actions/ai-action-with-signing@main
+- name: Mint JacobPEvans-claude installation token
+  id: app-token
+  uses: actions/create-github-app-token@v2
   with:
+    app-id: ${{ vars.GH_APP_CLAUDE_BOT_ID }}
+    private-key: ${{ secrets.GH_APP_CLAUDE_BOT_PRIVATE_KEY }}
+    owner: ${{ github.repository_owner }}
+    repositories: ${{ github.event.repository.name }}
+
+- name: Run Claude Code
+  uses: anthropics/claude-code-action@v1
+  with:
+    github_token: ${{ steps.app-token.outputs.token }}
     anthropic_api_key: ${{ secrets.OPENROUTER_API_KEY }}
-    ssh_signing_key: ${{ secrets.GH_APP_CLAUDE_SSH_SIGNING_KEY }}
+    allowed_bots: "github-actions"
+    use_commit_signing: "true"
     prompt: ${{ steps.prompt.outputs.content }}
-    allowed_tools: "Edit,MultiEdit,Write,Read,Glob,Grep,LS,Bash(git:*),Bash(gh pr create:*)"
-    model: ${{ vars.AI_MODEL_PLAN }}
 ```
 
-Verification: pull commits from the resulting PR via
-`gh api repos/.../commits/<sha>` — expect
-`verification.verified: true, reason: "valid"` and
-`author.email: "20714140+JacobPEvans@users.noreply.github.com"`. The SSH key
-(id 826672 on the JacobPEvans user account) is the public counterpart of
-`GH_APP_CLAUDE_SSH_SIGNING_KEY`; rotation requires regenerating the keypair
-and re-uploading the public half via `gh api user/ssh_signing_keys`.
+Consumers don't need to import the App credentials themselves — `secrets-sync`
+distributes `vars.GH_APP_CLAUDE_BOT_ID` and `secrets.GH_APP_CLAUDE_BOT_PRIVATE_KEY`
+to every repo in the `*github_app_repos` set. Adding a new consumer repo:
+add it to that anchor in `JacobPEvans/secrets-sync/secrets-config.yml` and
+re-run the distribution workflow.
 
-Bot attribution goes in the commit body via
-`Co-authored-by: JacobPEvans-claude[bot] <…@users.noreply.github.com>` so the
-GitHub UI shows the human-plus-bot association, while the author field stays
-correct for signature verification.
+The AI never constructs Contents API payloads itself. It edits files
+locally inside the workflow; `claude-code-action@v1` translates those edits
+into Contents API calls on commit. So AI workflows enjoy normal file editing
+ergonomics without losing signed-commit attribution.
 
-## Cloud-routine commit shape
+## Deterministic GHA pattern
 
-Routines never run `git commit` / `git push`. All commits go through
-the Contents API; GitHub web-flow signs them automatically. The routine
-env supplies `GH_TOKEN`, `GIT_COMMITTER_NAME`, `GIT_COMMITTER_EMAIL`
-(set once on the shared cloud env).
+Workflows where no AI generates content use whichever marketplace action
+fits — they sign automatically as long as the action makes its commits
+through the Contents API rather than runner-side `git commit`.
 
-`gh api -f key.subkey=value` sends a flat key, not a nested object —
-the Contents API requires `committer` as a real nested object, so the
-payload must be built with `jq` and piped via `--input -`:
+| Producer | Action | Notes |
+| --- | --- | --- |
+| `JacobPEvans/JacobPEvans` snake / 3d-contrib | `peter-evans/create-pull-request@v8` with `sign-commits: true`, then `gh pr merge --squash` | The action wraps the Contents API for arbitrary file updates |
+| Release commits (release-please) | `googleapis/release-please-action@v5` | Native web-flow signing |
+| Built-in commit modes | e.g. `lowlighter/metrics` with `output_action: commit` | Action handles signing itself |
 
-```bash
-jq -n \
-  --arg msg "..." \
-  --arg content "$(base64 -w0 < file)" \
-  --arg branch "..." \
-  --arg cname "$GIT_COMMITTER_NAME" \
-  --arg cemail "$GIT_COMMITTER_EMAIL" \
-  '{message:$msg, content:$content, branch:$branch,
-    committer:{name:$cname, email:$cemail}}' \
-| gh api repos/{owner}/{repo}/contents/{path} -X PUT --input -
-```
-
-Branch creation: `gh api repos/.../git/refs`. PR creation: `gh pr create`. Result: `verification.verified: true, reason: "valid"`, `author.login: "JacobPEvans-claude[bot]"`.
+Never build a custom Contents-API or Git-Data-API helper for content the
+runner can hand off to a trusted action.
 
 ## Enforcement
 
-Branch-level `required_signatures` Repository Rulesets reject unsigned pushes
-at the API. Adding a new workflow that commits? Make sure it goes through one
-of the two paths in the table above; the ruleset will reject anything else at
+Branch-level `required_signatures` Repository Rulesets reject unsigned
+pushes at the API. Adding a new workflow that commits? Make sure it goes
+through one of the paths above; the ruleset will reject anything else at
 push time.
 
 ## Canonical sources (single source of truth, link don't duplicate)
@@ -110,15 +95,22 @@ push time.
 - Architecture: this rule.
 - Cloud-routine operator setup: `docs/CLOUD_ROUTINES_AUTH.md` in `JacobPEvans/claude-code-routines`.
 - Local Mac identity values: `$XDG_CONFIG_HOME/nix-home/local.nix` (gitignored, out-of-tree).
-- AI-action signing wrapper: `.github/actions/ai-action-with-signing/action.yml` in `JacobPEvans/ai-workflows` (composite action; supersedes the
-  never-built `_ai-action-with-signing.yml` reusable workflow this rule referenced before 2026-05).
+- AI-action App-token pattern: the reusable workflows in
+  `JacobPEvans/ai-workflows/.github/workflows/` (issue-resolver, ci-fix,
+  code-simplifier, post-merge-tests, post-merge-docs-review, final-pr-review).
+- Native cloud-routine pattern: `JacobPEvans/claude-code-routines/.github/workflows/issue-solver.yml`.
+- App credential distribution: `secrets:` block in `JacobPEvans/secrets-sync/secrets-config.yml` (`GH_APP_CLAUDE_BOT_PRIVATE_KEY`, `GH_APP_CLAUDE_BOT_ID`).
 
 If you're about to copy-paste signing prose into another file, link here instead.
 
 ## Adding a new context
 
 Pick a real identity (App, user, or bot — never anonymous). Decide auth:
-long-lived PAT for sandboxes that can't refresh env; installation token
-for actions that mint per-run. Decide signing: web-flow if commits go
-through GitHub APIs; SSH/GPG if they go through `git commit`. Add a row
-to the table above; document operator setup in the consuming repo.
+
+- App installation token (`actions/create-github-app-token@v2`) when commits must be attributed to `JacobPEvans-claude[bot]`.
+- Default `GITHUB_TOKEN` when commits should be attributed to `JacobPEvans-github-actions[bot]`.
+- GPG/SSH-on-runner only when a workflow truly needs `git commit` on the
+  runner (rebase, cherry-pick, generated patches that don't fit the
+  Contents API) — document the exception inline.
+
+Add a row to the table above; document operator setup in the consuming repo.
