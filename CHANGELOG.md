@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.12.3...v1.13.0) (2026-05-16)
+
+
+### Features
+
+* **ci-cd-policy:** document RunsOn as the default runner for Linux jobs ([#638](https://github.com/JacobPEvans/ai-assistant-instructions/issues/638)) ([49eb903](https://github.com/JacobPEvans/ai-assistant-instructions/commit/49eb903019986db2b4fe5e871b548110b69afbed))
+
 ## [1.12.3](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.12.2...v1.12.3) (2026-05-14)
 
 
