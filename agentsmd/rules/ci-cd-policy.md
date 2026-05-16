@@ -51,3 +51,33 @@ If a correction is needed, create a new release rather than changing the existin
   Trusted orgs are listed in `JacobPEvans/.github/renovate-presets.json`.
 - **Untrusted external actions**: Use SHA commit hashes — only for orgs NOT
   in the trusted list. SHA pinning is the exception, not the default.
+
+## Runner Choice
+
+Linux GitHub Actions jobs in JacobPEvans repos target self-hosted RunsOn
+runners deployed by [terraform-runs-on](https://github.com/JacobPEvans/terraform-runs-on).
+The control plane is paid for whether or not it's running jobs (~$3.50/mo
+fixed App Runner + CloudWatch); workflows that stay on `ubuntu-latest`
+spend GitHub Actions minutes that don't need to be spent.
+
+| Workload | Runner |
+| --- | --- |
+| Linux job (lint, validate, build, test) | RunsOn — `runs-on=${{ github.run_id }}/runner=2cpu-linux-x64` |
+| Nix `flake check` (Linux) | RunsOn with more RAM — `runs-on=${{ github.run_id }}/cpu=4/ram=16/family=m7+c7/extras=s3-cache` |
+| `macos-latest` | GitHub-hosted — RunsOn EC2 Mac has a 24-hour minimum allocation; for short jobs `macos-latest` is cheaper despite the 10x billing multiplier |
+| `windows-latest` | RunsOn — supports Windows; case-by-case |
+| `*.lock.yml` from `gh-aw compile` | GitHub-hosted — lock files are regenerated; runner label must flow through the `.md` companion (gh-aw doesn't expose this yet) |
+| Disabled-schedule workflow (manual `workflow_dispatch` only) | GitHub-hosted — migration saves nothing |
+
+The leading `runs-on=${{ github.run_id }}` segment is **required** so the
+RunsOn control plane can correlate the GitHub Actions `workflow_job`
+webhook back to the originating run — without it the job hangs in
+`queued`. Reusable workflows in `JacobPEvans/.github` accept a
+`runner_label` input (default `ubuntu-latest`); callers opt in by passing
+the RunsOn label string.
+
+Full label catalog, prereqs (GitHub App allowlist), rollout playbook,
+and verification steps live in
+[terraform-runs-on/docs/migration-guide.md](https://github.com/JacobPEvans/terraform-runs-on/blob/main/docs/migration-guide.md).
+The `/self-hosted-runners` skill (infra-standards plugin) covers
+authoring-time guidance for individual workflow edits.
