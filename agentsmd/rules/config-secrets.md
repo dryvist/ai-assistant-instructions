@@ -65,3 +65,24 @@ provider "proxmox" {
 - **Environment Variables**: CI/CD secrets or local .env (never committed)
 - **AWS Secrets Manager / Parameter Store**: For AWS deployments
 - **SSH Agent**: Agent forwarding only, never commit keys
+
+### macOS Keychain Reuse
+
+**Each keychain read triggers a password approval prompt.** When a secret is
+used across multiple commands in the same session, fetch it once into a shell
+variable and reuse the variable. Never inline `$(security find-generic-password ...)`
+inside each command — that prompts the user once per command.
+
+```bash
+# WRONG — prompts on every command
+curl -H "Authorization: Bearer $(security find-generic-password -s GITHUB_TOKEN -w)" https://api.github.com/user
+gh auth login --with-token <<<"$(security find-generic-password -s GITHUB_TOKEN -w)"
+
+# CORRECT — one prompt, then reuse the variable
+GITHUB_TOKEN=$(security find-generic-password -s GITHUB_TOKEN -w)
+curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user
+gh auth login --with-token <<<"$GITHUB_TOKEN"
+```
+
+The same rule applies to any other keychain-backed secret (`OPENAI_API_KEY`,
+`ANTHROPIC_API_KEY`, etc.) and to any `security find-*-password` invocation.
