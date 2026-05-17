@@ -77,13 +77,20 @@ user once per command.
 ```bash
 # WRONG — prompts on every command
 curl -H "Authorization: Bearer $(security find-generic-password -s GITHUB_TOKEN -w)" https://api.github.com/user
-gh auth login --with-token <<<"$(security find-generic-password -s GITHUB_TOKEN -w)"
+curl -H "Authorization: Bearer $(security find-generic-password -s GITHUB_TOKEN -w)" https://api.github.com/repos/JacobPEvans/ai-assistant-instructions
 
-# CORRECT — one prompt, then reuse the variable
+# CORRECT — one prompt, then inject the variable into each command
 GITHUB_TOKEN=$(security find-generic-password -s GITHUB_TOKEN -w)
 curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user
-gh auth login --with-token <<<"$GITHUB_TOKEN"
+GH_TOKEN="$GITHUB_TOKEN" gh api repos/JacobPEvans/ai-assistant-instructions
 ```
+
+**Inject the variable, never persist it.** Use either an inline expansion
+(`-H "...$VAR"`) or a per-command env-var prefix (`GH_TOKEN="$VAR" gh ...`).
+Both scope the secret to one process. **Never write the secret to disk or to
+shared global state.** That includes `gh auth login --with-token` (writes to
+`~/.config/gh/hosts.yml` — affects every shell and every other Claude
+session), `git config --global`, shell profiles, or any persistent config file.
 
 The same rule applies to any other keychain-backed secret (`OPENAI_API_KEY`,
 `ANTHROPIC_API_KEY`, etc.) and to any `security find-*-password` invocation.
