@@ -15,10 +15,9 @@ paths:
 
 # Config File Secrets
 
-See `secrets-policy.md` for the broader "treat every repo as anyone's"
-posture and the canonical cross-repo public docs target
-([docs.jacobpevans.com](https://docs.jacobpevans.com)). This file is the
-config-file-specific application of those principles.
+See `secrets-policy.md` for the broader posture and the canonical
+cross-repo PUBLIC docs target
+([docs.jacobpevans.com](https://docs.jacobpevans.com)).
 
 ## Scrubbed Values
 
