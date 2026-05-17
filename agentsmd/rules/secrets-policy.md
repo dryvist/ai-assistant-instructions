@@ -1,6 +1,6 @@
 ---
 name: secrets-policy
-description: Never commit secrets, person-specific defaults, or private-repo identifiers. Cross-repo PUBLIC documentation goes to docs.jacobpevans.com (source github.com/JacobPEvans/docs). Placeholders and variables EVERYWHERE — treat every repo as if any person will clone and use it right now.
+description: Never commit secrets, person-specific defaults, or private-repo identifiers. Cross-repo PUBLIC docs go to docs.jacobpevans.com. Placeholders EVERYWHERE — every repo as anyone's.
 ---
 
 # Secrets Policy
@@ -65,5 +65,5 @@ itself becomes committed text — use shape stand-ins (`<name>`,
 leaking the value.
 
 Magic numbers: any literal that needs a comment to explain it should be a
-named constant or variable. See [`config-secrets.md`](config-secrets.md) for
-the canonical scrubbed-value table and runtime injection methods.
+named constant or variable. See `config-secrets.md` for the canonical
+scrubbed-value table and runtime injection methods.
