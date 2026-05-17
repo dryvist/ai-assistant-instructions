@@ -68,29 +68,19 @@ provider "proxmox" {
 
 ### macOS Keychain Reuse
 
-**Each keychain read triggers a password approval prompt.** When a secret is
-used across multiple commands in the same session, fetch it once into a transient
-shell variable (not exported, not persisted) and reuse the variable. Never inline
-`$(security find-generic-password ...)` inside each command — that prompts the
-user once per command.
+**Each keychain read triggers a password approval prompt.** Fetch the secret
+once into a shell variable, then inject the variable into every command that
+needs it. Never inline `$(security find-generic-password ...)` in each command.
 
 ```bash
 # WRONG — prompts on every command
 curl -H "Authorization: Bearer $(security find-generic-password -s GITHUB_TOKEN -w)" https://api.github.com/user
 curl -H "Authorization: Bearer $(security find-generic-password -s GITHUB_TOKEN -w)" https://api.github.com/repos/JacobPEvans/ai-assistant-instructions
 
-# CORRECT — one prompt, then inject the variable into each command
+# CORRECT — one prompt, then inject the variable
 GITHUB_TOKEN=$(security find-generic-password -s GITHUB_TOKEN -w)
 curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user
-GH_TOKEN="$GITHUB_TOKEN" gh api repos/JacobPEvans/ai-assistant-instructions
+curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/JacobPEvans/ai-assistant-instructions
 ```
 
-**Inject the variable, never persist it.** Use either an inline expansion
-(`-H "...$VAR"`) or a per-command env-var prefix (`GH_TOKEN="$VAR" gh ...`).
-Both scope the secret to one process. **Never write the secret to disk or to
-shared global state.** That includes `gh auth login --with-token` (writes to
-`~/.config/gh/hosts.yml` — affects every shell and every other Claude
-session), `git config --global`, shell profiles, or any persistent config file.
-
-The same rule applies to any other keychain-backed secret (`OPENAI_API_KEY`,
-`ANTHROPIC_API_KEY`, etc.) and to any `security find-*-password` invocation.
+Applies to any keychain-backed secret and any `security find-*-password` invocation.
