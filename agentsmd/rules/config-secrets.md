@@ -74,13 +74,13 @@ needs it. Never inline `$(security find-generic-password ...)` in each command.
 
 ```bash
 # WRONG — prompts on every command
-curl -H "Authorization: Bearer $(security find-generic-password -s GITHUB_TOKEN -w)" https://api.github.com/user
-curl -H "Authorization: Bearer $(security find-generic-password -s GITHUB_TOKEN -w)" https://api.github.com/repos/JacobPEvans/ai-assistant-instructions
+TF_VAR_anthropic_key=$(security find-generic-password -s ANTHROPIC_API_KEY -w) terragrunt plan
+TF_VAR_anthropic_key=$(security find-generic-password -s ANTHROPIC_API_KEY -w) terragrunt apply
 
 # CORRECT — one prompt, then inject the variable
-GITHUB_TOKEN=$(security find-generic-password -s GITHUB_TOKEN -w)
-curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user
-curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/JacobPEvans/ai-assistant-instructions
+ANTHROPIC_API_KEY=$(security find-generic-password -s ANTHROPIC_API_KEY -w)
+TF_VAR_anthropic_key=$ANTHROPIC_API_KEY terragrunt plan
+TF_VAR_anthropic_key=$ANTHROPIC_API_KEY terragrunt apply
 ```
 
 Applies to any keychain-backed secret and any `security find-*-password` invocation.
