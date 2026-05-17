@@ -69,9 +69,10 @@ provider "proxmox" {
 ### macOS Keychain Reuse
 
 **Each keychain read triggers a password approval prompt.** When a secret is
-used across multiple commands in the same session, fetch it once into a shell
-variable and reuse the variable. Never inline `$(security find-generic-password ...)`
-inside each command — that prompts the user once per command.
+used across multiple commands in the same session, fetch it once into a transient
+shell variable (not exported, not persisted) and reuse the variable. Never inline
+`$(security find-generic-password ...)` inside each command — that prompts the
+user once per command.
 
 ```bash
 # WRONG — prompts on every command
