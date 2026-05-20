@@ -13,6 +13,9 @@
     "temporal-python-testing": "name-only",
     "django-pro": "off",
     "fastapi-pro": "off",
-    "graphql-architect": "off"
+    "graphql-architect": "off",
+    "slack-gif-creator": "off",
+    "algorithmic-art": "off",
+    "internal-comms": "off"
   }
 }
