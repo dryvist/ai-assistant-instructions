@@ -14,8 +14,8 @@
     "django-pro": "off",
     "fastapi-pro": "off",
     "graphql-architect": "off",
-    "slack-gif-creator": "off",
     "algorithmic-art": "off",
-    "internal-comms": "off"
+    "internal-comms": "off",
+    "slack-gif-creator": "off"
   }
 }
