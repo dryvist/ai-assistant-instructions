@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.13.1...v1.14.0) (2026-05-21)
+
+
+### Features
+
+* **skill-overrides:** disable noisy design-adjacent skills globally ([#645](https://github.com/JacobPEvans/ai-assistant-instructions/issues/645)) ([c72c9e8](https://github.com/JacobPEvans/ai-assistant-instructions/commit/c72c9e8befffe22eede207ef713405dbd6f4aa01))
+
 ## [1.13.1](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.13.0...v1.13.1) (2026-05-19)
 
 
