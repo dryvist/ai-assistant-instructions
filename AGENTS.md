@@ -111,7 +111,7 @@ in the same session — never leave it to a follow-up:
 - New user-facing rule under `agentsmd/rules/` → mention in
   `docs/ai-development/ai-assistant-instructions.mdx`.
 - Diagram edits → keep inline mermaid blocks and any `docs/assets/*.mmd` sources in lockstep
-  per `agentsmd/rules/diagramming.md`.
+  per `diagramming.md`.
 - One PR per repo. Cross-link via `Refs: JacobPEvans/<repo>#N` in the PR body.
 - Per-repo docs (the local `README.md` and `docs/` inside any source repo) stay in that repo.
   Private/user-only content never goes in `JacobPEvans/docs`.

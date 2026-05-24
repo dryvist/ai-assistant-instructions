@@ -41,7 +41,7 @@ graph LR
 
     style Rules fill:#d4e6ff,stroke:#4a90d9,color:#000
     style Plugins fill:#fff3d4,stroke:#d4a017,color:#000
-    style Docs fill:#f0d4ff,stroke:#9b4ad9,color:#000
+    style Docs fill:#e8d4ff,stroke:#8a4ad9,color:#000
 ```
 
 Full rule, decision table, and update workflow: [`docs.jacobpevans.com/ai-development/repo-boundaries`](https://docs.jacobpevans.com/ai-development/repo-boundaries).
