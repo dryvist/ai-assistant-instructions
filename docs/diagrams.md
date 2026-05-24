@@ -56,7 +56,7 @@ graph TD
     GEMINI["GEMINI.md\n(synced document)"]
     COPILOT[".copilot/instructions.md\n(symlink → AGENTS.md)"]
 
-    Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul · no-scripts\n· secrets-policy · bifrost-routing\n· nix-tool-policy …"]
+    Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul\n· skill-execution-integrity\n· nix-tool-policy"]
     Workflows["**agentsmd/workflows/**\n5-step development process\n1 Research → 2 Plan → 3 Define\n4 Implement → 5 Finalize"]
     Permissions["**agentsmd/permissions/**\nTool access control\nallow / ask / deny (JSON)"]
 
@@ -103,7 +103,7 @@ sequenceDiagram
     Repo->>AAI: @AGENTS.md import resolves
     AAI-->>CC: Canonical rules + routing loaded
     CC->>AAI: Auto-load agentsmd/rules/
-    AAI-->>CC: tool-use, soul, no-scripts, secrets-policy, …
+    AAI-->>CC: tool-use, soul, skill-execution-integrity, nix-tool-policy
     CC->>Plugins: Load installed skills & hooks
     Plugins-->>CC: PreToolUse / PostToolUse hooks active
 
@@ -112,7 +112,7 @@ sequenceDiagram
     Plugins-->>Dev: Result
 
     Dev->>CC: Implement feature
-    CC->>CC: Apply rules (no-scripts, surgical changes, …)
+    CC->>CC: Apply rules (tool-use, surgical changes, …)
     CC-->>Dev: Code + commit
 
     Note over CC,AAI: Rules re-read from disk each session — no stale cache

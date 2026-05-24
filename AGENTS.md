@@ -78,7 +78,8 @@ Plugins, commands, skills, agents, hooks: [JacobPEvans/claude-code-plugins](http
 
 ## No Scripts
 
-See `no-scripts.md`. Iron law: search first, script as last resort, never inline.
+See [docs.jacobpevans.com/conventions/no-scripts](https://docs.jacobpevans.com/conventions/no-scripts).
+Iron law: search first, script as last resort, never inline.
 
 ## Starting any change
 
@@ -111,7 +112,7 @@ in the same session — never leave it to a follow-up:
 - New user-facing rule under `agentsmd/rules/` → mention in
   `docs/ai-development/ai-assistant-instructions.mdx`.
 - Diagram edits → keep inline mermaid blocks and any `docs/assets/*.mmd` sources in lockstep
-  per `diagramming.md`.
+  per [docs.jacobpevans.com/conventions/diagramming](https://docs.jacobpevans.com/conventions/diagramming).
 - One PR per repo. Cross-link via `Refs: JacobPEvans/<repo>#N` in the PR body.
 - Per-repo docs (the local `README.md` and `docs/` inside any source repo) stay in that repo.
   Private/user-only content never goes in `JacobPEvans/docs`.
