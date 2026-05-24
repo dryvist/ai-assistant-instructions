@@ -54,11 +54,12 @@ If a correction is needed, create a new release rather than changing the existin
 
 ## Runner Choice
 
-Linux GitHub Actions jobs in JacobPEvans repos target self-hosted RunsOn
-runners deployed by [terraform-runs-on](https://github.com/JacobPEvans/terraform-runs-on).
-The control plane is paid for whether or not it's running jobs (~$3.50/mo
-fixed App Runner + CloudWatch); workflows that stay on `ubuntu-latest`
-spend GitHub Actions minutes that don't need to be spent.
+RunsOn is the default for Linux jobs. The control plane is paid for
+whether or not it's running jobs (~$3.50/mo fixed App Runner +
+CloudWatch); workflows that stay on `ubuntu-latest` spend GitHub Actions
+minutes that don't need to be spent. On-prem self-hosted is the
+documented exception for jobs that genuinely need local hardware — not
+a routine choice.
 
 | Workload | Runner |
 | --- | --- |
@@ -68,6 +69,7 @@ spend GitHub Actions minutes that don't need to be spent.
 | `windows-latest` | RunsOn — supports Windows; case-by-case |
 | `*.lock.yml` from `gh-aw compile` | GitHub-hosted — lock files are regenerated; runner label must flow through the `.md` companion (gh-aw doesn't expose this yet) |
 | Disabled-schedule workflow (manual `workflow_dispatch` only) | GitHub-hosted — migration saves nothing |
+| Job requiring local hardware (OrbStack cluster, Proxmox LAN access, dev-loop instrumentation that can't be replicated on a fresh EC2 spot instance) | **on-prem self-hosted** — `[self-hosted, Linux, ARM64]` (orbstack-kubernetes) or `[self-hosted, Linux]` (ansible-proxmox-apps); see "On-prem runner requirements" below |
 
 The leading `runs-on=${{ github.run_id }}` segment is **required** so the
 RunsOn control plane can correlate the GitHub Actions `workflow_job`
@@ -76,8 +78,30 @@ webhook back to the originating run — without it the job hangs in
 `runner_label` input (default `ubuntu-latest`); callers opt in by passing
 the RunsOn label string.
 
-Full label catalog, prereqs (GitHub App allowlist), rollout playbook,
-and verification steps live in
+Full RunsOn label catalog, prereqs (GitHub App allowlist), rollout
+playbook, and verification steps live in
 [terraform-runs-on/docs/migration-guide.md](https://github.com/JacobPEvans/terraform-runs-on/blob/main/docs/migration-guide.md).
 The `/self-hosted-runners` skill (infra-standards plugin) covers
 authoring-time guidance for individual workflow edits.
+
+### On-prem runner requirements
+
+On-prem self-hosted runners are the org's single point of failure when
+the job has E2E coverage and the runner is broken or stale. Every on-prem
+runner MUST:
+
+1. Authenticate via a **GitHub App** (`APP_ID` + `APP_PRIVATE_KEY`) — never
+   a personal access token. App installation tokens auto-refresh; PATs
+   silently expire and break the runner with no upstream visibility.
+2. Pin the runner image (or VM template) **by digest**, with Renovate
+   tracking the digest. No floating tags.
+3. Expose a process-level healthcheck (Docker `healthcheck:`, systemd
+   `WatchdogSec`, or equivalent) so failed state surfaces in standard
+   inspection tools.
+4. Emit a periodic heartbeat to a dead-man's-switch endpoint
+   (healthchecks.io or equivalent) so silent death pages someone.
+5. Have a pre-flight check on the secret-injection step that fails loud
+   when required secrets are missing.
+
+Reference implementation: `orbstack-kubernetes/docker/actions-runner/`
+(see that repo's `Makefile` `runner-*` targets and `TESTING.md`).
