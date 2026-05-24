@@ -90,6 +90,35 @@ One-shot a local working solution. Surface upstream bugs as FYI; don't file PRs 
 outside the user's organizations. For multi-session work, use GitHub issues — never Claude Code's
 internal TODO as durable tracking.
 
+## Repo boundaries and docs
+
+The AI configuration layer spans three repos. Know which one owns the change before editing.
+
+| Owns | Repo |
+| --- | --- |
+| Auto-loaded rules, AGENTS.md, workflows, permission JSON | [`JacobPEvans/ai-assistant-instructions`](https://github.com/JacobPEvans/ai-assistant-instructions) |
+| Slash commands, skills, agents, hooks (marketplace-installed) | [`JacobPEvans/claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins) |
+| Public-facing reference site at [`docs.jacobpevans.com`](https://docs.jacobpevans.com) | [`JacobPEvans/docs`](https://github.com/JacobPEvans/docs) |
+
+Canonical "what lives where" with diagram and lifecycle:
+[`docs.jacobpevans.com/ai-development/repo-boundaries`](https://docs.jacobpevans.com/ai-development/repo-boundaries).
+
+When a change in one repo affects the public picture, mirror the relevant slice into `JacobPEvans/docs`
+in the same session — never leave it to a follow-up:
+
+- Plugin added, removed, or scope shifted → update `docs/ai-development/claude-code-plugins.mdx`
+  and `docs/docs.json` nav.
+- New user-facing rule under `agentsmd/rules/` → mention in
+  `docs/ai-development/ai-assistant-instructions.mdx`.
+- Diagram edits → keep inline mermaid blocks and any `docs/assets/*.mmd` sources in lockstep
+  per `agentsmd/rules/diagramming.md`.
+- One PR per repo. Cross-link via `Refs: JacobPEvans/<repo>#N` in the PR body.
+- Per-repo docs (the local `README.md` and `docs/` inside any source repo) stay in that repo.
+  Private/user-only content never goes in `JacobPEvans/docs`.
+
+The docs site is descriptive (written for humans and AI readers); agent directives like this one
+stay in `AGENTS.md`.
+
 ## Delegation
 
 Protect the main context window. Delegate exploration and high-token research to subagents

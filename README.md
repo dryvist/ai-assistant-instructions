@@ -21,27 +21,32 @@ Drop these into your projects and get consistent, high-quality AI assistance acr
 
 Think of it as a style guide, but for your AI pair programmer.
 
-### Ecosystem Context
+### Repo boundaries
 
-This repo is the universal config layer for the JacobPEvans AI ecosystem, sitting above the Nix infrastructure repos and feeding rules into every per-repo AI session:
+The AI configuration layer is split across three repositories. This repo owns the rules.
+[`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins) owns commands, skills, agents, and hooks.
+[`docs`](https://github.com/JacobPEvans/docs) owns the public-facing reference site at
+[`docs.jacobpevans.com`](https://docs.jacobpevans.com).
 
 ```mermaid
-graph TD
-    AAI["**ai-assistant-instructions**\nUniversal AI config layer"]
+graph LR
+    Rules["**ai-assistant-instructions**<br/>rules · workflows · permissions"]
+    Plugins["**claude-code-plugins**<br/>commands · skills · agents · hooks"]
+    Docs["**docs**<br/>public-facing reference"]
+    Session(("Developer session"))
 
-    NixAI["**nix-ai**\nAI tool ecosystem\nClaude Code · Gemini · MCP servers · Whisper"]
-    NixHome["**nix-home** / **nix-darwin**\nUser + system environments"]
+    Rules -->|"auto-loaded"| Session
+    Plugins -->|"marketplace install"| Session
+    Docs -.->|"read by humans and AI"| Session
 
-    Plugins["**claude-code-plugins**\nCommands · skills · hooks"]
-    PerRepo["**Per-repo CLAUDE.md**\n@AGENTS.md import"]
-
-    AAI -->|"dispatch webhook"| NixAI
-    AAI -->|"@AGENTS.md"| PerRepo
-    Plugins -->|"marketplace install"| PerRepo
-    NixAI --> NixHome
+    style Rules fill:#d4e6ff,stroke:#4a90d9,color:#000
+    style Plugins fill:#fff3d4,stroke:#d4a017,color:#000
+    style Docs fill:#f0d4ff,stroke:#9b4ad9,color:#000
 ```
 
-See [`docs/diagrams.md`](docs/diagrams.md) for full architecture and session-lifecycle diagrams.
+Full rule, decision table, and update workflow: [`docs.jacobpevans.com/ai-development/repo-boundaries`](https://docs.jacobpevans.com/ai-development/repo-boundaries).
+
+For the broader Nix ecosystem context and session lifecycle diagrams, see [`docs/diagrams.md`](docs/diagrams.md).
 
 ## Prerequisites
 

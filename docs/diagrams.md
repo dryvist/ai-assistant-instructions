@@ -3,6 +3,9 @@
 ## Ecosystem Context
 
 Where `ai-assistant-instructions` fits within the broader JacobPEvans nix-ai system.
+Companion repos: [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
+delivers the plugins, and [`docs`](https://github.com/JacobPEvans/docs) hosts the public
+reference site at [`docs.jacobpevans.com`](https://docs.jacobpevans.com).
 
 ```mermaid
 graph TD
@@ -14,12 +17,15 @@ graph TD
     NixDevenv["**nix-devenv**\nProject shells\n(per-language toolchains · importable modules)"]
 
     Plugins["**claude-code-plugins**\nCommands · skills · agents · hooks"]
+    Docs["**docs**\nPublic-facing reference\n(docs.jacobpevans.com)"]
 
     PerRepo["**Per-repo CLAUDE.md**\n@AGENTS.md import"]
 
     AAI -->|"dispatch webhook\n(trigger-nix-update)"| NixAI
     AAI -->|"@AGENTS.md\ncanonical source"| PerRepo
     Plugins -->|"marketplace install\nskills · slash commands"| PerRepo
+    AAI -. "mirrored to" .-> Docs
+    Plugins -. "mirrored to" .-> Docs
 
     NixAI -->|"home.packages"| NixHome
     NixDarwin -->|"system layer"| NixHome
@@ -28,10 +34,14 @@ graph TD
     style AAI fill:#d4e6ff,stroke:#4a90d9,color:#000
     style NixAI fill:#d4ffd4,stroke:#4a9d4a,color:#000
     style Plugins fill:#fff3d4,stroke:#d4a017,color:#000
+    style Docs fill:#e8d4ff,stroke:#8a4ad9,color:#000
     style PerRepo fill:#f0d4ff,stroke:#9b4ad9,color:#000
 ```
 
 Source: [`docs/assets/ecosystem.mmd`](assets/ecosystem.mmd)
+
+Canonical "what lives where" rule:
+[`docs.jacobpevans.com/ai-development/repo-boundaries`](https://docs.jacobpevans.com/ai-development/repo-boundaries).
 
 ---
 
