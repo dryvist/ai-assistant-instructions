@@ -17,6 +17,8 @@ description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glo
 | JSON manipulation | `jq` via Bash | Python script |
 | API calls | `curl` / `gh api` | Python/curl script |
 | Multi-file git ops | Parallel Bash tool calls | Loop script |
+| Workspace sweep / abandoned branches | `/refresh-repo --sweep` | Free-form session planning that opens PRs without content checks |
+| Close PR + cleanup local state | `/wrap-up purge-pr <N>` | `gh pr close --delete-branch` alone (leaves local branch + worktree) |
 | Infrastructure config | Ansible modules, Terraform resources | Configuration script |
 | Infrastructure validation | `terraform validate`, `ansible-lint`, check modes | Validation script |
 | State queries | `terraform output`, Ansible facts | Query script |
