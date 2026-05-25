@@ -91,14 +91,17 @@ Current: 7 complex bash scripts with nested subshells
 New: 3 simple commands with explicit success checks
 
 ```bash
-# Step 1: Update main
-cd ~/git/REPO/main && git fetch origin && git reset --hard origin/main
+# Step 1: in the main worktree
+git fetch origin && git reset --hard origin/main
 
-# Step 2: Rebase and merge
-cd ~/git/REPO/BRANCH && git rebase main && cd ~/git/REPO/main && git merge --ff-only BRANCH
+# Step 2: in the feature worktree
+git rebase main
 
-# Step 3: THE CRITICAL STEP - Push to origin
-cd ~/git/REPO/main && git push origin main
+# Step 3: back in the main worktree
+git merge --ff-only <type>/<name>
+
+# Step 4: THE CRITICAL STEP - still in the main worktree
+git push origin main
 ```
 
 #### 3. Remove Troubleshooting from Primary Skill
@@ -274,7 +277,7 @@ git checkout main && echo "different" > shared-file && git commit -am "main chan
 ### Evidence
 
 ```bash
-$ cd ~/git/ai-assistant-instructions/worktrees/active-pull-request
+$ # in the ai-assistant-instructions worktree for the active PR
 $ git branch -vv
 * chore/fix-label-naming  7a61cdc  # Local branch
   main                   7a61cdc  # Same as local - merge happened

@@ -83,7 +83,7 @@ Iron law: search first, script as last resort, never inline.
 
 ## Starting any change
 
-Run `/refresh-repo`, then create a worktree at `~/git/<repo>/<type>/<name>` on a `<type>/<name>` branch off `main`.
+Run `/refresh-repo`, then create a `<type>/<name>` worktree off `main`. Use whatever local layout your workspace already follows.
 
 ## Scope
 
