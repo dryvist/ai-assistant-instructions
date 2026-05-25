@@ -83,7 +83,9 @@ Iron law: search first, script as last resort, never inline.
 
 ## Starting any change
 
-Run `/refresh-repo`, then create a worktree at `~/git/<repo>/<type>/<name>` on a `<type>/<name>` branch off `main`.
+Run `/refresh-repo`, then create a worktree at `${GIT_HOME_PUBLIC}/<repo>/<type>/<name>`
+(public repos) or `${GIT_HOME}/<repo>/<type>/<name>` (private) on a
+`<type>/<name>` branch off `main`.
 
 ## Scope
 
