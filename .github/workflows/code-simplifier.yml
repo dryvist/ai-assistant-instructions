@@ -18,5 +18,5 @@ concurrency:
 
 jobs:
   simplify:
-    uses: JacobPEvans/ai-workflows/.github/workflows/code-simplifier.yml@main
+    uses: dryvist/ai-workflows/.github/workflows/code-simplifier.yml@main
     secrets: inherit
