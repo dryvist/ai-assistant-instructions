@@ -22,12 +22,19 @@ Consequence: when a shared-CI repo changes orgs, every consumer's `uses:` fails 
 
 ## Canonical homes (reference these literally)
 
-| Shared-CI repo | Current home |
+| Shared-CI workflow set | Current home |
 | --- | --- |
 | `ai-workflows` reusable workflows | `dryvist/ai-workflows` |
-| shared `.github` reusable workflows | `JacobPEvans-personal/.github` |
+| Nix reusable workflows (`_nix-validate.yml`, `_nix-build.yml`) | `dryvist/.github` |
+| All other shared `.github` reusable workflows (`_markdown-lint`, `_file-size`, `_osv-scan`, `_ci-gate`, …) | `JacobPEvans-personal/.github` |
 
-These two repos are fixed homes — do not move them. Moving either is a breaking change for every consumer in the org.
+These are fixed homes — do not move them. Moving any is a breaking change for every consumer in the org.
+
+The Nix reusable workflows were deliberately relocated from `JacobPEvans-personal/.github` to
+`dryvist/.github` (the org now owns its Nix CI). Consumers repoint via the sweep procedure below;
+once repointed, the personal-account Nix copies are removed. Do not move them back, and do not
+"consolidate" the remaining non-Nix `.github` workflows into `dryvist/.github` — they stay in
+`JacobPEvans-personal/.github` because that home is consumed across both accounts.
 
 ## Rules
 
