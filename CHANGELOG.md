@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.1...v1.14.2) (2026-06-03)
+
+
+### Bug Fixes
+
+* **ci:** retarget reusable-workflow uses: refs to current org homes ([fd861a5](https://github.com/dryvist/ai-assistant-instructions/commit/fd861a5b4f337df0f2c2e49872171c00d39cf342))
+* **release-please:** inherit dryvist/.github org-native caller; correct shared-workflow home rule ([#669](https://github.com/dryvist/ai-assistant-instructions/issues/669)) ([5cba3ae](https://github.com/dryvist/ai-assistant-instructions/commit/5cba3ae7fc8c20ac2cd3628d978307aeab3c6f15))
+
 ## [1.14.1](https://github.com/JacobPEvans/ai-assistant-instructions/compare/v1.14.0...v1.14.1) (2026-05-21)
 
 
