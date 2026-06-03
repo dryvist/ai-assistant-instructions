@@ -20,21 +20,29 @@ Two hard GitHub constraints:
 Consequence: when a shared-CI repo changes orgs, every consumer's `uses:` fails at parse time
 (the run shows zero jobs and "workflow was not found"). There is no runtime variable that prevents this.
 
-## Canonical homes (reference these literally)
+## Canonical home: dryvist
 
-| Shared-CI workflow set | Current home |
-| --- | --- |
-| `ai-workflows` reusable workflows | `dryvist/ai-workflows` |
-| Nix reusable workflows (`_nix-validate.yml`, `_nix-build.yml`) | `dryvist/.github` |
-| All other shared `.github` reusable workflows (`_markdown-lint`, `_file-size`, `_osv-scan`, `_ci-gate`, …) | `JacobPEvans-personal/.github` |
+**dryvist is the canonical home for everything dryvist uses.** Anything a dryvist
+repo consumes — reusable workflows, presets, policies — belongs under `dryvist/*`.
+`JacobPEvans-personal/*` may depend on `dryvist/*`; `dryvist/*` must **never** depend
+on `JacobPEvans-personal/*`. When a shared workflow is used by dryvist, its home is
+`dryvist/.github` (or the relevant `dryvist/*` repo), not the personal account.
 
-These are fixed homes — do not move them. Moving any is a breaking change for every consumer in the org.
+Because `uses:` does not follow redirects, reference each workflow by its literal
+**current** owner from the table below until a pending relocation actually lands.
 
-The Nix reusable workflows were deliberately relocated from `JacobPEvans-personal/.github` to
-`dryvist/.github` (the org now owns its Nix CI). Consumers repoint via the sweep procedure below;
-once repointed, the personal-account Nix copies are removed. Do not move them back, and do not
-"consolidate" the remaining non-Nix `.github` workflows into `dryvist/.github` — they stay in
-`JacobPEvans-personal/.github` because that home is consumed across both accounts.
+| Shared-CI workflow set | Current home | Status |
+| --- | --- | --- |
+| `ai-workflows` reusable workflows | `dryvist/ai-workflows` | canonical |
+| Nix reusable workflows (`_nix-validate.yml`, `_nix-build.yml`) | `dryvist/.github` | canonical |
+| Release-please (`_release-please.yml`) | `dryvist/.github` | canonical — org-native (dryvist release App, major-bump block, auto-merge) |
+| `_markdown-lint`, `_file-size`, `_osv-scan`, `_ci-gate`, … | `JacobPEvans-personal/.github` | **pending relocation to `dryvist/.github`** |
+
+Nix and release-please were deliberately relocated to `dryvist/.github` (the org owns
+its own CI). The remaining non-Nix `.github` workflows are still in
+`JacobPEvans-personal/.github` **only until they are moved the same way** — that is a
+transitional home, not a permanent one. Repoint consumers via the sweep below as each
+moves; do not move any back to the personal account.
 
 ## Rules
 
