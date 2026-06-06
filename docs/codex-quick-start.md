@@ -28,7 +28,7 @@ Do not assume `~/AGENTS.md` is a guaranteed fallback. In practice, rely on the a
 
 ## Use This Every Session
 
-1. Open the correct worktree. Use `main/` or a feature worktree, not the bare repo root.
+1. Open the repo. For parallel work, use a worktree.
 2. Read the repo-local `AGENTS.md` or `CLAUDE.md` first.
 3. Ask Codex to summarize the repo contracts before editing anything.
 4. For infra work, make Codex repeat the documented wrapper command back to you before running it.

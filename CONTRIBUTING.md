@@ -6,7 +6,7 @@ First off, thanks for considering contributing to this project. It's just me her
 
 **This repo uses git worktrees for session isolation.** Always start here:
 
-1. Run `/refresh-repo` to sync main and clean stale worktrees, then create a worktree with `git worktree add`
+1. Run `/refresh-repo` to sync main, then create a worktree
 2. Make your changes in the worktree
 3. Commit your changes (`git commit -m 'feat: add some cool thing'`)
 4. Push to the branch (`git push origin feature/cool-thing`)
