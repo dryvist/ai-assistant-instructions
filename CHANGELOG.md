@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.4](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.3...v1.14.4) (2026-06-07)
+
+
+### Bug Fixes
+
+* **select-model:** route cloud via PAL auto, drop versioned model name ([#675](https://github.com/dryvist/ai-assistant-instructions/issues/675)) ([a86a760](https://github.com/dryvist/ai-assistant-instructions/commit/a86a76040a4b6a6b642eaf0623c1f9e52d6aa85e))
+
 ## [1.14.3](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.2...v1.14.3) (2026-06-07)
 
 
