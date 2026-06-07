@@ -117,6 +117,26 @@ analyze_complexity() {
   echo "$complexity_score"
 }
 
+# Resolve a capability role (default, coding, most-capable, large-context,
+# quickest, tool-calling, oss) to its physical mlx-community/* model id via the
+# AI-stack registry — the single source of truth written by nix-ai on each
+# darwin-rebuild to ~/.config/ai-stack/registry.json. This keeps hardcoded
+# physical model ids out of the routing canon: when the resident model changes,
+# only the registry changes. Falls back to the 'default' role, then to the role
+# name itself (a capability alias) if the registry is unavailable.
+AI_STACK_REGISTRY="${AI_STACK_REGISTRY:-$HOME/.config/ai-stack/registry.json}"
+model_for_role() {
+  local role="$1" id=""
+  if command -v jq >/dev/null 2>&1 && [[ -r "$AI_STACK_REGISTRY" ]]; then
+    id=$(jq -r --arg r "$role" '.models[$r] // .models.default // empty' "$AI_STACK_REGISTRY")
+  fi
+  if [[ -z "$id" ]]; then
+    echo "Warning: AI-stack registry unavailable; using role alias '$role'" >&2
+    id="$role"
+  fi
+  printf '%s' "$id"
+}
+
 # Decision tree implementation based on delegate-to-ai.md routing logic
 select_model() {
   local task_type="$1"
@@ -132,10 +152,10 @@ select_model() {
 
   # Step 1: Is the data sensitive or confidential?
   if [[ "$private" == "true" ]]; then
-    echo "Model: mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit"
-    echo "Selected: mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit (local reasoning) or mlx-community/Qwen3-235B-A22B-4bit (local general)"
-    # Use PAL MCP chat tool: pal chat --model mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit "<prompt>"
-    echo "Command: pal chat --model mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit"
+    local m; m="$(model_for_role most-capable)"
+    echo "Model: $m"
+    echo "Selected: $m (single resident local model — every capability role resolves to it)"
+    echo "Command: pal chat --model $m"
     echo "Rationale: Private/sensitive data must stay local. Never use cloud APIs."
     return 0
   fi
@@ -144,38 +164,38 @@ select_model() {
   if [[ "$cost_sensitive" == "true" ]]; then
     case "$task_type" in
       coding)
-        echo "Model: mlx-community/Qwen3-Coder-30B-A3B-Instruct"
-        # Use PAL MCP chat tool: pal chat --model mlx-community/Qwen3-Coder-30B-A3B-Instruct "<prompt>"
-        echo "Command: pal chat --model mlx-community/Qwen3-Coder-30B-A3B-Instruct"
-        echo "Rationale: Cost-sensitive coding task - using free local specialized model"
+        local m; m="$(model_for_role coding)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive coding task - using the free local model (coding role)"
         return 0
         ;;
       review)
-        echo "Model: mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit"
-        # Use PAL MCP chat tool: pal chat --model mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit "<prompt>"
-        echo "Command: pal chat --model mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit"
-        echo "Rationale: Cost-sensitive code review - using free local reasoning model"
+        local m; m="$(model_for_role most-capable)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive code review - using the free local model (most-capable role)"
         return 0
         ;;
       research)
-        echo "Model: mlx-community/Qwen3-235B-A22B-4bit"
-        # Use PAL MCP chat tool: pal chat --model mlx-community/Qwen3-235B-A22B-4bit "<prompt>"
-        echo "Command: pal chat --model mlx-community/Qwen3-235B-A22B-4bit"
-        echo "Rationale: Cost-sensitive research/analysis - using free local general model"
+        local m; m="$(model_for_role large-context)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive research/analysis - using the free local model (large-context role)"
         return 0
         ;;
       decision)
-        echo "Model: mlx-community/DeepSeek-R1-Distill-Llama-70B-4bit + mlx-community/Qwen3-235B-A22B-4bit"
-        # Use PAL MCP clink tool for parallel multi-model: pal clink "<prompt>"
+        local m; m="$(model_for_role most-capable)"
+        echo "Model: $m (via pal clink — fans out across local + configured models)"
         echo "Command: pal clink"
-        echo "Rationale: Cost-sensitive critical decision - using best-reasoning + general local models"
+        echo "Rationale: Cost-sensitive critical decision - fan out for multiple perspectives"
         return 0
         ;;
       default)
-        echo "Model: mlx-community/Qwen3-235B-A22B-4bit"
-        # Use PAL MCP chat tool: pal chat --model mlx-community/Qwen3-235B-A22B-4bit "<prompt>"
-        echo "Command: pal chat --model mlx-community/Qwen3-235B-A22B-4bit"
-        echo "Rationale: Cost-sensitive generic task - using free local model"
+        local m; m="$(model_for_role default)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive generic task - using the free local model (default role)"
         return 0
         ;;
     esac
@@ -191,9 +211,10 @@ select_model() {
 
   # Step 4: Is this a critical decision?
   if [[ "$task_type" == "decision" ]]; then
+    local m; m="$(model_for_role most-capable)"
     echo "Model: consensus"
-    echo "Selected: gemini-3-pro + deepseek-r1:70b (local) + claude"
-    echo "Command: bash /tmp/multi-model-consensus.sh"
+    echo "Selected: gemini-3-pro (cloud) + $m (local) + Claude"
+    echo "Command: pal consensus"
     echo "Rationale: Critical decision - get consensus from multiple models to reduce bias"
     return 0
   fi
@@ -214,15 +235,16 @@ select_model() {
 
   # Step 6: Code review with cost flexibility
   if [[ "$task_type" == "review" ]]; then
+    local m; m="$(model_for_role most-capable)"
     if [[ "$complexity" == "high" ]]; then
       echo "Model: consensus"
-      echo "Selected: Claude Opus (Claude Code) + gemini-3-pro + deepseek-r1:70b (local)"
+      echo "Selected: Claude Opus (Claude Code) + gemini-3-pro + $m (local)"
       echo "Command: Multi-model review for high-complexity code"
       echo "Rationale: High-complexity review requires expert perspectives - adding Opus for deeper analysis"
     else
       echo "Model: consensus"
-      echo "Selected: gemini-3-pro + deepseek-r1:70b (local)"
-      echo "Command: bash /tmp/multi-model-review.sh"
+      echo "Selected: gemini-3-pro + $m (local)"
+      echo "Command: pal consensus"
       echo "Rationale: Code review benefits from multiple perspectives on non-sensitive code"
     fi
     return 0
@@ -237,11 +259,10 @@ select_model() {
   fi
 
   # Default: Start local, fall back to cloud
+  local m; m="$(model_for_role default)"
   echo "Model: mlx-with-fallback"
-  echo "Selected: mlx-community/Qwen3-235B-A22B-4bit (local) → gemini-3-pro (cloud fallback)"
-  # Use PAL MCP chat tool with local model first: pal chat --model mlx-community/Qwen3-235B-A22B-4bit "<prompt>"
-  # Fall back to cloud: pal chat --model gemini-3-pro "<prompt>"
-  echo "Command: pal chat --model mlx-community/Qwen3-235B-A22B-4bit"
+  echo "Selected: $m (local) → gemini-3-pro (cloud fallback)"
+  echo "Command: pal chat --model $m"
   echo "Rationale: Default/general task - try local first for cost/privacy, fall back to cloud if needed"
   return 0
 }
