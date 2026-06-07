@@ -203,9 +203,9 @@ select_model() {
 
   # Step 3: Do you need the latest information/web search or 1M+ context window?
   if [[ "$large_context" == "true" ]]; then
-    echo "Model: gemini-3-pro"
-    echo "Command: gemini chat --model gemini-3-pro"
-    echo "Rationale: 1M+ token context needed - only Gemini 3 Pro can handle this scale"
+    echo "Model: cloud (large-context tier)"
+    echo "Command: pal chat"
+    echo "Rationale: 1M+ token context needed - PAL/Bifrost auto-routes to a large-context cloud model"
     return 0
   fi
 
@@ -213,7 +213,7 @@ select_model() {
   if [[ "$task_type" == "decision" ]]; then
     local m; m="$(model_for_role most-capable)"
     echo "Model: consensus"
-    echo "Selected: gemini-3-pro (cloud) + $m (local) + Claude"
+    echo "Selected: cloud + $m (local) + Claude"
     echo "Command: pal consensus"
     echo "Rationale: Critical decision - get consensus from multiple models to reduce bias"
     return 0
@@ -238,12 +238,12 @@ select_model() {
     local m; m="$(model_for_role most-capable)"
     if [[ "$complexity" == "high" ]]; then
       echo "Model: consensus"
-      echo "Selected: Claude Opus (Claude Code) + gemini-3-pro + $m (local)"
+      echo "Selected: Claude Opus (Claude Code) + cloud + $m (local)"
       echo "Command: Multi-model review for high-complexity code"
       echo "Rationale: High-complexity review requires expert perspectives - adding Opus for deeper analysis"
     else
       echo "Model: consensus"
-      echo "Selected: gemini-3-pro + $m (local)"
+      echo "Selected: cloud + $m (local)"
       echo "Command: pal consensus"
       echo "Rationale: Code review benefits from multiple perspectives on non-sensitive code"
     fi
@@ -252,16 +252,16 @@ select_model() {
 
   # Step 7: Research/Analysis with cost flexibility
   if [[ "$task_type" == "research" ]]; then
-    echo "Model: gemini-3-pro"
-    echo "Command: gemini chat --model gemini-3-pro"
-    echo "Rationale: Research/analysis - Gemini 3 Pro for 1M context and latest information"
+    echo "Model: cloud (research tier)"
+    echo "Command: pal chat"
+    echo "Rationale: Research/analysis - PAL/Bifrost auto-routes to a large-context, web-capable cloud model"
     return 0
   fi
 
   # Default: Start local, fall back to cloud
   local m; m="$(model_for_role default)"
   echo "Model: mlx-with-fallback"
-  echo "Selected: $m (local) → gemini-3-pro (cloud fallback)"
+  echo "Selected: $m (local) → cloud (auto fallback)"
   echo "Command: pal chat --model $m"
   echo "Rationale: Default/general task - try local first for cost/privacy, fall back to cloud if needed"
   return 0
