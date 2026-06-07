@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.3](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.2...v1.14.3) (2026-06-07)
+
+
+### Bug Fixes
+
+* **select-model:** resolve model ids from ai-stack registry, not hardcoded ([#673](https://github.com/dryvist/ai-assistant-instructions/issues/673)) ([119aae1](https://github.com/dryvist/ai-assistant-instructions/commit/119aae150688491e67c06d3e136ea364dfb89b40))
+
 ## [1.14.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.1...v1.14.2) (2026-06-03)
 
 
