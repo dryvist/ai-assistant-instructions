@@ -8,6 +8,9 @@ defaults:
 
 # File-specific limits
 limits:
+  # Always-loaded entry point — keep the per-session cost low
+  AGENTS.md: 1000
+
   # Rules and documentation
   agentsmd/rules/*.md: 2000
   agentsmd/docs/*.md: 3000

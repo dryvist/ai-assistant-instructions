@@ -101,13 +101,13 @@ routing decisions, and on-demand standards.
 
 ```text
 .
-├── AGENTS.md                  # Canonical configuration (CLAUDE.md / GEMINI.md are symlinks)
+├── AGENTS.md                  # Canonical configuration (GEMINI.md is a symlink)
+├── CLAUDE.md                  # Stub — Nix wiring auto-loads AGENTS.md globally; no re-import
 ├── agentsmd/
 │   ├── rules/                 # Auto-loaded universal and path-scoped rules
 │   ├── workflows/             # The 5-step development workflow
 │   ├── permissions/           # Permission framework (allow / ask / deny JSON configs)
 │   └── docs/                  # Permission and workflow support docs
-├── .claude/rules              # Symlink → agentsmd/rules
 ├── .copilot/instructions.md   # Symlink → AGENTS.md
 ├── .gemini/config.yaml        # Gemini-specific config
 ├── scripts/                   # Validation helpers (token limits, permissions, links)
