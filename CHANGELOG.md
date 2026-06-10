@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.15.0...v1.16.0) (2026-06-10)
+
+
+### Features
+
+* delete rules migrated to on-demand marketplace skills ([#682](https://github.com/dryvist/ai-assistant-instructions/issues/682)) ([c7fe8bd](https://github.com/dryvist/ai-assistant-instructions/commit/c7fe8bdbc2611f13c52759e63d551e81484dc122))
+
 ## [1.15.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.4...v1.15.0) (2026-06-10)
 
 
