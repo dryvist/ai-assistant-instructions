@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.4...v1.15.0) (2026-06-10)
+
+
+### Features
+
+* slim always-loaded context — stub CLAUDE.md, compress Karpathy block ([#678](https://github.com/dryvist/ai-assistant-instructions/issues/678)) ([98e4999](https://github.com/dryvist/ai-assistant-instructions/commit/98e499920a77bf395eec4d3cd397c62d5a93ba78))
+
 ## [1.14.4](https://github.com/dryvist/ai-assistant-instructions/compare/v1.14.3...v1.14.4) (2026-06-07)
 
 
