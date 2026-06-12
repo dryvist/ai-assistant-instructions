@@ -1,0 +1,18 @@
+# Dispatch: notify consumers after changes land on main
+#
+# Target repos are read from the DISPATCH_CONSUMERS repository variable
+# (JSON array, e.g. '["nix-ai","nix-darwin"]'). Add a new consumer there
+# without touching this file.
+name: Dispatch lock update to consumers
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  dispatch:
+    uses: dryvist/.github/.github/workflows/_dispatch-flake-consumers.yml@main
+    # source_input defaults to the calling repo name (ai-assistant-instructions).
+    secrets: inherit
