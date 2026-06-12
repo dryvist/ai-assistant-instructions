@@ -1,11 +1,9 @@
-# Reusable workflow for schema and permissions validation
+# Reusable workflow for cclint schema/config validation
 # Called by: ci-gate.yml (PRs), validate-cclint-schema.yml (push to main)
 #
-# Contains 4 jobs:
-# 1. validate-permissions - Validates permission files
-# 2. check-cclint-config - Verifies cclint configuration syntax
-# 3. detect-schema-changes - Detects schema version changes (PR only)
-# 4. final-cclint-check - Runs cclint validation
+# Contains 2 jobs:
+# 1. check-cclint-config - Verifies cclint configuration syntax
+# 2. final-cclint-check - Runs cclint validation
 
 name: Schema Validation (Reusable)
 
@@ -26,27 +24,6 @@ on:
         default: 0
 
 jobs:
-  validate-permissions:
-    name: "Validate Permission Files"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Run permission validation
-        run: bash scripts/validate-permissions.sh
-
-      - name: Upload validation report
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: validation-report
-          path: agentsmd/permissions/valid-tools.json
-          retention-days: 7
-
   check-cclint-config:
     name: "Verify cclint Configuration"
     runs-on: ubuntu-latest
@@ -88,60 +65,13 @@ jobs:
             echo "⚠️  Schema URL might be inaccessible (could be network issue)"
           fi
 
-  detect-schema-changes:
-    name: "Detect Schema Changes"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      pull-requests: write
-    # Only run on PRs (not push to main)
-    # Uses caller_event input since github.event_name is 'workflow_call' when called via workflow_call
-    if: inputs.caller_event == 'pull_request' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Check for valid-tools.json changes
-        id: schema_check
-        run: |
-          CURRENT_VERSION=$(npm view @carlrannaberg/cclint version 2>/dev/null || echo "unknown")
-          echo "current_version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
-
-          if [[ -f "agentsmd/permissions/valid-tools.json" ]]; then
-            PREVIOUS_VERSION=$(jq -r '.cclint_version' agentsmd/permissions/valid-tools.json)
-            echo "previous_version=${PREVIOUS_VERSION}" >> "$GITHUB_OUTPUT"
-
-            if [[ "${CURRENT_VERSION}" != "${PREVIOUS_VERSION}" ]]; then
-              echo "SCHEMA_CHANGED=true" >> "$GITHUB_ENV"
-              echo "ℹ️  cclint version changed: ${PREVIOUS_VERSION} → ${CURRENT_VERSION}"
-            else
-              echo "✅ cclint version is unchanged: ${CURRENT_VERSION}"
-            fi
-          else
-            echo "⚠️  valid-tools.json not found"
-          fi
-
-      - name: Post comment on PR if schema changed
-        # Use inputs.caller_event since github.event_name is 'workflow_call' when called via workflow_call
-        if: env.SCHEMA_CHANGED == 'true' && inputs.caller_event == 'pull_request' && inputs.pr_number > 0
-        uses: actions/github-script@v9
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: ${{ inputs.pr_number }},
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '⚠️  **Schema Version Change Detected**\n\nThe cclint schema version has changed. Please review `agentsmd/permissions/valid-tools.json` to ensure it\'s up-to-date.'
-            })
-
   final-cclint-check:
     name: "Run cclint on .claude Files"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
-    needs: validate-permissions
+    needs: check-cclint-config
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6

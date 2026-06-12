@@ -1,4 +1,0 @@
-{
-  "_comment": "Placeholder for future GitHub CLI patterns that require confirmation. Currently empty - all gh commands are allowed via allow/gh.json",
-  "commands": []
-}

@@ -52,7 +52,7 @@ These are the check names that appear in GitHub PR status:
 | ---------- | ----------- |
 | CI Gate / Detect Changes | Identifies which file categories changed |
 | CI Gate / Claude Code Lint | Validates Claude Code configuration |
-| CI Gate / Schema Validation | Validates cclint schema and permissions |
+| CI Gate / Schema Validation | Validates cclint schema/config |
 | CI Gate / Markdown Lint | Checks markdown formatting |
 | CI Gate / Token Limit Check | Enforces token usage limits |
 | CI Gate / Instruction Validation | Validates required instruction files |
@@ -65,7 +65,6 @@ These are the check names that appear in GitHub PR status:
 | -------- | ----- | -------- |
 | `claude-config` | `.claude/**`, `CLAUDE.md`, `.cclintrc.jsonc` | Claude Code Lint, Schema Validation, Token Limit Check |
 | `agentsmd` | `agentsmd/**` | Claude Code Lint, Instruction Validation, Token Limit Check |
-| `permissions` | `agentsmd/permissions/**`, `scripts/validate-permissions.sh` | Schema Validation |
 | `markdown` | `**/*.md`, `.markdownlint-cli2.jsonc` | Markdown Lint, Token Limit Check |
 | `yaml` | `**/*.yml`, `**/*.yaml`, `.yamllint.yml` | YAML Lint |
 | `workflows` | `.github/workflows/**` | YAML Lint |
