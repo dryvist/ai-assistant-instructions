@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.16.0...v1.16.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* **ci:** repair 5-months-broken CI Gate — reusable-workflow permission mismatches ([#684](https://github.com/dryvist/ai-assistant-instructions/issues/684)) ([036dd32](https://github.com/dryvist/ai-assistant-instructions/commit/036dd32a19a0e4c00c60bab7a13c96b6da30fdea))
+
 ## [1.16.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.15.0...v1.16.0) (2026-06-10)
 
 
