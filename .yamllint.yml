@@ -1,8 +1,54 @@
+---
+# dryvist organization-wide yamllint canonical.
+#
+# Single source of truth for yamllint across every dryvist repo with
+# YAML content (which is most of them). Consumer repos either fetch
+# this at scaffold time (non-Nix path) or have the Nix-side
+# `fetch-shared-configs` helper materialize it at devShell entry
+# (Nix path).
+#
+# Rule choices represent the most-common variant across the inventory
+# (ansible-proxmox style). Repos that want a different line-length or
+# stricter truthy rules can override locally.
+#
+# Schema: https://yamllint.readthedocs.io/en/stable/configuration.html
+
 extends: default
+
+ignore: |
+  .github/aw/
+  .github/workflows/*.lock.yml
+  .github/workflows/agentics-maintenance.yml
+  # SOPS-encrypted files: opaque ciphertext; the recursive glob also
+  # catches future encrypted files in any subdirectory.
+  **/*.enc.yaml
+  **/*.enc.yml
 
 rules:
   line-length:
     max: 160
     level: warning
   truthy:
+    allowed-values:
+      - "true"
+      - "false"
+      - "yes"
+      - "no"
     check-keys: false
+  comments:
+    min-spaces-from-content: 1
+  # Required by ansible-lint compatibility — ansible playbooks frequently
+  # put comments at the same indent as the surrounding content.
+  comments-indentation: false
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+  indentation:
+    spaces: 2
+    indent-sequences: true
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
