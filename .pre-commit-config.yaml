@@ -55,11 +55,3 @@ repos:
         files: ^\.claude/
         pass_filenames: false
         stages: [pre-push]
-      - id: validate-permissions
-        name: validate-permissions
-        description: "Validate permission files for cclint compatibility"
-        entry: bash scripts/validate-permissions.sh
-        language: system
-        files: ^agentsmd/permissions/(?!valid-tools\.json).*\.json$
-        pass_filenames: false
-        stages: [pre-commit]

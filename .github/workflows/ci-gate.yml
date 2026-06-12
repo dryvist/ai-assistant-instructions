@@ -49,7 +49,6 @@ jobs:
     outputs:
       claude-config: ${{ steps.filter.outputs.claude-config }}
       agentsmd: ${{ steps.filter.outputs.agentsmd }}
-      permissions: ${{ steps.filter.outputs.permissions }}
       markdown: ${{ steps.filter.outputs.markdown }}
       yaml: ${{ steps.filter.outputs.yaml }}
       workflows: ${{ steps.filter.outputs.workflows }}
@@ -69,9 +68,6 @@ jobs:
               - '.cclintrc.jsonc'
             agentsmd:
               - 'agentsmd/**'
-            permissions:
-              - 'agentsmd/permissions/**'
-              - 'scripts/validate-permissions.sh'
             markdown:
               - '**/*.md'
               - '.markdownlint-cli2.jsonc'
@@ -112,17 +108,8 @@ jobs:
   validate-cclint:
     name: Schema Validation
     needs: changes
-    if: needs.changes.outputs.permissions == 'true' || needs.changes.outputs.claude-config == 'true'
-    # _validate-cclint.yml's detect-schema-changes job posts a PR comment,
-    # so the call site must grant pull-requests: write — the workflow-level
-    # default (read) caps nested jobs and fails the whole run at startup.
-    permissions:
-      contents: read
-      pull-requests: write
+    if: needs.changes.outputs.claude-config == 'true'
     uses: ./.github/workflows/_validate-cclint.yml
-    with:
-      caller_event: pull_request
-      pr_number: ${{ github.event.pull_request.number }}
 
   markdownlint:
     name: Markdown Lint

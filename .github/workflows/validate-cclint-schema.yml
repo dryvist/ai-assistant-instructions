@@ -7,8 +7,6 @@ on:
   push:
     branches: [main]
     paths:
-      - 'agentsmd/permissions/**/*.json'
-      - 'scripts/validate-permissions.sh'
       - '.cclintrc.jsonc'
   workflow_dispatch:
     # Manual trigger for ad-hoc schema validation

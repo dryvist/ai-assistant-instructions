@@ -24,10 +24,6 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate permissions first
-        run: |
-          bash scripts/validate-permissions.sh
-
       - name: Run cclint
         # renovate: datasource=npm depName=@carlrannaberg/cclint
         run: npx @carlrannaberg/cclint@0.2.10 --verbose

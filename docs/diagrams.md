@@ -9,7 +9,7 @@ reference site at [`docs.jacobpevans.com`](https://docs.jacobpevans.com).
 
 ```mermaid
 graph TD
-    AAI["**ai-assistant-instructions**\nUniversal AI config layer\n(AGENTS.md · rules · workflows · permissions)"]
+    AAI["**ai-assistant-instructions**\nUniversal AI config layer\n(AGENTS.md · rules · workflows)"]
 
     NixAI["**nix-ai**\nAI tool ecosystem\n(Claude Code · Gemini · MCP servers · Whisper)"]
     NixHome["**nix-home**\nUser dev environment\n(dev tools · shell · git · linters)"]
@@ -58,7 +58,6 @@ graph TD
 
     Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul\n· skill-execution-integrity\n· nix-tool-policy"]
     Workflows["**agentsmd/workflows/**\n5-step development process\n1 Research → 2 Plan → 3 Define\n4 Implement → 5 Finalize"]
-    Permissions["**agentsmd/permissions/**\nTool access control\nallow / ask / deny (JSON)"]
 
     Docs["**docs/**\nUser-facing guides\n· codex-quick-start\n· troubleshooting\n· github-actions"]
     Assets["**docs/assets/**\nDiagram sources (.mmd)\nSVG rendered on demand"]
@@ -70,15 +69,12 @@ graph TD
     AGENTS --> COPILOT
     AGENTS -->|"auto-loaded"| Rules
     AGENTS -->|"governs"| Workflows
-    AGENTS -->|"enforces"| Permissions
     Rules --> CI
-    Permissions --> CI
     Docs --> Assets
 
     style AGENTS fill:#d4e6ff,stroke:#4a90d9,color:#000
     style Rules fill:#d4ffd4,stroke:#4a9d4a,color:#000
     style Workflows fill:#d4ffd4,stroke:#4a9d4a,color:#000
-    style Permissions fill:#d4ffd4,stroke:#4a9d4a,color:#000
     style CI fill:#ffd4d4,stroke:#d94a4a,color:#000
 ```
 

@@ -226,7 +226,7 @@ devcontainer exec --workspace-folder . claude --dangerously-skip-permissions
 **For development and testing:**
 
 1. Enable native sandbox in Claude Code: `/sandbox`
-2. Maintain explicit deny rules in `agentsmd/permissions/deny/`
+2. Maintain explicit deny rules in `nix-claude-code/data/permissions/deny.nix`
 3. Use for routine development tasks
 
 **Benefits:**
@@ -335,7 +335,7 @@ docker volume inspect docker-claude-sandbox-data
 
 Even with sandboxing enabled, maintain explicit deny rules for critical operations:
 
-**File: `agentsmd/permissions/deny/`**
+**File: `nix-claude-code/data/permissions/deny.nix`**
 
 ```json
 {

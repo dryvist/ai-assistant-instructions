@@ -33,7 +33,8 @@ The AI configuration layer spans three repos. Know which one owns the change bef
 
 | Owns | Repo |
 | --- | --- |
-| Auto-loaded rules, AGENTS.md, workflows, permission JSON | [`JacobPEvans/ai-assistant-instructions`](https://github.com/JacobPEvans/ai-assistant-instructions) |
+| Auto-loaded rules, AGENTS.md, workflows | [`JacobPEvans/ai-assistant-instructions`](https://github.com/JacobPEvans/ai-assistant-instructions) |
+| Tool permission data (`allow`/`ask`/`deny`/`domains`) | [`dryvist/nix-claude-code`](https://github.com/dryvist/nix-claude-code/tree/main/data/permissions) |
 | Slash commands, skills, agents, hooks (marketplace-installed) | [`JacobPEvans/claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins) |
 | Public-facing reference site at [`docs.jacobpevans.com`](https://docs.jacobpevans.com) | [`JacobPEvans/docs`](https://github.com/JacobPEvans/docs) |
 

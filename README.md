@@ -7,8 +7,9 @@
 > and are delivered as portable plugins. This repository now maintains the generic pieces
 > that aren't plugin-delivered: the canonical `AGENTS.md` / `CLAUDE.md` / `GEMINI.md`
 > configuration, the auto-loaded rules in `agentsmd/rules/`, the 5-step development
-> workflow in `agentsmd/workflows/`, the permission framework in `agentsmd/permissions/`,
-> and the CI / validation tooling that keeps all of the above honest.
+> workflow in `agentsmd/workflows/`, and the CI / validation tooling that keeps all of
+> the above honest. (Tool permissions now live in
+> [`dryvist/nix-claude-code`](https://github.com/dryvist/nix-claude-code/tree/main/data/permissions).)
 
 [![License][license-badge]][license-url]
 [![Markdown Lint][markdownlint-badge]][markdownlint-url]
@@ -30,7 +31,7 @@ The AI configuration layer is split across three repositories. This repo owns th
 
 ```mermaid
 graph LR
-    Rules["**ai-assistant-instructions**<br/>rules · workflows · permissions"]
+    Rules["**ai-assistant-instructions**<br/>rules · workflows · CI tooling"]
     Plugins["**claude-code-plugins**<br/>commands · skills · agents · hooks"]
     Docs["**docs**<br/>public-facing reference"]
     Session(("Developer session"))
@@ -106,11 +107,10 @@ routing decisions, and on-demand standards.
 ├── agentsmd/
 │   ├── rules/                 # Auto-loaded universal and path-scoped rules
 │   ├── workflows/             # The 5-step development workflow
-│   ├── permissions/           # Permission framework (allow / ask / deny JSON configs)
-│   └── docs/                  # Permission and workflow support docs
+│   └── docs/                  # Workflow and integration support docs
 ├── .copilot/instructions.md   # Symlink → AGENTS.md
 ├── .gemini/config.yaml        # Gemini-specific config
-├── scripts/                   # Validation helpers (token limits, permissions, links)
+├── scripts/                   # Validation helpers (token limits, links)
 └── .github/workflows/         # CI gates (markdown, spellcheck, link check, CodeQL, release-please)
 ```
 
@@ -172,18 +172,18 @@ The documentation covers:
 - **Code Standards** - Consistency across languages
 - **Documentation Standards** - AI-friendly markdown
 - **Infrastructure Standards** - Terraform/Terragrunt patterns
-- **Permission System** - How AI tool permissions integrate with nix-config
+- **Permission System** - Where AI tool permissions now live (nix-claude-code)
 - **DRY Principle** - Why everything symlinks to one place
 - **Memory Bank** - Maintaining AI context across sessions
 - **Remote Commit Workflow** - Making commits via GitHub API without local clone
 
 Browse [`agentsmd/rules/`](agentsmd/rules/) and [`agentsmd/docs/`](agentsmd/docs/).
 
-**Advanced**: This repo integrates with
-[nix-config](https://github.com/JacobPEvans/nix) for unified permission
-management across AI tools. This is **optional** - the basic setup works
-standalone. See [`agentsmd/docs/permission-system.md`](agentsmd/docs/permission-system.md)
-for details.
+**Advanced**: Tool permissions are no longer defined in this repo. They live in
+[`dryvist/nix-claude-code`](https://github.com/dryvist/nix-claude-code/tree/main/data/permissions),
+which `nix-ai` renders into Claude / Codex / Gemini / Copilot settings. See
+[`agentsmd/docs/permission-system.md`](agentsmd/docs/permission-system.md) for
+the pointer.
 
 ## Need Help?
 
