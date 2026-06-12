@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.16.1...v1.16.2) (2026-06-12)
+
+
+### Bug Fixes
+
+* **ci:** adopt hub dispatch-flake-consumers, repair broken changelog issue links ([#687](https://github.com/dryvist/ai-assistant-instructions/issues/687)) ([a07dc21](https://github.com/dryvist/ai-assistant-instructions/commit/a07dc21f862295d9e321044b1f73c93766109e93))
+
 ## [1.16.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.16.0...v1.16.1) (2026-06-12)
 
 
