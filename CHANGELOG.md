@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.16.2...v1.17.0) (2026-06-12)
+
+
+### Features
+
+* retire permissions tree, migrate ownership to nix-claude-code ([7c0ff25](https://github.com/dryvist/ai-assistant-instructions/commit/7c0ff2505161df245f77c0fc18228ee82cd5dfdf))
+
 ## [1.16.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.16.1...v1.16.2) (2026-06-12)
 
 
