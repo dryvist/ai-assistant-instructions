@@ -21,6 +21,11 @@ Iron law: search first, script as last resort, never inline.
 
 Run `/refresh-repo`, then start your change in a new worktree.
 
+## Knowledge base
+
+Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Before a change, check for
+relevant OKF concepts; after, update or create documents for any knowledge worth capturing.
+
 ## Scope
 
 One-shot a local working solution. Surface upstream bugs as FYI; don't file PRs against repos
