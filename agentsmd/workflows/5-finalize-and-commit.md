@@ -1,28 +1,22 @@
-# Step 5: Finalize and Commit
+# Default: Finalize
 
-**Goal:** Finalize all work, update documentation, and clean up.
+**Goal:** Leave the worktree understandable, verified, and ready for the user's
+next action.
 
 ## On Failure
 
-If Step 4 failed:
+If implementation or verification failed:
 
-1. Do not merge broken code.
-2. Document the failure in detail in the PRD file and `PLANNING.md`.
-3. A new cycle will begin from Step 1.
+1. Do not claim success.
+2. Keep the report short and specific: blocker, evidence, and next action.
+3. Update a PRD or issue only when one is already part of the task or the work
+   must continue across sessions.
 
 ## On Success
 
-1. **Update Documentation**
-   - Update the `README.md` if your changes affect it.
-   - Remove the completed task from `PLANNING.md`.
-
-2. **MANDATORY: Documentation Review**
-   - **CRITICAL**: Must be completed before any pull request can be merged.
-   - **REQUIRED FIRST STEP**: Run `markdownlint-cli2 --fix .` to auto-fix issues.
-   - Run `markdownlint-cli2 .` to check for remaining issues.
-   - Fix all markdownlint violations, especially MD013 (max 160 characters).
-
-3. **Final Steps**
-   - Ensure all code is committed and pushed to the PR branch.
-   - Delete the temporary plan file from `/.tmp/`.
-   - The pull request is now ready for final review and merging.
+1. Update docs only when the behavior or public surface changed.
+2. Run relevant formatting or lint checks. For Markdown, docs, or instruction
+   changes, run `markdownlint-cli2 .` and the repository markdown link checker
+   when one exists.
+3. Commit, push, or open a pull request when the user requested delivery.
+4. Report changed files and verification results without routine narration.

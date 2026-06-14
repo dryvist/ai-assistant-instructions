@@ -31,11 +31,20 @@ def find_markdown_files(root_dir: Path) -> Generator[Path, None, None]:
             if file.endswith('.md'):
                 yield Path(root) / file
 
+
+def strip_code_examples(content: str) -> str:
+    """Replace fenced blocks and inline code spans before link extraction."""
+    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
+    return re.sub(r'`[^`\n]+`', '', content)
+
+
 def extract_file_links(content: str) -> Generator[str, None, None]:
     """Extract file links from markdown content (not URLs).
 
     Handles both inline links [text](link) and reference-style links [text][ref].
     """
+    content = strip_code_examples(content)
+
     # First, extract reference-style link definitions: [ref]: path
     ref_definitions = {}
     ref_pattern = r'^\[([^\]]+)\]:\s*(.+)$'

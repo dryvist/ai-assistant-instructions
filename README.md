@@ -6,7 +6,7 @@
 > [JacobPEvans/claude-code-plugins](https://github.com/JacobPEvans/claude-code-plugins)
 > and are delivered as portable plugins. This repository now maintains the generic pieces
 > that aren't plugin-delivered: the canonical `AGENTS.md` / `CLAUDE.md` / `GEMINI.md`
-> configuration, the auto-loaded rules in `agentsmd/rules/`, the 5-step development
+> configuration, the auto-loaded rules in `agentsmd/rules/`, the default development
 > workflow in `agentsmd/workflows/`, and the CI / validation tooling that keeps all of
 > the above honest. (Tool permissions now live in
 > [`dryvist/nix-claude-code`](https://github.com/dryvist/nix-claude-code/tree/main/data/permissions).)
@@ -94,9 +94,9 @@ are pulled in for every session. Plugin-delivered commands and skills from
 are invoked via slash commands (`/refresh-repo`, `/finalize-pr`, `/ship`, etc.)
 or directly by name.
 
-See the [5-step workflow](#the-5-step-workflow) below for the expected
-development loop, and [AGENTS.md](AGENTS.md) for the full set of rules,
-routing decisions, and on-demand standards.
+See the [default workflow](#the-default-workflow) below for the expected
+development loop, and [AGENTS.md](AGENTS.md) for the full set of rules, routing
+decisions, and on-demand standards.
 
 ## Directory Structure
 
@@ -106,7 +106,7 @@ routing decisions, and on-demand standards.
 ├── CLAUDE.md                  # Stub — Nix wiring auto-loads AGENTS.md globally; no re-import
 ├── agentsmd/
 │   ├── rules/                 # Auto-loaded universal and path-scoped rules
-│   ├── workflows/             # The 5-step development workflow
+│   ├── workflows/             # Default workflow plus full-discipline guidance
 │   └── docs/                  # Workflow and integration support docs
 ├── .copilot/instructions.md   # Symlink → AGENTS.md
 ├── .gemini/config.yaml        # Gemini-specific config
@@ -129,17 +129,19 @@ and are consumed via the `git-workflows`, `github-workflows`, `git-standards`,
 | **GitHub Copilot** | `.github/copilot-instructions.md` + prompts | Works in VS Code, GitHub.com, Visual Studio |
 | **Gemini** | `.gemini/` directory | Style guide and config support |
 
-## The 5-Step Workflow
+## The Default Workflow
 
-This repo centers on a rigorous development workflow:
+This repo centers on a lightweight autonomous loop:
 
-1. **Research & Explore** - Understand before you code
-2. **Plan & Document** - Write the "what" and "why" before the "how"
-3. **Define Success & PR** - Set acceptance criteria upfront
-4. **Implement & Verify** - Build with tests, verify as you go
-5. **Finalize & Commit** - Clean commits, passing CI
+1. **Research & Explore** - Gather enough context to act correctly
+2. **Plan** - Pick the simplest verifiable path
+3. **Define Success** - Choose the narrowest useful evidence
+4. **Implement & Verify** - Make the smallest correct change and prove it
+5. **Finalize** - Report changed files and verification results
 
-Full details in [`agentsmd/workflows/`](agentsmd/workflows/).
+Full PRD/test-first discipline remains available on demand for high-risk,
+multi-session, compliance-sensitive, cross-owner, or explicitly gated work.
+Details live in [`agentsmd/workflows/`](agentsmd/workflows/).
 
 ## Plugin-delivered commands, skills, agents, and hooks
 

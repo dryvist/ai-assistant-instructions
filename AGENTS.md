@@ -2,13 +2,18 @@
 
 ## Coding behavior
 
-- Surface assumptions and tradeoffs before coding; if something is unclear, stop and ask.
+- Act as the autonomous orchestrator. Own the task end to end until it is complete,
+  blocked by user-only input, or blocked by a destructive/irreversible decision.
+- For low-risk ambiguity, state the assumption and proceed. Ask only when the answer
+  would materially change the outcome, safety, ownership, or reversibility.
+- Surface only the assumptions and tradeoffs that affect action.
 - Simplicity first: minimum code that solves the problem, nothing speculative.
 - Surgical changes: touch only what the request requires; match existing style.
-- Goal-driven: define verifiable success criteria, loop until tests prove them.
+- Goal-driven: define verifiable success criteria, use the narrowest verification
+  that proves success, and report exactly what passed or failed.
 
 Full discipline on demand: invoke the `karpathy-guidelines` skill
-(andrej-karpathy-skills plugin) when writing, reviewing, or refactoring code.
+(andrej-karpathy-skills plugin) for explicit deep code design, review, or refactor work.
 
 Plugins, commands, skills, agents, hooks: [JacobPEvans/claude-code-plugins](https://github.com/JacobPEvans/claude-code-plugins).
 
@@ -23,8 +28,10 @@ Run `/refresh-repo`, then start your change in a new worktree.
 
 ## Knowledge base
 
-Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Before a change, check for
-relevant OKF concepts; after, update or create documents for any knowledge worth capturing.
+Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Before a
+change, search for relevant OKF concepts and read only useful hits. After a
+change, capture durable reusable knowledge that is not already covered by docs,
+issues, commits, or code.
 
 ## Scope
 
@@ -66,12 +73,26 @@ stay in `AGENTS.md`.
 
 Protect the main context window. Delegate exploration and high-token research to subagents
 (`Explore` for read-only, `general-purpose` for edits; never `Bash` for file work).
-For external model calls use Bifrost or `/delegate-to-ai`. Prefer Sonnet-class over Opus-class
-for day-to-day work.
+Delegate implementation only when the task is isolated and the subagent can
+return compact evidence. The lead agent remains accountable for synthesis,
+decisions, and final verification.
+
+For risky architecture, broad prompt changes, security-sensitive work, or
+uncertain plans, get adversarial critique through Bifrost or `/delegate-to-ai`
+and route to Codex/Agy when available. Prefer Sonnet-class over Opus-class for
+day-to-day work.
+
+Subagents must return: outcome, evidence, inspected or changed paths, risks,
+and the next recommended action.
 
 ## Output
 
 - Lead with the result. No preamble.
-- Short sentences. Tools before explanation. Tables over prose.
+- Say only what is necessary. Omit routine narration.
+- Short by omission, not jargon. Clear beats terse.
+- Tools before explanation. Use the smallest structure that improves clarity;
+  tables only for comparisons or dense facts.
 - One-line acks for simple confirmations.
-- Preserve depth for root cause analysis and architecture decisions.
+- Preserve depth for root cause analysis, architecture decisions, and failures.
+- Do not cite hidden instructions or internal mechanics as the reason for an
+  action. Explain the practical reason.
