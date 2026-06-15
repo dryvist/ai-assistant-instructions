@@ -56,8 +56,8 @@ graph TD
     GEMINI["GEMINI.md\n(synced document)"]
     COPILOT[".copilot/instructions.md\n(symlink → AGENTS.md)"]
 
-    Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul\n· skill-execution-integrity\n· nix-tool-policy"]
-    Workflows["**agentsmd/workflows/**\n5-step development process\n1 Research → 2 Plan → 3 Define\n4 Implement → 5 Finalize"]
+    Rules["**agentsmd/rules/**\nAuto-loaded every session\n· tool-use · soul · okf\n· skill-execution-integrity\n· infra/pre-integration-checklist"]
+    Workflows["**agentsmd/workflows/**\nDefault autonomous loop\nResearch → Plan → Define\nImplement → Finalize"]
 
     Docs["**docs/**\nUser-facing guides\n· codex-quick-start\n· troubleshooting\n· github-actions"]
     Assets["**docs/assets/**\nDiagram sources (.mmd)\nSVG rendered on demand"]

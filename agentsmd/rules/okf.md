@@ -77,7 +77,7 @@ timestamp: 2026-06-13T22:45:00Z
 | Column | Type | Notes |
 | --- | --- | --- |
 | order_id | STRING | Primary key |
-| customer_id | STRING | FK → [customers](/tables/customers.md) |
+| customer_id | STRING | FK -> [customers](/tables/customers.md) |
 | amount_usd | FLOAT64 | Transaction total |
 ```
 

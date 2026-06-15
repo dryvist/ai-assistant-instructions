@@ -1,19 +1,18 @@
-# Step 4: Implement and Verify
+# Default: Implement and Verify
 
-**Goal:** Write code to make the tests from Step 3 pass.
+**Goal:** Make the smallest correct change and prove it.
 
 ## Rules
 
-- **Do Not Change Tests.** Make the existing tests pass.
-- **Follow the Plan** from Step 2 exactly.
-- **Idempotency**: All operations must be repeatable with consistent results.
-- **One Thing at a Time**: Execute one checklist item at a time.
-- **Improve the Plan, Don't Patch**: If implementation reveals flaws, improve the plan from Step 2 and retry - do not patch via conversation.
+- Keep edits surgical and consistent with local style.
+- Use structured parsers or project APIs when available.
+- If the plan is wrong, revise it in place and continue.
+- Delegate isolated implementation only when the result can be reviewed with a
+  compact diff and evidence.
 
 ## Tasks
 
-1. **Implement the Code** following the plan from Step 2. Commit frequently after each piece of functionality works.
-2. **Verify with Tests.** Run tests after each change. Make all tests pass.
-3. **The Failure Cycle.** If you cannot make the tests pass:
-   - **Do not change the tests** to make them pass.
-   - Proceed to Step 5 to document the failure. The entire 5-step process will restart.
+1. Implement the smallest viable change.
+2. Run the selected verification.
+3. If verification fails, diagnose and fix when the fix is in scope.
+4. If blocked, report the concrete blocker, evidence, and next required input.
