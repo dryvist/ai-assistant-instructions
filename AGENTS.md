@@ -28,7 +28,8 @@ Run `/refresh-repo`, then start your change in a new worktree.
 
 ## Knowledge base
 
-Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Before a
+Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md) — maintain OKF
+compliance and best practices when authoring or editing knowledge documents. Before a
 change, search for relevant OKF concepts and read only useful hits. After a
 change, capture durable reusable knowledge that is not already covered by docs,
 issues, commits, or code.
