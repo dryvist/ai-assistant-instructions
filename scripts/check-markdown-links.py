@@ -34,8 +34,8 @@ def find_markdown_files(root_dir: Path) -> Generator[Path, None, None]:
 
 def strip_code_examples(content: str) -> str:
     """Replace fenced blocks and inline code spans before link extraction."""
-    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
-    return re.sub(r'`[^`\n]+`', '', content)
+    content = re.sub(r'(\x60{3,}|\x7e{3,})(.*?)\1', '', content, flags=re.DOTALL)
+    return re.sub(r'(\x60+)([^\x60\n]*)\1', '', content)
 
 
 def extract_file_links(content: str) -> Generator[str, None, None]:
