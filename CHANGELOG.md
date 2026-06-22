@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.17.0...v1.17.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* **deps:** refresh gh-aw action SHA pins [aw:gh-aw-pin-refresh] ([#697](https://github.com/dryvist/ai-assistant-instructions/issues/697)) ([b9e404a](https://github.com/dryvist/ai-assistant-instructions/commit/b9e404aff721db64e2088147ac4ea6156400cacc))
+
 ## [1.17.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.16.2...v1.17.0) (2026-06-12)
 
 
