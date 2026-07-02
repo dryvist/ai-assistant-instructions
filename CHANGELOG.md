@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.4](https://github.com/dryvist/ai-assistant-instructions/compare/v1.17.3...v1.17.4) (2026-07-02)
+
+
+### Bug Fixes
+
+* point callers at renamed cc- reusable workflows ([ac4ec82](https://github.com/dryvist/ai-assistant-instructions/commit/ac4ec8273b7530ad1af5ddba3dd940f3432d6163))
+
 ## [1.17.3](https://github.com/dryvist/ai-assistant-instructions/compare/v1.17.2...v1.17.3) (2026-06-29)
 
 
