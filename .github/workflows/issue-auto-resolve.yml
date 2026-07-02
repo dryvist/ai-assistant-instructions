@@ -47,7 +47,7 @@ jobs:
   resolve-issue:
     if: false
     needs: [run-triage]
-    uses: dryvist/ai-workflows/.github/workflows/issue-resolver.yml@main
+    uses: dryvist/ai-workflows/.github/workflows/cc-issue-resolver.yml@main
     secrets: inherit
     with:
       repo_context: "AI assistant instruction files and CLAUDE.md patterns for multi-model orchestration"
