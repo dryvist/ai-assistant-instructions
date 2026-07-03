@@ -30,7 +30,7 @@ description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glo
 | Infrastructure config | Ansible modules, Terraform resources | Configuration script |
 | Infrastructure validation | `terraform validate`, `ansible-lint`, check modes | Validation script |
 | State queries | `terraform output`, Ansible facts | Query script |
-| Delegate to external AI | Bifrost or `/delegate-to-ai` | Manual model routing |
+| Delegate to external AI | `/delegate-to-ai` (Codex / native subagent) | Manual model routing |
 
 ## Subagent type selection
 
@@ -47,7 +47,7 @@ description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glo
 - Delegate edits only when the scope is isolated and the expected return can be
   checked with a compact diff or test result.
 - For risky architecture, broad prompt changes, security-sensitive changes, or
-  plans that feel under-specified, request adversarial critique through Bifrost
-  or `/delegate-to-ai`; route to Codex/Agy directly when available.
+  plans that feel under-specified, request adversarial critique via
+  `/delegate-to-ai`; route to Codex/Agy directly when available.
 - Require every delegated result to include outcome, evidence, inspected or
   changed paths, risks, and the next recommended action.
