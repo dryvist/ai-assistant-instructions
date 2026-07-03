@@ -205,7 +205,7 @@ select_model() {
   if [[ "$large_context" == "true" ]]; then
     echo "Model: cloud (large-context tier)"
     echo "Command: pal chat"
-    echo "Rationale: 1M+ token context needed - PAL/Bifrost auto-routes to a large-context cloud model"
+    echo "Rationale: 1M+ token context needed - delegate to a large-context cloud model"
     return 0
   fi
 
@@ -254,7 +254,7 @@ select_model() {
   if [[ "$task_type" == "research" ]]; then
     echo "Model: cloud (research tier)"
     echo "Command: pal chat"
-    echo "Rationale: Research/analysis - PAL/Bifrost auto-routes to a large-context, web-capable cloud model"
+    echo "Rationale: Research/analysis - delegate to a large-context, web-capable cloud model"
     return 0
   fi
 

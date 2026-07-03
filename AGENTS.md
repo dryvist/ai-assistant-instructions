@@ -79,9 +79,9 @@ return compact evidence. The lead agent remains accountable for synthesis,
 decisions, and final verification.
 
 For risky architecture, broad prompt changes, security-sensitive work, or
-uncertain plans, get adversarial critique through Bifrost or `/delegate-to-ai`
-and route to Codex/Agy when available. Prefer Sonnet-class over Opus-class for
-day-to-day work.
+uncertain plans, get adversarial critique via `/delegate-to-ai` and route to
+Codex/Agy when available. Prefer Sonnet-class over Opus-class for day-to-day
+work.
 
 Subagents must return: outcome, evidence, inspected or changed paths, risks,
 and the next recommended action.
