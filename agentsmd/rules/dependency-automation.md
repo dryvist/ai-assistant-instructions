@@ -1,7 +1,7 @@
 ---
 name: dependency-automation
 description: Org dependency-freshness policy — trust tiers, auto-merge rules, and where the canonical config lives
-paths: ["**/renovate.json*", "**/renovate-presets.json", "**/renovate-grouping.json"]
+paths: ["**/renovate.json*", "**/renovate-presets.json", "**/renovate-grouping.json", "**/.renovaterc*"]
 ---
 
 # Dependency automation (trust tiers)
