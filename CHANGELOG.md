@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.18.0...v1.19.0) (2026-07-03)
+
+
+### Features
+
+* add review-thread-resolver caller for instant bot-thread resolution ([#710](https://github.com/dryvist/ai-assistant-instructions/issues/710)) ([93687af](https://github.com/dryvist/ai-assistant-instructions/commit/93687af98e191163ae9abb28fc4433568fb55f85))
+
 ## [1.18.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.17.4...v1.18.0) (2026-07-03)
 
 
