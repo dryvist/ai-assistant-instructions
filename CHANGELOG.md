@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.17.4...v1.18.0) (2026-07-03)
+
+
+### Features
+
+* add AI PR care caller (dep review + release highlights) ([#706](https://github.com/dryvist/ai-assistant-instructions/issues/706)) ([d7d6bcb](https://github.com/dryvist/ai-assistant-instructions/commit/d7d6bcbccb0f5af04d12d1da9d6d401fefa9bf9b))
+
 ## [1.17.4](https://github.com/dryvist/ai-assistant-instructions/compare/v1.17.3...v1.17.4) (2026-07-02)
 
 
