@@ -1,0 +1,43 @@
+# Backlog activation. On a slow schedule (and on demand), Claude judges the
+# oldest UNTRIAGED open issues and labels the auto-resolvable ones `ai:ready`
+# via the App token, which fires issue-auto-resolve.yml (issues: labeled) to
+# open the resolving PR. This is how the pre-existing backlog shrinks.
+#
+# The schedule is deliberate: a backlog is static state, not an event, so there
+# is nothing to trigger on. Keep the cadence slow — it only tops up the
+# ai:ready queue as the resolver drains it.
+#
+# Throttling: the reusable's max_issues (default 5) caps labels per run; the
+# resolver's own PR ceiling (5 bot PRs / 24h) is the hard backstop on PRs opened.
+#
+# No `with: max_issues` / workflow_dispatch input here: referencing the `inputs`
+# context in a reusable-call `with:` while a `schedule` trigger is present makes
+# GitHub startup-fail every run (`inputs` is undefined for scheduled events). The
+# reusable's default (5) is used for both the weekly run and manual dispatches.
+
+name: Issue Backlog Sweep
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC — top up the ai:ready queue weekly
+
+permissions:
+  contents: read
+  id-token: write
+  issues: write
+  pull-requests: read
+
+# No caller-level `concurrency:` — the reusable already sets the identical group
+# (issue-backlog-sweep-${{ github.repository }}). A caller sharing the reusable's
+# exact concurrency group holds that slot, so the reusable's jobs can never
+# acquire it → the run startup-fails with 0 jobs. Let the reusable queue runs.
+
+jobs:
+  sweep:
+    uses: dryvist/ai-workflows/.github/workflows/issue-backlog-sweep.yml@v0
+    # Org-level secrets can only be forwarded to a reusable via `inherit` — GitHub
+    # rejects explicit mapping (`NAME: ${{ secrets.NAME }}`) of org secrets at
+    # instantiation (startup failure). zizmor's secrets-inherit audit is therefore
+    # a false positive here: the reusable is first-party and version-pinned.
+    secrets: inherit # zizmor: ignore[secrets-inherit]
