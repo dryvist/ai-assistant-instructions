@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.19.0...v1.20.0) (2026-07-04)
+
+
+### Features
+
+* add issue-backlog-sweep caller ([#712](https://github.com/dryvist/ai-assistant-instructions/issues/712)) ([a70c64d](https://github.com/dryvist/ai-assistant-instructions/commit/a70c64d6e3edfc9e90ce723e735a88dcc7f6f2f3))
+
 ## [1.19.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.18.0...v1.19.0) (2026-07-03)
 
 
