@@ -32,6 +32,18 @@ description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glo
 | State queries | `terraform output`, Ansible facts | Query script |
 | Delegate to external AI | `/delegate-to-ai` (Codex / native subagent) | Manual model routing |
 
+When a capability isn't natively provided by a standard tool, the answer is
+"use the tool as-is, or don't do it" — not "write a small script." A custom
+wrapper script is an unmaintained, untested-at-scale liability that duplicates
+or poorly reinvents what packaged tools already do. If a desired refinement
+can't be done through the tool's native config, drop that refinement rather
+than scripting around the gap.
+
+**Never pipe or dump a bare `env`** (or `printenv`), even through a filter
+like `cut -d'=' -f1`. Multi-line values (private keys, license blobs) break
+line-based parsing and can print secret contents into the transcript/log.
+Test for a specific variable's presence with `[[ -n "$VAR" ]]` instead.
+
 ## Subagent type selection
 
 | `subagent_type` | Use when |
