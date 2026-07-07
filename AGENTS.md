@@ -22,11 +22,13 @@ Run `/refresh-repo`, then start the change in a new worktree.
 
 ## Knowledge base
 
-Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Search relevant OKF concepts before editing; after a change, capture durable reusable knowledge not already covered by docs, issues, commits, or code.
+Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Search relevant OKF concepts before editing;
+after a change, capture durable reusable knowledge not already covered by docs, issues, commits, or code.
 
 ## Scope
 
-One-shot a local working solution. Surface upstream bugs as FYI; don't file PRs outside the user's organizations. Use GitHub issues for multi-session work, not Claude Code's internal TODO.
+One-shot a local working solution. Surface upstream bugs as FYI; don't file PRs outside the user's organizations.
+Use GitHub issues for multi-session work, not Claude Code's internal TODO.
 
 ## Repo boundaries and docs
 
@@ -49,8 +51,11 @@ Docs are descriptive; directives stay in `AGENTS.md`.
 
 ## Delegation
 
-Protect the main context window. Delegate exploration and high-token research to subagents (`Explore` read-only, `general-purpose` edits; never `Bash` for file work). Delegate implementation only when isolated and the subagent can return compact evidence. The lead agent stays accountable.
-For risky architecture, broad prompt changes, security-sensitive work, or uncertain plans, get adversarial critique via `/delegate-to-ai` and route to Codex/Agy when available. Prefer Sonnet-class over Opus-class.
+Protect the main context window. Delegate exploration and high-token research to subagents (`Explore` read-only,
+`general-purpose` edits; never `Bash` for file work). Delegate implementation only when isolated and the subagent
+can return compact evidence. The lead agent stays accountable.
+For risky architecture, broad prompt changes, security-sensitive work, or uncertain plans, get adversarial critique
+via `/delegate-to-ai` and route to Codex/Agy when available. Prefer Sonnet-class over Opus-class.
 Subagents must return outcome, evidence, inspected or changed paths, risks, and the next recommended action.
 
 ## Output

@@ -2,7 +2,9 @@
 
 ## Overview
 
-Running AI coding assistants (Claude Code, Gemini CLI) with `--dangerously-skip-permissions` requires sandboxing to keep security boundaries intact. This doc compares the available approaches and recommends a default for this repository.
+Running AI coding assistants (Claude Code, Gemini CLI) with `--dangerously-skip-permissions`
+requires sandboxing to keep security boundaries intact. This doc compares the available approaches
+and recommends a default for this repository.
 
 ## Executive Summary
 
@@ -99,7 +101,8 @@ docker sandbox run -w ~/my-project claude
 
 ### 3. Other Container Wrappers
 
-`textcortex/claude-code-sandbox`, `rvaidya/claude-code-sandbox`, `claudebox`, and DevContainers are worth knowing about, but they add complexity and are not the default path for this repo.
+`textcortex/claude-code-sandbox`, `rvaidya/claude-code-sandbox`, `claudebox`, and DevContainers
+are worth knowing about, but they add complexity and are not the default path for this repo.
 
 ### 4. Firejail (Linux Only)
 
