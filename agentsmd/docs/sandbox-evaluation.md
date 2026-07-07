@@ -2,36 +2,34 @@
 
 ## Overview
 
-Running AI coding assistants (Claude Code, Gemini CLI) with `--dangerously-skip-permissions`
-requires sandboxing to maintain security boundaries. This document evaluates available
-sandbox strategies and recommends an approach for this repository.
+Running AI coding assistants (Claude Code, Gemini CLI) with `--dangerously-skip-permissions` requires sandboxing to keep security boundaries intact. This doc compares the available approaches and recommends a default for this repository.
 
 ## Executive Summary
 
-**Recommended Approach:** Native sandbox mode (`/sandbox` in Claude Code) for macOS, combined with explicit permission deny rules.
+**Recommended Approach:** Native sandbox mode (`/sandbox` in Claude Code) on macOS, plus explicit permission deny rules.
 
 - **Setup Complexity:** Low
-- **Security Level:** Medium-High
-- **Credential Management:** N/A (sandbox doesn't change auth)
-- **Best For:** Development workflows on trusted machines
+- **Security Level:** Medium-high
+- **Credential Management:** N/A (sandbox does not change auth)
+- **Best For:** Trusted development workflows
 
-For higher security requirements (untrusted code execution), combine native sandboxing with Docker containers.
+For higher isolation or untrusted code execution, use Docker containers.
 
 ## Sandbox Options Evaluation
 
 ### 1. Claude Code Native Sandbox (Recommended for This Repo)
 
-**Status:** Available now, recommended for development workflows
+**Status:** Available now and recommended for development workflows.
 
 #### How It Works
 
-- **macOS:** Uses built-in Seatbelt sandbox
+- **macOS:** Uses the built-in Seatbelt sandbox
 - **Linux:** Uses [bubblewrap](https://github.com/containers/bubblewrap) for application sandboxing
-- **Windows:** Filesystem virtualization (limited isolation)
+- **Windows:** Uses filesystem virtualization with limited isolation
 
 #### Activation
 
-Within Claude Code, use the `/sandbox` command to enable sandbox mode:
+Within Claude Code, enable sandbox mode with:
 
 ```text
 /sandbox
@@ -39,45 +37,32 @@ Within Claude Code, use the `/sandbox` command to enable sandbox mode:
 
 This toggles sandbox mode for the current session. When enabled:
 
-- Filesystem access is restricted to the project directory
-- Network access restrictions may apply depending on OS
-- System resource access is limited
+- Filesystem access stays within the project directory
+- Network access depends on the OS profile
+- System resource limits apply
 
 #### Key Features
 
-✓ **Low setup overhead** - Built into Claude Code
-✓ **Full tool support** - All programming languages and tools work normally
-✓ **Per-session control** - Toggle on/off as needed
-✓ **macOS integration** - Uses native Seatbelt (no additional software)
+- Low setup overhead
+- Full tool support
+- Per-session control
+- Native macOS integration
 
-#### Limitations
+#### Limits
 
-✗ Medium isolation level compared to containers
-✗ Not suitable for executing untrusted third-party code
-✗ Requires trust in the host system itself
+- Medium isolation compared with containers
+- Not suitable for untrusted third-party code
+- Depends on trust in the host OS
 
 #### Platform Notes
 
-**macOS (Seatbelt):**
-
-- Lightweight, built-in OS feature
-- Profiles can be customized via security policies
-- Good for preventing accidental filesystem damage
-
-**Linux (bubblewrap):**
-
-- Lightweight sandboxing with namespace isolation
-- Requires bubblewrap to be installed: `sudo apt install bubblewrap`
-- Stronger isolation than Seatbelt
-
-**Windows:**
-
-- Limited functionality compared to Unix platforms
-- Recommend Docker containers for production use on Windows
+- **macOS:** Lightweight, built-in, and good at preventing accidental filesystem damage
+- **Linux:** Namespace isolation, requires `sudo apt install bubblewrap`, stronger than Seatbelt
+- **Windows:** Limited; prefer Docker containers
 
 ### 2. Docker Desktop Sandbox (Official Claude Code Integration)
 
-**Status:** Available in Docker Desktop 4.50+ (Experimental feature)
+**Status:** Available in Docker Desktop 4.50+ as an experimental feature.
 
 #### Running Docker Sandbox
 
@@ -88,252 +73,84 @@ docker sandbox run -w ~/my-project claude
 
 #### Features
 
-- **Auto-approval enabled by default** - `--dangerously-skip-permissions` not needed
-- **Credential persistence** - API keys stored in Docker volume `docker-claude-sandbox-data`
-- **Pre-configured tools** - GitHub CLI, Node.js, Go, Python 3, Git, ripgrep, jq
-- **True isolation** - Complete container separation from host
+- Auto-approval by default; `--dangerously-skip-permissions` is not needed
+- API keys stored in persistent `docker-claude-sandbox-data`
+- Pre-configured tools: GitHub CLI, Node.js, Go, Python 3, Git, ripgrep, jq
+- Strong isolation
 
-#### Evaluation Criteria
+#### Tradeoffs
 
-✓ Highest isolation level
-✓ Works across platforms (macOS, Linux, Windows)
-✓ Official Docker + Anthropic integration
-✓ Seamless credential management
-
-✗ Requires Docker Desktop (paid for commercial use in large organizations)
-✗ Slightly higher setup complexity
-✗ Docker commands aren't available inside sandbox by design
-✗ Performance overhead from containerization
+- Highest isolation
+- Works across macOS, Linux, and Windows
+- Official Docker + Anthropic integration
+- Requires Docker Desktop and adds setup/runtime overhead
 
 #### Use Case
-
-**Best for:**
 
 - Production environments
 - Untrusted code execution
 - Multi-user systems
-- Organizations requiring strict isolation
-
-**Not recommended for:**
-
-- Quick development iterations
-- Trusted environments with simple tools
-- Systems with limited container runtime resources
+- CI/CD
 
 #### Credential Strategies
 
-1. **Sandbox mode (default):** API keys persist in volume, automatic on startup
-2. **None mode:** Manual authentication, no persistence between sessions
+1. **Sandbox mode:** API keys persist in the Docker volume
+2. **None mode:** Manual auth, no persistence between sessions
 
-### 3. Third-Party Container Solutions
+### 3. Other Container Wrappers
 
-#### A. textcortex/claude-code-sandbox
-
-**Repository:** [textcortex/claude-code-sandbox](https://github.com/textcortex/claude-code-sandbox)
-
-```bash
-docker build -t claude-sandbox .
-docker run --rm -it \
-  -v ~/.ssh:/root/.ssh:ro \
-  -v $(pwd):/workspace \
-  claude-sandbox \
-  claude --dangerously-skip-permissions
-```
-
-**Security Warning:** Mounting `~/.ssh` even in read-only mode exposes private keys to the container.
-For untrusted code execution, use SSH agent forwarding instead or configure Git with HTTPS authentication.
-
-**Features:**
-
-- Isolated branch creation (`claude/[timestamp]`)
-- File copying for true isolation (not mounting)
-- Web UI at `localhost:3456` with real-time commit diffs
-- Automatic branch deletion on completion
-
-**Status:** Alpha (may have security issues)
-**Evaluation:** Good for experimentation; not recommended for production
-
-#### B. rvaidya/claude-code-sandbox
-
-**Repository:** [rvaidya/claude-code-sandbox](https://github.com/rvaidya/claude-code-sandbox)
-
-**Features:**
-
-- Built on asdf with 500+ tool support
-- Multi-stage Docker builds with content hashing
-- Dynamic tool detection from `.tool-versions`
-- Incremental builds for fast iteration
-
-**Best for:** Projects with diverse tool requirements
-**Evaluation:** More complex setup, better for specialized environments
-
-#### C. claudebox
-
-**Repository:** [RchGrav/claudebox](https://github.com/RchGrav/claudebox)
-
-**Features:**
-
-- Pre-configured development profiles (C/C++, Python, Rust, Go)
-- Complete project isolation
-- Persistent configuration
-
-**Best for:** Multi-language projects with standard tooling
-**Evaluation:** Good balance of features and simplicity
-
-#### D. DevContainers Integration
-
-**Setup:**
-
-```bash
-npm install -g @devcontainers/cli
-devcontainer up --workspace-folder .
-devcontainer exec --workspace-folder . claude --dangerously-skip-permissions
-```
-
-**Features:**
-
-- VS Code integration
-- `.devcontainer/devcontainer.json` configuration
-- Can combine with Claude native sandboxing for defense-in-depth
-
-**Best for:** Teams using VS Code Remote Containers
-**Evaluation:** Flexible but requires additional tooling
+`textcortex/claude-code-sandbox`, `rvaidya/claude-code-sandbox`, `claudebox`, and DevContainers are worth knowing about, but they add complexity and are not the default path for this repo.
 
 ### 4. Firejail (Linux Only)
 
-**Installation:** `sudo apt install firejail`
-
-**Lightweight (~1MB) application sandbox** for Linux environments. Good alternative to Docker for systems without container runtime.
-
-**Not recommended** for this repository given macOS/multiplatform requirements.
-
-## Comparison Matrix
-
-**Rating Scale:** ⭐ = Poor, ⭐⭐ = Fair, ⭐⭐⭐ = Good, ⭐⭐⭐⭐ = Very Good, ⭐⭐⭐⭐⭐ = Excellent
-
-| Solution | Setup | Isolation | Platform | Credentials | Tools | Recommendation |
-| -------- | ----- | --------- | -------- | ----------- | ----- | --------------- |
-| Native Sandbox | ⭐⭐ | ⭐⭐⭐ | macOS/Linux/Win | N/A | Full | **Use for development** |
-| Docker Sandbox | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | All | Built-in | Medium | Use for production |
-| textcortex | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Docker | Manual | Medium | Experimental only |
-| DevContainers | ⭐⭐⭐ | ⭐⭐⭐⭐ | Docker | Manual | High | Good for teams |
-| claudebox | ⭐⭐ | ⭐⭐⭐⭐⭐ | Docker | Manual | High | Special use cases |
+Firejail is a lightweight Linux application sandbox. It is not recommended here because this repo targets macOS and multiplatform workflows.
 
 ## Recommended Strategy for This Repository
 
 ### Primary: Native Sandbox Mode
 
-**For development and testing:**
+For development and testing:
 
-1. Enable native sandbox in Claude Code: `/sandbox`
-2. Maintain explicit deny rules in `nix-claude-code/data/permissions/deny.nix`
-3. Use for routine development tasks
+1. Enable native sandbox in Claude Code with `/sandbox`.
+2. Keep explicit deny rules in `nix-claude-code/data/permissions/deny.nix`.
+3. Use it for routine development tasks.
 
-**Benefits:**
-
-- Low overhead, immediate availability
-- No additional software required
-- Full tool support (Docker, Node.js, etc.)
-- Good for trusted development environments
-
-**Limitations:**
-
-- Not suitable for untrusted code
-- Medium isolation (relies on OS Seatbelt/bubblewrap)
+Benefits: low overhead, no extra software, full tool support, good fit for trusted development.
+Limits: not for untrusted code; isolation is medium.
 
 ### Secondary: Docker Containers
 
-**For production or untrusted code:**
-
-```bash
-docker sandbox run -w ~/my-project claude
-```
-
-**When to use:**
-
-- Reviewing untrusted third-party code
-- Production deployments
-- CI/CD pipelines
-- Multi-user systems
+Use `docker sandbox run -w ~/my-project claude` when you need stricter isolation for untrusted code, production deployments, CI/CD, or multi-user systems.
 
 ## Implementation: Native Sandbox Setup
 
 ### For macOS (Seatbelt)
 
-#### Step 1: Verify Claude Code version
-
-Check that you have the latest version of Claude Code with sandbox support.
-
-#### Step 2: Enable sandbox in Claude Code
-
-Within Claude Code, type:
-
-```text
-/sandbox
-```
-
-This enables sandbox mode for the current session.
-
-#### Step 3: Maintain permission deny rules
-
-Even with sandboxing, keep explicit deny rules for destructive patterns:
-
-```json
-{
-  "permissions": [
-    "Bash(rm -rf /:*)",
-    "Bash(git push --force:*)"
-  ]
-}
-```
+1. Verify Claude Code has sandbox support.
+2. Enable sandbox with `/sandbox`.
+3. Keep permission deny rules in place.
 
 ### For Linux (bubblewrap)
 
-#### Step 1: Install bubblewrap
-
-```bash
-sudo apt update
-sudo apt install bubblewrap
-```
-
-#### Step 2: Enable sandbox mode
-
-```text
-/sandbox
-```
-
-#### Step 3: Configure deny rules
-
-Same as macOS setup above.
+1. Install bubblewrap.
+2. Enable sandbox with `/sandbox`.
+3. Configure the same deny rules.
 
 ### For Docker Container Alternative
 
-#### Step 1: Install Docker Desktop
-
-Requires Docker Desktop 4.50+ with experimental features enabled.
-
-#### Step 2: Run Claude Code in sandbox
+1. Install Docker Desktop 4.50+ with experimental features enabled.
+2. Run Claude Code in sandbox:
 
 ```bash
-# Run with auto-approval in container
 docker sandbox run -w ~/my-project claude
-
-# Run with custom credentials location
 docker sandbox run -w ~/my-project -c ~/.claude claude
 ```
 
-#### Step 3: Manage Docker volume credentials
-
-Credentials persist in volume:
-
-```bash
-docker volume ls | grep claude
-docker volume inspect docker-claude-sandbox-data
-```
+3. Credentials persist in `docker-claude-sandbox-data`.
 
 ## Permission Deny Rules (Defense-in-Depth)
 
-Even with sandboxing enabled, maintain explicit deny rules for critical operations:
+Even with sandboxing enabled, keep explicit deny rules for critical operations:
 
 **File: `nix-claude-code/data/permissions/deny.nix`**
 
@@ -356,178 +173,49 @@ Even with sandboxing enabled, maintain explicit deny rules for critical operatio
 
 ## Credential Management in Sandboxes
 
-### Native Sandbox (No Special Handling)
-
-- Credentials stored in standard locations (`~/.ssh`, `~/.config`)
-- Use OS keychain for sensitive API keys
-- macOS: Use `security` command with keychain
-- Linux: Use `pass` or `secretstorage` packages
-
-### Docker Sandbox (Integrated)
-
-- API keys stored in persistent volume: `docker-claude-sandbox-data`
-- Volume persists between sessions
-- Configure via `-c` flag: `docker sandbox run -c ~/.claude claude`
-
-### Best Practice: OS Keychain Integration
-
-Store API keys in system keychain rather than files:
+- Native sandbox: credentials use normal file-system paths; store sensitive API keys in the OS keychain instead of files.
+- Docker sandbox: API keys persist in `docker-claude-sandbox-data`; use `-c ~/.claude` if you want Claude config mounted.
+- Best practice on macOS:
 
 ```bash
-# macOS: Store Claude API key in keychain (prompts for password interactively)
 security add-generic-password -a claude \
   -s "anthropic-api-key" -w
-
-# Retrieve in shell
 CLAUDE_API_KEY=$(security find-generic-password \
   -a claude -s "anthropic-api-key" -w 2>/dev/null)
 ```
 
-## Testing Sandbox Functionality
+## Smoke Tests
 
-### Test Case 1: Basic Command Execution
-
-**Expected:** Command runs normally in sandbox
-
-```text
-/sandbox
-echo "Testing sandbox isolation"
-pwd
-ls -la
-```
-
-### Test Case 2: Filesystem Isolation
-
-**Expected:** Cannot access files outside project directory
-
-```text
-/sandbox
-cat /etc/passwd  # Should be restricted
-```
-
-### Test Case 3: Network Access
-
-**Expected:** Network policies apply per OS
-
-```text
-/sandbox
-curl https://api.github.com  # May be restricted depending on profile
-```
-
-### Test Case 4: Git Operations
-
-**Expected:** Git operations work normally within sandbox
-
-```text
-/sandbox
-git status
-git log --oneline
-```
+- `/sandbox`; `echo`, `pwd`, `ls -la`
+- `cat /etc/passwd` should stay blocked
+- `curl https://api.github.com` should follow the sandbox policy
+- `git status` and `git log --oneline` should still work
 
 ## MCP Server Compatibility
 
-### Native Sandbox
-
-MCP servers can run normally within native sandbox:
-
-- File system operations scoped to project
-- Network operations subject to OS sandbox policy
-- Standard input/output works as expected
-
-**Recommendation:** Test MCP servers within sandbox before production use
-
-### Docker Sandbox
-
-MCP servers run in container context:
-
-- File system limited to container mount points
-- Network isolated to container network
-- May require explicit configuration for host communication
-
-**Setup:** Mount project directory and configure MCP tool paths
-
-## Migration Path for This Repository
-
-### Phase 1: Enable Native Sandbox (Immediate)
-
-1. Update documentation (this file)
-2. Add sandbox command to quick-reference guides
-3. Encourage team use of `/sandbox` for development
-
-**Timeline:** Immediate
-
-### Phase 2: Test Docker Sandbox (If Needed)
-
-1. Set up Docker Desktop with experimental features
-2. Test with sample projects
-3. Document specific use cases
-
-**Timeline:** When production deployment needed
-
-### Phase 3: CI/CD Integration (Future)
-
-1. Use Docker sandbox in GitHub Actions workflows
-2. Automate credential injection via secrets
-3. Set up workflow that requires sandbox for untrusted code
-
-**Timeline:** When multi-contributor CI/CD critical
+- Native sandbox: MCP servers can run normally; filesystem access stays within the project and network access follows the sandbox policy.
+- Docker sandbox: MCP servers run in the container and are limited to its mounts and network.
 
 ## Security Considerations
 
 ### What Sandboxing Provides
 
-✓ **Filesystem isolation** - Limited to project directory
-✓ **Resource limits** - CPU, memory constraints
-✓ **Process isolation** - Own process namespace
-✓ **Network restrictions** - Subject to sandbox policy
+- Filesystem isolation limited to the project directory or container mount
+- Resource limits
+- Process isolation
+- Network restrictions subject to the active profile
 
-### What Sandboxing Does NOT Provide
+### What Sandboxing Does Not Provide
 
-✗ **Protection against host OS vulnerabilities** - Sandbox can be escaped with zero-days
-✗ **Complete credential isolation** - Credentials may still be accessible
-✗ **True multi-tenancy** - Single user per sandbox on shared system
-✗ **Compliance guarantees** - Check with security team for compliance needs
+- Protection against host OS vulnerabilities
+- Complete credential isolation
+- True multi-tenancy
+- Compliance guarantees
 
 ### Defense-in-Depth Strategy
 
-Combine multiple protection layers:
-
-1. **Native sandbox** - Application-level isolation
-2. **Permission deny rules** - Explicit block list
-3. **Code review** - Human validation before approval
-4. **Git branch protection** - Require PR reviews
-5. **Audit logging** - Track all auto-approved actions
-
-## FAQ
-
-**Q: Will `/sandbox` mode slow down Claude Code?**
-A: Minimal overhead on macOS (native Seatbelt). Linux (bubblewrap) has slightly more overhead but still acceptable.
-
-**Q: Can I use Docker Desktop sandbox with `--dangerously-skip-permissions`?**
-A: Not needed - Docker sandbox auto-enables approval by design.
-
-**Q: Should I use native sandbox or Docker sandbox?**
-A: Use native sandbox for development (faster, simpler). Use Docker for production or untrusted code.
-
-**Q: What if I'm on Windows?**
-A: Windows has limited native sandbox. Recommend Docker Desktop containers instead.
-
-**Q: Can I combine native sandbox with Docker containers?**
-A: Yes! This provides defense-in-depth. Run `docker sandbox run claude` which uses native sandboxing inside Docker.
-
-**Q: What about credential security in native sandbox?**
-A: Credentials follow normal file system rules. Use OS keychain for sensitive values rather than environment variables.
-
-## References
-
-- [Claude Code Sandboxing Documentation](https://code.claude.com/docs/en/sandboxing)
-- [Docker AI Sandboxes - Get Started](https://docs.docker.com/ai/sandboxes/get-started/)
-- [bubblewrap - Container Isolation](https://github.com/containers/bubblewrap)
-
-## Next Steps
-
-1. ✓ Document sandbox options (this file)
-2. Test native sandbox on macOS with actual Claude Code
-3. Update permission deny rules to include defense-in-depth patterns
-4. Create example workflows in `.claude/workflows/` for sandbox usage
-5. Add sandbox usage guide to team onboarding documentation
+1. Native sandbox
+2. Permission deny rules
+3. Code review
+4. Git branch protection
+5. Audit logging

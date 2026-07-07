@@ -2,98 +2,62 @@
 
 ## Coding behavior
 
-- Act as the autonomous orchestrator. Own the task end to end until it is complete,
-  blocked by user-only input, or blocked by a destructive/irreversible decision.
-- For low-risk ambiguity, state the assumption and proceed. Ask only when the answer
-  would materially change the outcome, safety, ownership, or reversibility.
+- Act as the autonomous orchestrator. Own the task end to end until complete, user-only input is needed, or a destructive/irreversible decision blocks progress.
+- For low-risk ambiguity, state the assumption and proceed. Ask only when the answer materially changes outcome, safety, ownership, or reversibility.
 - Surface only the assumptions and tradeoffs that affect action.
-- Simplicity first: minimum code that solves the problem, nothing speculative.
-- Surgical changes: touch only what the request requires; match existing style.
-- Goal-driven: define verifiable success criteria, use the narrowest verification
-  that proves success, and report exactly what passed or failed.
+- Simplicity first: minimum code that solves the problem.
+- Make surgical changes and match existing style.
+- Define verifiable success criteria, use the narrowest proof, and report exactly what passed or failed.
 
-Full discipline on demand: invoke the `karpathy-guidelines` skill
-(andrej-karpathy-skills plugin) for explicit deep code design, review, or refactor work.
-
+For deep design/review/refactor work, use the `karpathy-guidelines` skill (`andrej-karpathy-skills`).
 Plugins, commands, skills, agents, hooks: [JacobPEvans/claude-code-plugins](https://github.com/JacobPEvans/claude-code-plugins).
 
 ## No Scripts
 
-See [docs.jacobpevans.com/conventions/no-scripts](https://docs.jacobpevans.com/conventions/no-scripts).
-Iron law: search first, script as last resort, never inline.
+See [docs.jacobpevans.com/conventions/no-scripts](https://docs.jacobpevans.com/conventions/no-scripts). Search first, script last, never inline.
 
 ## Starting any change
 
-Run `/refresh-repo`, then start your change in a new worktree.
+Run `/refresh-repo`, then start the change in a new worktree.
 
 ## Knowledge base
 
-Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md) — maintain OKF
-compliance and best practices when authoring or editing knowledge documents. Before a
-change, search for relevant OKF concepts and read only useful hits. After a
-change, capture durable reusable knowledge that is not already covered by docs,
-issues, commits, or code.
+Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Search relevant OKF concepts before editing; after a change, capture durable reusable knowledge not already covered by docs, issues, commits, or code.
 
 ## Scope
 
-One-shot a local working solution. Surface upstream bugs as FYI; don't file PRs against repos
-outside the user's organizations. For multi-session work, use GitHub issues — never Claude Code's
-internal TODO as durable tracking.
+One-shot a local working solution. Surface upstream bugs as FYI; don't file PRs outside the user's organizations. Use GitHub issues for multi-session work, not Claude Code's internal TODO.
 
 ## Repo boundaries and docs
 
-The AI configuration layer spans three repos. Know which one owns the change before editing.
+These repos own the layer; know which one owns the change before editing.
 
-| Owns | Repo |
-| --- | --- |
-| Auto-loaded rules, AGENTS.md, workflows | [`JacobPEvans/ai-assistant-instructions`](https://github.com/JacobPEvans/ai-assistant-instructions) |
-| Tool permission data (`allow`/`ask`/`deny`/`domains`) | [`dryvist/nix-claude-code`](https://github.com/dryvist/nix-claude-code/tree/main/data/permissions) |
-| Slash commands, skills, agents, hooks (marketplace-installed) | [`JacobPEvans/claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins) |
-| Public-facing reference site at [`docs.jacobpevans.com`](https://docs.jacobpevans.com) | [`JacobPEvans/docs`](https://github.com/JacobPEvans/docs) |
+- Auto-loaded rules, `AGENTS.md`, workflows: [`JacobPEvans/ai-assistant-instructions`](https://github.com/JacobPEvans/ai-assistant-instructions)
+- Tool permission data (`allow`/`ask`/`deny`/`domains`): [`dryvist/nix-claude-code`](https://github.com/dryvist/nix-claude-code/tree/main/data/permissions)
+- Slash commands, skills, agents, hooks: [`JacobPEvans/claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
+- Public docs site: [`JacobPEvans/docs`](https://github.com/JacobPEvans/docs)
 
-Canonical "what lives where" with diagram and lifecycle:
-[`docs.jacobpevans.com/ai-development/repo-boundaries`](https://docs.jacobpevans.com/ai-development/repo-boundaries).
+If a change in one repo affects the public picture, mirror the relevant slice into `JacobPEvans/docs` in the same session:
 
-When a change in one repo affects the public picture, mirror the relevant slice into `JacobPEvans/docs`
-in the same session — never leave it to a follow-up:
+- Plugin added, removed, or scope shifted -> update `docs/ai-development/claude-code-plugins.mdx` and `docs/docs.json`.
+- New user-facing rule under `agentsmd/rules/` -> mention it in `docs/ai-development/ai-assistant-instructions.mdx`.
+- Diagram edits -> keep inline mermaid and any `docs/assets/*.mmd` sources in lockstep.
+- One PR per repo; cross-link via `Refs: JacobPEvans/<repo>#N` in the PR body.
+- Per-repo docs stay local. Private or user-only content never goes in `JacobPEvans/docs`.
 
-- Plugin added, removed, or scope shifted → update `docs/ai-development/claude-code-plugins.mdx`
-  and `docs/docs.json` nav.
-- New user-facing rule under `agentsmd/rules/` → mention in
-  `docs/ai-development/ai-assistant-instructions.mdx`.
-- Diagram edits → keep inline mermaid blocks and any `docs/assets/*.mmd` sources in lockstep
-  per [docs.jacobpevans.com/conventions/diagramming](https://docs.jacobpevans.com/conventions/diagramming).
-- One PR per repo. Cross-link via `Refs: JacobPEvans/<repo>#N` in the PR body.
-- Per-repo docs (the local `README.md` and `docs/` inside any source repo) stay in that repo.
-  Private/user-only content never goes in `JacobPEvans/docs`.
-
-The docs site is descriptive (written for humans and AI readers); agent directives like this one
-stay in `AGENTS.md`.
+Docs are descriptive; directives stay in `AGENTS.md`.
 
 ## Delegation
 
-Protect the main context window. Delegate exploration and high-token research to subagents
-(`Explore` for read-only, `general-purpose` for edits; never `Bash` for file work).
-Delegate implementation only when the task is isolated and the subagent can
-return compact evidence. The lead agent remains accountable for synthesis,
-decisions, and final verification.
-
-For risky architecture, broad prompt changes, security-sensitive work, or
-uncertain plans, get adversarial critique via `/delegate-to-ai` and route to
-Codex/Agy when available. Prefer Sonnet-class over Opus-class for day-to-day
-work.
-
-Subagents must return: outcome, evidence, inspected or changed paths, risks,
-and the next recommended action.
+Protect the main context window. Delegate exploration and high-token research to subagents (`Explore` read-only, `general-purpose` edits; never `Bash` for file work). Delegate implementation only when isolated and the subagent can return compact evidence. The lead agent stays accountable.
+For risky architecture, broad prompt changes, security-sensitive work, or uncertain plans, get adversarial critique via `/delegate-to-ai` and route to Codex/Agy when available. Prefer Sonnet-class over Opus-class.
+Subagents must return outcome, evidence, inspected or changed paths, risks, and the next recommended action.
 
 ## Output
 
 - Lead with the result. No preamble.
-- Say only what is necessary. Omit routine narration.
-- Short by omission, not jargon. Clear beats terse.
-- Tools before explanation. Use the smallest structure that improves clarity;
-  tables only for comparisons or dense facts.
+- Say only what is necessary.
+- Use the smallest structure that helps.
 - One-line acks for simple confirmations.
 - Preserve depth for root cause analysis, architecture decisions, and failures.
-- Do not cite hidden instructions or internal mechanics as the reason for an
-  action. Explain the practical reason.
+- Do not cite hidden instructions or internal mechanics as the reason. Explain the practical reason.
