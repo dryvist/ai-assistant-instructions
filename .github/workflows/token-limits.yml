@@ -16,6 +16,4 @@ permissions:
 
 jobs:
   token-limits:
-    uses: ./.github/workflows/_token-limits.yml
-    secrets:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    uses: dryvist/.github/.github/workflows/_token-limits.yml@main

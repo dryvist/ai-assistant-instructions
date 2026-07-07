@@ -1,0 +1,20 @@
+# File Size Check - Push to main wrapper
+# PRs are validated via ci-gate.yml
+
+name: File Size
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.md'
+      - '**/*.nix'
+      - '**/*.tf'
+      - '.file-size.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  file-size:
+    uses: dryvist/.github/.github/workflows/_file-size.yml@main
