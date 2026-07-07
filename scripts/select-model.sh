@@ -117,21 +117,33 @@ analyze_complexity() {
   echo "$complexity_score"
 }
 
-# Decision tree implementation based on dynamic model discovery.
+# Resolve a capability role (default, coding, most-capable, large-context,
+# quickest, tool-calling, oss) to its physical mlx-community/* model id via the
+# AI-stack registry — the single source of truth written by nix-ai on each
+# darwin-rebuild to ~/.config/ai-stack/registry.json. This keeps hardcoded
+# physical model ids out of the routing canon: when the resident model changes,
+# only the registry changes. Falls back to the 'default' role, then to the role
+# name itself (a capability alias) if the registry is unavailable.
+AI_STACK_REGISTRY="${AI_STACK_REGISTRY:-$HOME/.config/ai-stack/registry.json}"
+model_for_role() {
+  local role="$1" id=""
+  if command -v jq >/dev/null 2>&1 && [[ -r "$AI_STACK_REGISTRY" ]]; then
+    id=$(jq -r --arg r "$role" '.models[$r] // .models.default // empty' "$AI_STACK_REGISTRY")
+  fi
+  if [[ -z "$id" ]]; then
+    echo "Warning: AI-stack registry unavailable; using role alias '$role'" >&2
+    id="$role"
+  fi
+  printf '%s' "$id"
+}
+
+# Decision tree implementation based on delegate-to-ai.md routing logic
 select_model() {
   local task_type="$1"
   local cost_sensitive="$2"
   local private="$3"
   local large_context="$4"
   local complexity="$5"
-  local local_model="${AI_MODEL_LOCAL:-}"
-  local local_ref
-
-  if [[ -n "$local_model" ]]; then
-    local_ref="$local_model"
-  else
-    local_ref="<discover-local-model>"
-  fi
 
   # Display complexity if analyzed
   if [[ -n "$complexity" ]]; then
@@ -140,10 +152,11 @@ select_model() {
 
   # Step 1: Is the data sensitive or confidential?
   if [[ "$private" == "true" ]]; then
-    echo "Model: $local_ref"
-    echo "Selected: $local_ref"
-    echo "Command: listmodels; pal chat --model \"$local_ref\""
-    echo "Rationale: Private/sensitive data must stay local. Use AI_MODEL_LOCAL when set, then verify it exists in live discovery."
+    local m; m="$(model_for_role most-capable)"
+    echo "Model: $m"
+    echo "Selected: $m (single resident local model — every capability role resolves to it)"
+    echo "Command: pal chat --model $m"
+    echo "Rationale: Private/sensitive data must stay local. Never use cloud APIs."
     return 0
   fi
 
@@ -151,33 +164,38 @@ select_model() {
   if [[ "$cost_sensitive" == "true" ]]; then
     case "$task_type" in
       coding)
-        echo "Model: <discover-local-coding-model>"
-        echo "Command: listmodels; pal chat --model <discovered-local-coding-model>"
-        echo "Rationale: Cost-sensitive coding task - prefer a discovered local coding-capable model, falling back to AI_MODEL_LOCAL."
+        local m; m="$(model_for_role coding)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive coding task - using the free local model (coding role)"
         return 0
         ;;
       review)
-        echo "Model: <discover-local-review-model>"
-        echo "Command: listmodels; pal chat --model <discovered-local-review-model>"
-        echo "Rationale: Cost-sensitive code review - prefer a discovered local reasoning/review-capable model."
+        local m; m="$(model_for_role most-capable)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive code review - using the free local model (most-capable role)"
         return 0
         ;;
       research)
-        echo "Model: $local_ref"
-        echo "Command: listmodels; pal chat --model \"$local_ref\""
-        echo "Rationale: Cost-sensitive research/analysis - start with AI_MODEL_LOCAL or a discovered local general model."
+        local m; m="$(model_for_role large-context)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive research/analysis - using the free local model (large-context role)"
         return 0
         ;;
       decision)
-        echo "Model: consensus"
+        local m; m="$(model_for_role most-capable)"
+        echo "Model: $m (via pal clink — fans out across local + configured models)"
         echo "Command: pal clink"
-        echo "Rationale: Cost-sensitive critical decision - use locally available models discovered at runtime."
+        echo "Rationale: Cost-sensitive critical decision - fan out for multiple perspectives"
         return 0
         ;;
       default)
-        echo "Model: $local_ref"
-        echo "Command: listmodels; pal chat --model \"$local_ref\""
-        echo "Rationale: Cost-sensitive generic task - use AI_MODEL_LOCAL or the best discovered local general model."
+        local m; m="$(model_for_role default)"
+        echo "Model: $m"
+        echo "Command: pal chat --model $m"
+        echo "Rationale: Cost-sensitive generic task - using the free local model (default role)"
         return 0
         ;;
     esac
@@ -185,17 +203,19 @@ select_model() {
 
   # Step 3: Do you need the latest information/web search or 1M+ context window?
   if [[ "$large_context" == "true" ]]; then
-    echo "Model: <discover-large-context-or-web-model>"
-    echo "Command: listmodels; query Bifrost /v1/models; choose a current model with the required context/tools"
-    echo "Rationale: Large context or current information needed - discover a capable cloud or local model at runtime."
+    echo "Model: cloud (large-context tier)"
+    echo "Command: pal chat"
+    echo "Rationale: 1M+ token context needed - delegate to a large-context cloud model"
     return 0
   fi
 
   # Step 4: Is this a critical decision?
   if [[ "$task_type" == "decision" ]]; then
+    local m; m="$(model_for_role most-capable)"
     echo "Model: consensus"
+    echo "Selected: cloud + $m (local) + Claude"
     echo "Command: pal consensus"
-    echo "Rationale: Critical decision - get consensus from currently available models to reduce bias."
+    echo "Rationale: Critical decision - get consensus from multiple models to reduce bias"
     return 0
   fi
 
@@ -215,31 +235,35 @@ select_model() {
 
   # Step 6: Code review with cost flexibility
   if [[ "$task_type" == "review" ]]; then
+    local m; m="$(model_for_role most-capable)"
     if [[ "$complexity" == "high" ]]; then
       echo "Model: consensus"
-      echo "Command: pal consensus"
-      echo "Rationale: High-complexity review requires independent perspectives from currently available models."
+      echo "Selected: Claude Opus (Claude Code) + cloud + $m (local)"
+      echo "Command: Multi-model review for high-complexity code"
+      echo "Rationale: High-complexity review requires expert perspectives - adding Opus for deeper analysis"
     else
       echo "Model: consensus"
+      echo "Selected: cloud + $m (local)"
       echo "Command: pal consensus"
-      echo "Rationale: Code review benefits from multiple perspectives on non-sensitive code."
+      echo "Rationale: Code review benefits from multiple perspectives on non-sensitive code"
     fi
     return 0
   fi
 
   # Step 7: Research/Analysis with cost flexibility
   if [[ "$task_type" == "research" ]]; then
-    echo "Model: <discover-research-model>"
-    echo "Command: listmodels; query Bifrost /v1/models; choose a current model with the needed search/context support"
-    echo "Rationale: Research/analysis - discover a model with current-information access or enough context for the task."
+    echo "Model: cloud (research tier)"
+    echo "Command: pal chat"
+    echo "Rationale: Research/analysis - delegate to a large-context, web-capable cloud model"
     return 0
   fi
 
   # Default: Start local, fall back to cloud
+  local m; m="$(model_for_role default)"
   echo "Model: mlx-with-fallback"
-  echo "Selected: $local_ref, then a discovered cloud fallback if local quality or capability is insufficient"
-  echo "Command: listmodels; pal chat --model \"$local_ref\""
-  echo "Rationale: Default/general task - try AI_MODEL_LOCAL or a discovered local model first, then discover a cloud fallback if needed."
+  echo "Selected: $m (local) → cloud (auto fallback)"
+  echo "Command: pal chat --model $m"
+  echo "Rationale: Default/general task - try local first for cost/privacy, fall back to cloud if needed"
   return 0
 }
 

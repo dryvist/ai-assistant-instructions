@@ -2,6 +2,17 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "local>JacobPEvans/.github:renovate-presets"
+    "local>dryvist/.github"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^AGENTS\\.md$"],
+      "matchStrings": ["blob/(?<currentDigest>[a-f0-9]{40})/CLAUDE\\.md"],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/forrestchang/andrej-karpathy-skills",
+      "depNameTemplate": "karpathy-claude-skills",
+      "currentValueTemplate": "main"
+    }
   ]
 }

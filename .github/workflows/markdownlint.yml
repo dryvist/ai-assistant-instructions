@@ -15,4 +15,4 @@ permissions:
 
 jobs:
   markdownlint:
-    uses: ./.github/workflows/_markdownlint.yml
+    uses: dryvist/.github/.github/workflows/_markdown-lint.yml@main

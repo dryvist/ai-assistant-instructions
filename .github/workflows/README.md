@@ -1,5 +1,21 @@
 # GitHub Actions Workflows
 
+## Installation
+
+These workflows live in `.github/workflows/` and run automatically — no installation step is required.
+Branch protection rules reference the **Merge Gate** check (see below).
+
+```text
+# To enable on a fork or new clone:
+git clone https://github.com/JacobPEvans/ai-assistant-instructions.git
+# (workflows activate on next push to GitHub)
+```
+
+## Usage
+
+Workflows trigger on pull-request events and push-to-`main`.
+Open a PR to exercise the full CI Gate, or push to `main` to run the push-only wrappers.
+
 ## Merge Gatekeeper Pattern
 
 This repository uses the **Merge Gatekeeper Pattern** for CI validation on pull requests.
@@ -36,10 +52,10 @@ These are the check names that appear in GitHub PR status:
 | ---------- | ----------- |
 | CI Gate / Detect Changes | Identifies which file categories changed |
 | CI Gate / Claude Code Lint | Validates Claude Code configuration |
-| CI Gate / Schema Validation | Validates cclint schema and permissions |
-| CI Gate / Markdown Lint | Checks markdown formatting |
-| CI Gate / Spell Check | Checks spelling in markdown files |
-| CI Gate / Token Limit Check | Enforces token usage limits |
+| CI Gate / Schema Validation | Validates cclint schema/config |
+| CI Gate / Markdown Lint | Checks markdown formatting (shared: `dryvist/.github`) |
+| CI Gate / Token Limit Check | Enforces token usage limits (shared: `dryvist/.github`) |
+| CI Gate / File Size | Enforces file size limits (shared: `dryvist/.github`) |
 | CI Gate / Instruction Validation | Validates required instruction files |
 | CI Gate / YAML Lint | Validates YAML syntax |
 | CI Gate / Merge Gate | Aggregates all check results (REQUIRED) |
@@ -50,8 +66,7 @@ These are the check names that appear in GitHub PR status:
 | -------- | ----- | -------- |
 | `claude-config` | `.claude/**`, `CLAUDE.md`, `.cclintrc.jsonc` | Claude Code Lint, Schema Validation, Token Limit Check |
 | `agentsmd` | `agentsmd/**` | Claude Code Lint, Instruction Validation, Token Limit Check |
-| `permissions` | `agentsmd/permissions/**`, `scripts/validate-permissions.sh` | Schema Validation |
-| `markdown` | `**/*.md`, `.markdownlint-cli2.jsonc`, `.cspell.json` | Markdown Lint, Spell Check, Token Limit Check |
+| `markdown` | `**/*.md`, `.markdownlint-cli2.jsonc` | Markdown Lint, Token Limit Check, File Size |
 | `yaml` | `**/*.yml`, `**/*.yaml`, `.yamllint.yml` | YAML Lint |
 | `workflows` | `.github/workflows/**` | YAML Lint |
 
@@ -59,16 +74,21 @@ These are the check names that appear in GitHub PR status:
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
-│                    REUSABLE WORKFLOWS                       │
+│              LOCAL REUSABLE WORKFLOWS                       │
 │         (Implementation - triggered via workflow_call)       │
 ├─────────────────────────────────────────────────────────────┤
 │  _cclint.yml              │ Claude Code Lint                │
-│  _markdownlint.yml        │ Markdown Lint                   │
-│  _spellcheck.yml          │ Spell Check                     │
-│  _token-limits.yml        │ Token Limit Check               │
 │  _validate-cclint.yml     │ Schema Validation               │
 │  _validate-instructions.yml │ Instruction Validation        │
 │  _yaml-lint.yml           │ YAML Lint                       │
+└─────────────────────────────────────────────────────────────┘
+              │
+┌─────────────────────────────────────────────────────────────┐
+│         SHARED REUSABLE WORKFLOWS (dryvist/.github)          │
+├─────────────────────────────────────────────────────────────┤
+│  _markdown-lint.yml       │ Markdown Lint                   │
+│  _token-limits.yml        │ Token Limit Check                │
+│  _file-size.yml           │ File Size                       │
 └─────────────────────────────────────────────────────────────┘
                               │
               ┌───────────────┴───────────────┐
@@ -79,17 +99,28 @@ These are the check names that appear in GitHub PR status:
 ├─────────────────────────┤     ├─────────────────────────┤
 │ • Detects file changes  │     │ cclint.yml              │
 │ • Calls reusable flows  │     │ markdownlint.yml        │
-│ • Merge Gate aggregates │     │ spellcheck.yml          │
-│ • ONLY required check   │     │ token-limits.yml        │
+│ • Merge Gate aggregates │     │ token-limits.yml        │
+│ • ONLY required check   │     │ file-size.yml           │
 └─────────────────────────┘     │ validate-cclint-schema  │
                                 │ validate-instructions   │
                                 │ yaml-lint.yml           │
                                 └─────────────────────────┘
 ```
 
+Markdown Lint, Token Limit Check, and File Size call the shared reusable
+workflows in `dryvist/.github` (`_markdown-lint.yml`, `_token-limits.yml`,
+`_file-size.yml`) instead of a local implementation, so lint/token/size
+policy stays identical across every dryvist repo. Token Limit Check no
+longer needs an `ANTHROPIC_API_KEY` secret — the shared workflow counts
+tokens with the offline `tiktoken` tokenizer against this repo's own
+`.token-limits.yaml`. File Size is new here: with no `.nix`/`.tf` files and
+`.token-limits.yaml` already governing every `.md`, it is a no-op today but
+activates automatically if either file type is added.
+
 ## Adding New Checks
 
 1. Create reusable workflow: `_your-check.yml` with `on: workflow_call`
+   (local, or in `dryvist/.github` if other repos will share it)
 2. Add filter pattern under `changes.steps.filter.with.filters` in `ci-gate.yml`
 3. Add job that calls the reusable workflow with appropriate `if:` condition
 4. Add job name to `gate.needs` array and `allowed-skips`

@@ -1,5 +1,9 @@
 # README Validator Configuration
 # Excludes internal documentation READMEs that aren't project root READMEs
 
+required_sections:
+  - Installation
+  - Usage
+
 exclude_paths:
   - "agentsmd/**/README.md"

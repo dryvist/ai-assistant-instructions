@@ -1,8 +1,18 @@
+---
+name: pre-integration-checklist
+description: Pre-integration checklist for new local inference backends (MLX, vLLM, etc.)
+paths:
+  - "flake.nix"
+  - "**/nix-*/**"
+  - "**/terraform-*/**"
+  - "**/ansible-*/**"
+  - "**/mlx*"
+  - "**/vllm*"
+---
+
 # Pre-Integration Checklist for New Inference Backends
 
 Complete every item before merging a new inference backend (MLX (vllm-mlx), vLLM, etc.).
-Based on the MLX arc retrospective where 5 of 14 PRs were reactive fixes that this checklist
-would have prevented.
 
 ## Memory Budget
 

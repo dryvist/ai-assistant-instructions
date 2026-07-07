@@ -49,7 +49,6 @@ jobs:
     outputs:
       claude-config: ${{ steps.filter.outputs.claude-config }}
       agentsmd: ${{ steps.filter.outputs.agentsmd }}
-      permissions: ${{ steps.filter.outputs.permissions }}
       markdown: ${{ steps.filter.outputs.markdown }}
       yaml: ${{ steps.filter.outputs.yaml }}
       workflows: ${{ steps.filter.outputs.workflows }}
@@ -69,13 +68,9 @@ jobs:
               - '.cclintrc.jsonc'
             agentsmd:
               - 'agentsmd/**'
-            permissions:
-              - 'agentsmd/permissions/**'
-              - 'scripts/validate-permissions.sh'
             markdown:
               - '**/*.md'
               - '.markdownlint-cli2.jsonc'
-              - '.cspell.json'
             yaml:
               - '**/*.yml'
               - '**/*.yaml'
@@ -113,23 +108,14 @@ jobs:
   validate-cclint:
     name: Schema Validation
     needs: changes
-    if: needs.changes.outputs.permissions == 'true' || needs.changes.outputs.claude-config == 'true'
+    if: needs.changes.outputs.claude-config == 'true'
     uses: ./.github/workflows/_validate-cclint.yml
-    with:
-      caller_event: pull_request
-      pr_number: ${{ github.event.pull_request.number }}
 
   markdownlint:
     name: Markdown Lint
     needs: changes
     if: needs.changes.outputs.markdown == 'true'
-    uses: ./.github/workflows/_markdownlint.yml
-
-  spellcheck:
-    name: Spell Check
-    needs: changes
-    if: needs.changes.outputs.markdown == 'true'
-    uses: ./.github/workflows/_spellcheck.yml
+    uses: dryvist/.github/.github/workflows/_markdown-lint.yml@main
 
   token-limits:
     name: Token Limit Check
@@ -140,12 +126,13 @@ jobs:
       (needs.changes.outputs.claude-config == 'true' ||
        needs.changes.outputs.agentsmd == 'true' ||
        needs.changes.outputs.markdown == 'true')
-    uses: ./.github/workflows/_token-limits.yml
-    with:
-      caller_event: pull_request
-      base_ref: ${{ github.base_ref }}
-    secrets:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    uses: dryvist/.github/.github/workflows/_token-limits.yml@main
+
+  file-size:
+    name: File Size
+    needs: changes
+    if: needs.changes.outputs.markdown == 'true'
+    uses: dryvist/.github/.github/workflows/_file-size.yml@main
 
   validate-instructions:
     name: Instruction Validation
@@ -169,8 +156,8 @@ jobs:
       - cclint
       - validate-cclint
       - markdownlint
-      - spellcheck
       - token-limits
+      - file-size
       - validate-instructions
       - yaml-lint
     if: ${{ !cancelled() }}
@@ -184,8 +171,8 @@ jobs:
             cclint,
             validate-cclint,
             markdownlint,
-            spellcheck,
             token-limits,
+            file-size,
             validate-instructions,
             yaml-lint
           jobs: ${{ toJSON(needs) }}

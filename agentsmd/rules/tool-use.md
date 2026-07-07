@@ -1,84 +1,65 @@
 ---
-description: Use native tools (Read/Edit/Write/Grep/Glob) over Bash equivalents — research existing solutions before generating scripts
+name: tool-use
+description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glob). Use general-purpose subagent when files are edited.
 ---
 
 # Tool Use
 
-AI assistants solve problems by finding and using existing tools, not by generating scripts.
-Research what exists before implementing anything — do not trust training data.
+## Operating model
 
-## The Workflow
+- Prefer native tools and installed plugins over shell equivalents.
+- Before saying a tool, command, skill, agent, or connector is unavailable,
+  discover it with the runtime's tool or plugin discovery mechanism.
+- Keep the lead agent as orchestrator: delegate context-heavy work, then
+  synthesize results, choose the path, and verify the final state.
 
-1. **Identify the tool** — What existing CLI, builtin, or module handles this?
-2. **Verify capabilities** — Use Context7 MCP, PAL MCP, or web search to confirm
-3. **Execute directly** — Run via Bash tool (or equivalent tool call)
-4. **Parallelize** — Independent commands as parallel tool calls in a single response
+## Ecosystem alternatives
 
-If no existing tool handles the task, ask the user before writing any code.
-Check AI assistant settings files (`~/.claude/settings.json`, `~/.gemini/settings.json`) for pre-approved commands.
-
-## Ecosystem Alternatives
-
-| Task | Use This | Not This |
+| Task | Use | Not |
 | --- | --- | --- |
-| File reading | `Read` tool | `cat`, `head`, `tail` via Bash |
-| File editing | `Edit` tool | `sed -i`, `awk`, `python -c` via Bash |
-| File creation | `Write` tool | `cat >`, heredocs, `echo >` via Bash |
-| File search | `Grep` tool | `grep`, `rg`, `ag` via Bash |
-| File discovery | `Glob` tool | `find`, `ls`, `fd` via Bash |
-| JSON manipulation | `jq` via Bash tool | Python script |
-| API calls | `curl` or `gh api` via Bash tool | Python/curl script |
-| Text processing (pipe filter) | `grep`/`sed`/`awk` on stdin (never in-place) | Processing script |
-| Permission/JSON transforms | `Read` + `jq` (via Bash) + `Edit`/`Write` | Python file manipulation |
-| Multi-file git operations | Parallel Bash tool calls (`git add f1 f2 f3`) | Loop script |
-| Delegate to external AI | Bifrost `http://localhost:30080/v1/chat/completions` or `/delegate-to-ai` for `clink`/`consensus` | Manual model routing |
-| Infrastructure config | Ansible modules, Terraform resources/data sources | Configuration script |
+| File reading | `Read` | `cat`, `head`, `tail` |
+| File editing | `Edit` | `sed -i`, `awk`, `python -c` |
+| File creation | `Write` | `cat >`, heredocs, `echo >` |
+| File search | `Grep` | `grep`, `rg`, `ag` via Bash |
+| File discovery | `Glob` | `find`, `ls`, `fd` via Bash |
+| JSON manipulation | `jq` via Bash | Python script |
+| API calls | `curl` / `gh api` | Python/curl script |
+| Multi-file git ops | Parallel Bash tool calls | Loop script |
+| Workspace sweep / abandoned branches | `/refresh-repo --sweep` | Free-form sweep scripts |
+| Close PR + cleanup local state | `/wrap-up purge-pr <PR_NUMBER>` | `gh pr close` alone |
+| Infrastructure config | Ansible modules, Terraform resources | Configuration script |
 | Infrastructure validation | `terraform validate`, `ansible-lint`, check modes | Validation script |
-| State queries | `terraform output`, `terraform state show`, Ansible facts | Query script |
+| State queries | `terraform output`, Ansible facts | Query script |
+| Delegate to external AI | `/delegate-to-ai` (Codex / native subagent) | Manual model routing |
 
-## Exceptions
+When a capability isn't natively provided by a standard tool, the answer is
+"use the tool as-is, or don't do it" — not "write a small script." A custom
+wrapper script is an unmaintained, untested-at-scale liability that duplicates
+or poorly reinvents what packaged tools already do. If a desired refinement
+can't be done through the tool's native config, drop that refinement rather
+than scripting around the gap.
 
-Scripts are appropriate ONLY when the deliverable IS a script:
+**Never pipe or dump a bare `env`** (or `printenv`), even through a filter
+like `cut -d'=' -f1`. Multi-line values (private keys, license blobs) break
+line-based parsing and can print secret contents into the transcript/log.
+Test for a specific variable's presence with `[[ -n "$VAR" ]]` instead.
 
-- User explicitly asked to create a script file
-- The script will be committed as a permanent artifact (CI/CD workflows, pre-commit hooks, `Makefile`s)
+## Subagent type selection
 
-Never for one-off tasks or temp files.
+| `subagent_type` | Use when |
+| --- | --- |
+| `general-purpose` | Any task that reads, writes, or edits files |
+| `Explore` | Read-only research / exploration |
+| `Bash` | Pure shell only; never for file ops (Bash-only agents work around missing tools with `python -c`/`sed`/`awk` and bypass audit trails) |
 
-## File Operations Block (Required in Every Subagent Prompt)
+## Delegation contract
 
-Every file-editing subagent prompt MUST include this block verbatim:
-
-```text
-File operations:
-- Read files with the Read tool (NEVER cat, head, tail, less, bat)
-- Edit existing files with the Edit tool (NEVER sed, awk, perl -i, python -c)
-- Create new files with the Write tool (NEVER cat >, echo >, tee, heredocs)
-- Search file contents with the Grep tool (NEVER grep, rg, ag via Bash)
-- Find files with the Glob tool (NEVER find, ls, fd via Bash)
-- Bash is ONLY for running system commands (git, terraform, ansible, etc.)
-```
-
-Explore agents are exempt (read-only, no Edit/Write tools).
-
-Script policy (Required in every subagent prompt):
-
-- NEVER generate custom scripts — use native tools (jq, curl, gh api, Nix functions, etc.)
-- If blocked by a hook, follow the alternatives in the block message
-- Committed scripts go in allowed locations (scripts/, hooks/, .github/, tests/) — never temp files
-
-## Subagent Type Selection
-
-| `subagent_type` | Available Tools | Use When |
-| --- | --- | --- |
-| `general-purpose` | All tools (Read, Edit, Write, Bash, Glob, Grep, ...) | Any task involving file reads, edits, or writes |
-| `Explore` | Exploration tools (Read, Glob, Grep, Bash, ...) | Exploration and research only; no file modifications |
-| `Bash` | Bash only | Pure shell operations with no file modifications |
-
-**Critical rule**: If a subagent needs to read, write, or edit files, NEVER use `subagent_type: "Bash"`.
-Bash-only agents work around missing tools with `python -c`/`sed`/`awk`, bypassing permissions and audit trails.
-Use `general-purpose` instead.
-
-## Why This Matters
-
-Bash file operations bypass permissions, produce unauditable changes, and fail silently.
+- Use subagents for broad codebase sweeps, log or test triage, source
+  comparison, and other high-token exploration.
+- Delegate edits only when the scope is isolated and the expected return can be
+  checked with a compact diff or test result.
+- For risky architecture, broad prompt changes, security-sensitive changes, or
+  plans that feel under-specified, request adversarial critique via
+  `/delegate-to-ai`; route to Codex/Agy directly when available.
+- Require every delegated result to include outcome, evidence, inspected or
+  changed paths, risks, and the next recommended action.

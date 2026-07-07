@@ -12,5 +12,5 @@ jobs:
 
       - name: Install linting tools
         run: |
-          npm install -g markdownlint-cli2 cspell
+          npm install -g markdownlint-cli2
           pip install yamllint

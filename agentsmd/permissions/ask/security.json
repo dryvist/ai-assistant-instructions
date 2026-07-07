@@ -1,9 +1,0 @@
-{
-  "commands": [
-    "aws secretsmanager get-secret-value",
-    "doppler secrets get",
-    "security unlock-keychain",
-    "vault kv get",
-    "vault read"
-  ]
-}
