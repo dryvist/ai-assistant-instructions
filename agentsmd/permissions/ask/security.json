@@ -1,7 +1,6 @@
 {
   "commands": [
     "aws secretsmanager get-secret-value",
-    "doppler run",
     "doppler secrets get",
     "security unlock-keychain",
     "vault kv get",

@@ -33,7 +33,7 @@ But the current implementation:
 
 ### Why Models Fail
 
-Haiku-level models (and even Sonnet when distracted):
+Lower-capability or smaller-context models:
 
 - See "Rebase successful" and think the task is complete
 - Lose context by line 183 in a 319-line document
@@ -87,7 +87,7 @@ New (line 1):
 
 #### 2. Simplify to Three Commands
 
-Current: 7 complex bash scripts with nested subshells
+Current: 7 complex bash scripts with nested shell blocks
 New: 3 simple commands with explicit success checks
 
 ```bash
@@ -146,7 +146,7 @@ Structure:
 ```markdown
 ---
 description: Push feature branch to origin/main via rebase
-model: haiku
+model: <discovered-small-context-model>
 allowed-tools: Bash(git:*)
 ---
 
@@ -205,14 +205,14 @@ git checkout -b test-branch && echo "test" >> file && git commit -am "test"
 /git-rebase test-branch
 
 # Verify
-git log origin/main --oneline -3  # Should show test commit
+git log origin/main --pretty=format:'%h %s' -3  # Should show test commit
 ```
 
-### Test 2: Haiku Completion
+### Test 2: Lower-Capability Model Completion
 
 ```bash
-# Run with haiku model
-/model haiku
+# Run with a lower-capability model selected dynamically
+/model <discovered-small-context-model>
 /git-rebase test-branch
 
 # Verify model doesn't stop at "Rebase successful"
@@ -247,7 +247,7 @@ git checkout main && echo "different" > shared-file && git commit -am "main chan
 ## Success Criteria
 
 - [ ] `/git-rebase` completes full workflow (through push to origin)
-- [ ] Haiku model can follow instructions without losing context
+- [ ] Lower-capability model can follow instructions without losing context
 - [ ] No intermediate "success" messages that could cause early termination
 - [ ] Troubleshooting loads only when needed
 - [ ] Approval prompts reduced from ~10 to ~2
@@ -290,18 +290,18 @@ Rebase successful
 Commits to push: 3
 ```
 
-Haiku sees "successful" and reports task complete. The fact that Step 6 exists at line 183 is irrelevant - context was lost.
+The model sees "successful" and reports task complete. The fact that Step 6 exists at line 183 is irrelevant - context was lost.
 
 ## Design Principles
 
-### For Haiku-Level Models
+### For Lower-Capability Models
 
 1. **Lead with the goal** - First line should state what success looks like
 2. **Repeat the goal** - Mention it multiple times throughout
 3. **No intermediate success messages** - Only "SUCCESS" when truly done
 4. **Explicit completion checklist** - Model must verify each item
 5. **Short documents** - Under 100 lines, ideally under 80
-6. **Linear execution** - No branching, no conditionals, no nested subshells
+6. **Linear execution** - No branching, no conditionals, no nested shell blocks
 
 ### Deferred Loading
 

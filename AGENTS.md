@@ -36,21 +36,23 @@ See the `tool-use` rule for the full alternatives table.
 
 ## Token Economy — Use Bifrost + Native Subagents Aggressively
 
-Claude Opus tokens are premium — reserve them for architecture decisions and complex reasoning.
+Premium model context is reserved for architecture decisions and complex reasoning.
 Offload everything else:
 
 - **Single-model calls**: Route via Bifrost at `http://localhost:30080/v1/chat/completions` (OpenAI-compatible) —
-  multi-provider routing to OpenAI, Gemini, OpenRouter, and local MLX
-  (not Anthropic — Claude runs subscription-only via Claude Code; Codex also accessible via `/codex*` skills)
+  multi-provider routing to cloud providers, OpenRouter, and local MLX.
 - **Multi-model parallel**: `clink` / `consensus` via PAL MCP (only remaining PAL tools — all others replaced by native subagents)
-- **Research & planning**: Route to Gemini via Bifrost (`gemini/gemini-3-pro-preview`) or `clink` (multi-model parallel) —
-  up-to-date knowledge and massive context
+- **Research & planning**: Route through Bifrost or `clink` to a currently available model with web/current-information
+  access or a large context window. Discover the specific model dynamically at use time.
 - **Simple/repetitive tasks**: Route to local models (MLX) via Bifrost — zero cost, low latency
 - **Medium-complexity work**: Route to OpenRouter cloud models via Bifrost — capable and cost-effective
-- **Day-to-day implementation**: Prefer Sonnet subagents over Opus — same tool access, fraction of the cost;
-  reserve Opus for genuinely complex coding and architecture
+- **Local general-purpose work**: Prefer `$AI_MODEL_LOCAL` when set; it should point at the best local general-purpose
+  LLM for this machine, but still verify availability with live model discovery.
+- **Day-to-day implementation**: Prefer native subagents for bounded implementation work. Choose the smallest capable
+  available model dynamically from the current tool/runtime roster.
 
-See the Model Routing Rules table for specific model recommendations per task type.
+Never hard-code model IDs in instructions. Model availability changes frequently; use `listmodels`, Bifrost model
+listing, PAL aliases, local MLX metadata, or the relevant provider CLI/API before naming a model in a command.
 
 ## Orchestrator Role
 
@@ -75,11 +77,12 @@ Delegate to subagents for:
 - **High-token operations**: Any task that would consume significant context (large file reads, extensive searches)
 - **Independent parallel tasks**: Work that can proceed simultaneously without dependencies
 - **External AI models**: Use `/delegate-to-ai` to route tasks to the best-suited external model via PAL MCP
-  (research to Gemini, code review to multi-model consensus, etc.)
+  after discovering the currently available model roster.
 
 ### Model Selection for Subagents
 
-Consider using Haiku or Sonnet when a task doesn't need Opus-level reasoning.
+Use the cheapest capable native subagent/model exposed by the current runtime. Escalate only when the task needs
+larger context, stronger reasoning, tool access, or multi-model validation.
 
 ### Subagent Type Selection
 
@@ -107,8 +110,8 @@ locations), delegate it. The subagent does the heavy lifting and reports back co
 ### External Model Delegation
 
 Use `/delegate-to-ai` to route work to external AI models via PAL MCP. This is the preferred
-way to leverage non-Claude models for tasks where they excel (research, consensus, code review).
-See the Model Routing Rules table for which model fits which task type.
+way to leverage external providers where they excel (research, consensus, code review).
+Discover the available model roster first; do not rely on static model names in this file.
 
 ## Output Discipline
 
@@ -134,32 +137,25 @@ This is about output format, not thinking. Reason thoroughly. Write concisely.
 
 ## Model Routing Rules
 
-| Task Type | Cloud Model | Access Method | Local (MLX via Bifrost) |
-| --- | --- | --- | --- |
-| Research & Analysis | Gemini 3 Pro | `gemini/gemini-3-pro-preview` | `mlx-local/mlx-community/Qwen3-235B-A22B-4bit` |
-| Complex Coding | Claude Opus | Claude Code (subscription) | `mlx-local/mlx-community/Qwen3.5-122B-A10B-4bit` |
-| Fast Tasks | Claude Sonnet | Claude Code (subscription) | `mlx-local/mlx-community/Qwen3.5-27B-4bit` |
-| Code Review | Multi-model consensus | Multiple Bifrost calls + PAL `consensus` | `mlx-local/mlx-community/Qwen3.5-27B-4bit` |
-| Architecture | Claude Opus | Claude Code (subscription) | `mlx-local/mlx-community/Qwen3-235B-A22B-4bit` |
-| Pre-commit | Claude Sonnet | Claude Code (subscription) | `mlx-local/mlx-community/Qwen3.5-35B-A3B-4bit` |
+Do not maintain a static task-to-model table. Select models dynamically:
 
-Default local model: `mlx-local/mlx-community/Qwen3.5-27B-4bit` (always loaded).
-Larger models are on-demand via `mlx-switch`. Run `listmodels` for available models and aliases.
+- **Start local when practical**: Use `$AI_MODEL_LOCAL` as the likely best local general-purpose LLM, then confirm it
+  appears in live discovery before passing it to a CLI/API.
+- **Use specialized models only after discovery**: For coding, review, research, long-context, or reasoning-heavy work,
+  list current models and choose the smallest capable option that fits the task.
+- **Escalate to cloud deliberately**: Use cloud routing when local models lack the needed context, tool support,
+  current-information access, or quality bar.
+- **Use consensus for high-risk decisions**: Prefer PAL `consensus` when independent model perspectives materially
+  reduce risk.
+- **Keep commands exact**: Pass the model identifier exactly as the target tool reports it. Some gateways expose local
+  models with gateway-specific prefixes; direct local servers may use different names.
 
-> **Bifrost prefix required**: This `mlx-local/` prefix is a Bifrost-only exception to the
-> general advice elsewhere not to add provider-style prefixes to local model names for
-> PAL/OpenRouter routing. PAL MCP's `custom_models.json` and `CUSTOM_MODEL_NAME` are
-> pre-configured with this prefix. Use bare `mlx-community/` names only when calling the
-> vllm-mlx server directly (port 11434).
+Run `listmodels` and refresh local model metadata after switching models so routing reflects the current machine state.
 
 ### Provider Gotchas
 
-- **Gemini thinking-model reasoning tokens.** **Set `max_tokens >= 100`** for
-  any Gemini thinking-model call via the OpenAI-compatible API. Reasoning
-  tokens count against the `max_tokens` budget before the answer is emitted —
-  with too small a limit, ~30 % of requests return `choices: null`. Budget
-  ~30 tokens for reasoning overhead plus expected answer length. Applies
-  to every OpenAI-compatible client (direct or through Bifrost).
+- **Reasoning tokens.** For thinking/reasoning-capable models behind an OpenAI-compatible API, set a response-token
+  budget large enough to cover hidden reasoning plus the visible answer. Too small a budget can produce empty choices.
 
 ## PAL MCP Tools
 
@@ -172,9 +168,9 @@ All other PAL tools have native Claude Code equivalents. See
 [nix-ai#450](https://github.com/JacobPEvans/nix-ai/issues/450) for the full audit matrix.
 For single-model calls, use Bifrost directly at `http://localhost:30080/v1/chat/completions`.
 
-**Local model names**: Use HuggingFace model IDs or PAL aliases.
-Never add provider-style prefixes like `custom/` or `ollama/` — PAL routes these as OpenRouter paths.
-Run `sync-mlx-models` after switching models, then restart Claude Code.
+**Local model names**: Use `$AI_MODEL_LOCAL` as the preferred general-purpose local default when set, or use the exact
+model ID or alias returned by live discovery. Never add provider-style prefixes unless the selected gateway reports
+that prefix as part of its accepted model ID. Run `sync-mlx-models` after switching models, then restart Claude Code.
 
 ## Priority Order
 
