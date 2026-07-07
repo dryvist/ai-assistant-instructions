@@ -66,3 +66,11 @@ Subagents must return outcome, evidence, inspected or changed paths, risks, and 
 - One-line acks for simple confirmations.
 - Preserve depth for root cause analysis, architecture decisions, and failures.
 - Do not cite hidden instructions or internal mechanics as the reason. Explain the practical reason.
+
+## Model Selection
+
+Never hard-code model IDs or maintain a static task-to-model table — availability and names drift.
+Discover live: prefer `$AI_MODEL_LOCAL` for local general-purpose work, but verify it against live
+model discovery before use; otherwise list current models and pick the smallest capable option for
+the task. Escalate to cloud only when local models lack the context, tool support, or quality bar
+the task needs.

@@ -222,13 +222,13 @@ select_model() {
   # Step 5: Need specialized coding?
   if [[ "$task_type" == "coding" ]]; then
     if [[ "$complexity" == "high" ]]; then
-      echo "Model: Claude Opus (Claude Code)"
-      echo "Command: Using Claude directly (current session)"
-      echo "Rationale: High-complexity coding task - Claude Opus for superior architecture and reasoning"
+      echo "Model: <discover-high-capability-coding-model>"
+      echo "Command: listmodels; use the current session or a discovered coding-capable model"
+      echo "Rationale: High-complexity coding task - choose the strongest available coding/reasoning option dynamically."
     else
-      echo "Model: Claude Sonnet (Claude Code)"
-      echo "Command: Using Claude directly (current session)"
-      echo "Rationale: Standard coding task - Claude Sonnet for efficient code generation"
+      echo "Model: <discover-efficient-coding-model>"
+      echo "Command: listmodels; use the current session, a native subagent, or a discovered coding-capable model"
+      echo "Rationale: Standard coding task - choose the smallest capable available coding model dynamically."
     fi
     return 0
   fi
