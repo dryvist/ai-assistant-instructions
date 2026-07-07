@@ -115,7 +115,7 @@ jobs:
     name: Markdown Lint
     needs: changes
     if: needs.changes.outputs.markdown == 'true'
-    uses: ./.github/workflows/_markdownlint.yml
+    uses: dryvist/.github/.github/workflows/_markdown-lint.yml@main
 
   token-limits:
     name: Token Limit Check
@@ -126,12 +126,13 @@ jobs:
       (needs.changes.outputs.claude-config == 'true' ||
        needs.changes.outputs.agentsmd == 'true' ||
        needs.changes.outputs.markdown == 'true')
-    uses: ./.github/workflows/_token-limits.yml
-    with:
-      caller_event: pull_request
-      base_ref: ${{ github.base_ref }}
-    secrets:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    uses: dryvist/.github/.github/workflows/_token-limits.yml@main
+
+  file-size:
+    name: File Size
+    needs: changes
+    if: needs.changes.outputs.markdown == 'true'
+    uses: dryvist/.github/.github/workflows/_file-size.yml@main
 
   validate-instructions:
     name: Instruction Validation
@@ -156,6 +157,7 @@ jobs:
       - validate-cclint
       - markdownlint
       - token-limits
+      - file-size
       - validate-instructions
       - yaml-lint
     if: ${{ !cancelled() }}
@@ -170,6 +172,7 @@ jobs:
             validate-cclint,
             markdownlint,
             token-limits,
+            file-size,
             validate-instructions,
             yaml-lint
           jobs: ${{ toJSON(needs) }}
