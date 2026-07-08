@@ -1,6 +1,7 @@
 ---
 name: technical-writing
 description: Prose style for docs, comments, commits, PRs, and messages — Google technical-writing style at an 8th-grade reading level.
+paths: ["**/*.md", "**/*.mdx", "**/*.rst", "docs/**"]
 ---
 
 # Technical writing
