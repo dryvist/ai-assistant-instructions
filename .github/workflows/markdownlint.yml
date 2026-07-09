@@ -1,11 +1,11 @@
-# Markdown Lint - Push to main wrapper
+# Markdown Lint - Push to main/develop wrapper
 # PRs are validated via ci-gate.yml
 
 name: Markdown Lint
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '**/*.md'
       - '.markdownlint-cli2.jsonc'

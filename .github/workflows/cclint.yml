@@ -1,11 +1,11 @@
-# Claude Code Lint - Push to main wrapper
+# Claude Code Lint - Push to main/develop wrapper
 # PRs are validated via ci-gate.yml
 
 name: Claude Code Lint
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '.claude/**'
       - 'agentsmd/**'

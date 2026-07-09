@@ -1,11 +1,11 @@
-# Schema Validation - Push to main wrapper
+# Schema Validation - Push to main/develop wrapper
 # PRs are validated via ci-gate.yml
 
 name: Schema Validation
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '.cclintrc.jsonc'
   workflow_dispatch:

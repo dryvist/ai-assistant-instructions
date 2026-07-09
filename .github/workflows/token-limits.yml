@@ -1,11 +1,11 @@
-# Token Limit Check - Push to main wrapper
+# Token Limit Check - Push to main/develop wrapper
 # PRs are validated via ci-gate.yml
 
 name: Token Limit Check
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '.claude/**'
       - 'agentsmd/**'
