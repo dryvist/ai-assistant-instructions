@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.20.0...v1.21.0) (2026-07-09)
+
+
+### Features
+
+* **rules:** git-flow branching model + universal SHA pinning ([#724](https://github.com/dryvist/ai-assistant-instructions/issues/724)) ([7e3c916](https://github.com/dryvist/ai-assistant-instructions/commit/7e3c916ee90e2cabd01957f3a33e3ddf24bb87ed))
+
 ## [1.20.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.19.0...v1.20.0) (2026-07-04)
 
 
