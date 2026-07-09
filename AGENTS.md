@@ -10,7 +10,6 @@
 - Define verifiable success criteria, use the narrowest proof, and report exactly what passed or failed.
 
 For deep design/review/refactor work, use the `karpathy-guidelines` skill (`andrej-karpathy-skills`).
-Plugins, commands, skills, agents, hooks: [JacobPEvans/claude-code-plugins](https://github.com/JacobPEvans/claude-code-plugins).
 
 ## No Scripts
 
