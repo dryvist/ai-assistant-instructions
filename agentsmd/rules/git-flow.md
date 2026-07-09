@@ -12,7 +12,8 @@ CLI is installed and configured globally (nix-managed `gitflow.*` git config).
 ## Detect adoption first
 
 Before any branch, PR, or release work, detect the repo's remote default
-branch (`gh repo view --json defaultBranchRef` or `git remote show origin`).
+branch (`gh repo view --json defaultBranchRef --jq .defaultBranchRef.name`
+or `git remote show origin`).
 
 - Default branch `develop` → the repo is on git-flow; follow this file.
 - Default branch `main` → trunk flow; keep the existing squash-to-main
@@ -42,10 +43,11 @@ work lands.
 ## Working a change
 
 1. Create or switch to a fresh worktree based on `origin/develop`.
-2. Start the feature branch there: `git flow feature start <name>`. When a
-   GitHub issue exists, include its number: `feature/123-fix-inventory-loader`.
-   Never invent an issue number; for issue-less maintenance use a short
-   descriptive slug.
+2. Start the feature branch there: `git flow feature start <name>` — pass the
+   name WITHOUT the `feature/` prefix (the tool prepends it; passing it twice
+   yields `feature/feature/…`). When a GitHub issue exists, include its number
+   in the name: `git flow feature start 123-fix-inventory-loader`. Never invent
+   an issue number; for issue-less maintenance use a short descriptive slug.
 3. Commit **atomically**: one fix, one feature, or one coherent section of
    updates per commit — never a grab-bag. Follow Conventional Commits.
    Reference the issue (`#123`) in the commit or PR; use closing keywords
@@ -54,9 +56,9 @@ work lands.
    merge commit into `develop` only when preserving multiple atomic commits
    matters: stacked work, coordinated multi-commit changes, and release or
    hotfix back-merges.
-5. Hotfix exception to PR targeting: `hotfix/*` branches from `main` and its
-   PR targets `main` (merge commit, never squash); immediately back-merge
-   `main` into `develop` afterward.
+5. Hotfix exception to PR targeting: a `hotfix/*` branch starts from `main`
+   and its PR targets `main` (merge commit, never squash); immediately
+   back-merge `main` into `develop` afterward.
 6. Small direct commits to `develop` are permitted, but prefer a PR for
    anything reviewable.
 
