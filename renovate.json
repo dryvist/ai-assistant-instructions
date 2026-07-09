@@ -1,13 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
     "local>dryvist/.github"
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^AGENTS\\.md$"],
+      "managerFilePatterns": ["/^AGENTS\\.md$/"],
       "matchStrings": ["blob/(?<currentDigest>[a-f0-9]{40})/CLAUDE\\.md"],
       "datasourceTemplate": "git-refs",
       "packageNameTemplate": "https://github.com/forrestchang/andrej-karpathy-skills",
