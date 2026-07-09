@@ -20,6 +20,14 @@ See [docs.jacobpevans.com/conventions/no-scripts](https://docs.jacobpevans.com/c
 
 Run `/refresh-repo`, then start the change in a new worktree.
 
+## Git workflow
+
+Detect the remote default branch before any branch, PR, or release work. If it is `develop`, the
+repo is on git-flow — follow [git-flow](agentsmd/rules/git-flow.md) (git-flow-next): PRs target
+`develop` (squash-merge), `develop` → `main` promotes by merge commit only, every merge to `main`
+releases. If it is `main`, keep the existing trunk flow. Either way, always make **atomic
+commits** — one fix, one feature, or one coherent section of updates per commit.
+
 ## Knowledge base
 
 Documentation follows [Open Knowledge Format](agentsmd/rules/okf.md). Search relevant OKF concepts before editing;
