@@ -40,6 +40,16 @@ PR-creation cadence, never minor/patch.**
   under the separate **AI Merge Gate**. The two gates are always distinct and both required.
 - **Prefer native Renovate capability over custom scripts/workflows** — debug the config.
 - **`platformAutomerge` stays false** (GitHub's merge-queue stalls; Renovate merges via API).
-- Trusted GitHub Actions use semver tags; untrusted are SHA-pinned; `dryvist/*` self-refs ride `@main`.
+- **Pin all third-party GitHub Actions (and other pinnable third-party refs) to a full commit
+  SHA** — Renovate bumps SHAs by default, so tags add risk without saving work. Every SHA pin
+  carries: (1) the exact released version tag as a trailing comment
+  (`uses: actions/checkout@<sha> # v4.2.2`) — always; if the project publishes no immutable
+  version tag, do not invent one — pick an action that has release tags, or record an explicit
+  exception; (2) an explicit Renovate tag when Renovate cannot infer the pin from context
+  (non-`uses:` pins) — e.g. `# renovate: datasource=github-tags depName=owner/repo
+  versioning=semver`. First-party `dryvist/*` self-refs are the exception and ride `@main`.
+  Older guidance allowing semver tags for "trusted" actions is retired — delete it on sight.
+- **Renovate PRs target the repo's default branch.** On git-flow repos that is `develop`
+  (see the `git-flow` rule); never add a repo-level `baseBranches` forcing `main`.
 - When you touch trust tiers, auto-merge, or schedules, update `dryvist/.github` `SECURITY.md`
   AND the canonical docs page in the same change — they must not drift.
