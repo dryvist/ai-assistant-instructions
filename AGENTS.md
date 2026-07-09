@@ -22,11 +22,9 @@ Run `/refresh-repo`, then start the change in a new worktree.
 
 ## Git workflow
 
-Detect the remote default branch before any branch, PR, or release work. If it is `develop`, the
-repo is on git-flow — follow [git-flow](agentsmd/rules/git-flow.md) (git-flow-next): PRs target
-`develop` (squash-merge), `develop` → `main` promotes by merge commit only, every merge to `main`
-releases. If it is `main`, keep the existing trunk flow. Either way, always make **atomic
-commits** — one fix, one feature, or one coherent section of updates per commit.
+If the default branch is `develop`, follow [git-flow](agentsmd/rules/git-flow.md): PRs target
+`develop` (squash-merge), `develop` → `main` by merge commit only. If `main`, use trunk flow.
+Always make **atomic commits** — one fix, one feature, or one coherent section per commit.
 
 ## Knowledge base
 
@@ -47,13 +45,13 @@ These repos own the layer; know which one owns the change before editing.
 - Slash commands, skills, agents, hooks: [`JacobPEvans/claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
 - Public docs site: [`JacobPEvans/docs`](https://github.com/JacobPEvans/docs)
 
-If a change in one repo affects the public picture, mirror the relevant slice into `JacobPEvans/docs` in the same session:
+If a change affects the public picture, mirror into `JacobPEvans/docs` the same session:
 
-- Plugin added, removed, or scope shifted -> update `docs/ai-development/claude-code-plugins.mdx` and `docs/docs.json`.
-- New user-facing rule under `agentsmd/rules/` -> mention it in `docs/ai-development/ai-assistant-instructions.mdx`.
-- Diagram edits -> keep inline mermaid and any `docs/assets/*.mmd` sources in lockstep.
-- One PR per repo; cross-link via `Refs: JacobPEvans/<repo>#N` in the PR body.
-- Per-repo docs stay local. Private or user-only content never goes in `JacobPEvans/docs`.
+- Plugin changes → `docs/ai-development/claude-code-plugins.mdx` + `docs/docs.json`.
+- New `agentsmd/rules/` rule → `docs/ai-development/ai-assistant-instructions.mdx`.
+- Diagram edits → sync inline mermaid and `docs/assets/*.mmd`.
+- One PR per repo; cross-link via `Refs: JacobPEvans/<repo>#N`.
+- Per-repo docs stay local; no private content in `JacobPEvans/docs`.
 
 Docs are descriptive; directives stay in `AGENTS.md`.
 
@@ -77,8 +75,6 @@ Subagents must return outcome, evidence, inspected or changed paths, risks, and 
 
 ## Model Selection
 
-Never hard-code model IDs or maintain a static task-to-model table — availability and names drift.
-Discover live: prefer `$AI_MODEL_LOCAL` for local general-purpose work, but verify it against live
-model discovery before use; otherwise list current models and pick the smallest capable option for
-the task. Escalate to cloud only when local models lack the context, tool support, or quality bar
-the task needs.
+Never hard-code model IDs — availability drifts. Prefer `$AI_MODEL_LOCAL` for local work (verify
+against live discovery); otherwise pick the smallest capable model. Escalate to cloud only when
+local models lack the context, tool support, or quality the task needs.
