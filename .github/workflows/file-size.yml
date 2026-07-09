@@ -1,11 +1,11 @@
-# File Size Check - Push to main wrapper
+# File Size Check - Push to main/develop wrapper
 # PRs are validated via ci-gate.yml
 
 name: File Size
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '**/*.md'
       - '**/*.nix'

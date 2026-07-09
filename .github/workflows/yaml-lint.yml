@@ -1,11 +1,11 @@
-# YAML Lint - Push to main wrapper
+# YAML Lint - Push to main/develop wrapper
 # PRs are validated via ci-gate.yml
 
 name: YAML Lint
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - '**/*.yml'
       - '**/*.yaml'

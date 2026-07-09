@@ -1,11 +1,11 @@
-# Instruction Validation - Push to main wrapper
+# Instruction Validation - Push to main/develop wrapper
 # PRs are validated via ci-gate.yml
 
 name: Instruction Validation
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - 'agentsmd/**'
 
