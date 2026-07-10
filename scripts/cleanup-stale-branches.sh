@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # cleanup-stale-branches.sh - Safely identify and delete merged branches
 #
-# This script identifies feature and fix branches that have been merged into main
-# and are safe to delete. It excludes branches with active open PRs.
+# This script identifies feature and fix branches that have been merged into the
+# repo's default branch and are safe to delete. It excludes branches with active
+# open PRs. The default branch is main on trunk repos, develop on git-flow repos.
 #
 # Usage: cleanup-stale-branches.sh [options]
 #   --local-only       (flag - only delete local branches, not remote)
@@ -22,6 +23,10 @@ LOCAL_ONLY=false
 REMOTE_ONLY=false
 APPLY_CHANGES=false
 EXCLUDED_BRANCHES="main,master,develop"
+
+# Resolve the repo's default branch (main on trunk repos, develop on git-flow).
+DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | sed -n 's/.*HEAD branch: //p')
+DEFAULT_BRANCH=${DEFAULT_BRANCH:-main}
 
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do
@@ -93,7 +98,7 @@ has_open_pr() {
 
 # Function to get merged local branches
 get_merged_local_branches() {
-  git branch --merged main --format='%(refname:short)' | while read -r branch; do
+  git branch --merged "origin/$DEFAULT_BRANCH" --format='%(refname:short)' | while read -r branch; do
     if ! is_excluded "$branch"; then
       echo "$branch"
     fi
@@ -102,12 +107,12 @@ get_merged_local_branches() {
 
 # Function to get merged remote branches
 get_merged_remote_branches() {
-  # Get all remote branches that have been merged to main
-  # Filter out origin/HEAD and main branch
-  git branch --remotes --merged main --format='%(refname:short)' | \
+  # Get all remote branches that have been merged to the default branch
+  # Filter out origin/HEAD and the default branch itself
+  git branch --remotes --merged "origin/$DEFAULT_BRANCH" --format='%(refname:short)' | \
     grep "origin/" | \
     grep -v "origin/HEAD" | \
-    grep -v "origin/main" | \
+    grep -v "origin/$DEFAULT_BRANCH" | \
     sed 's|origin/||' | \
     while read -r branch; do
       if ! is_excluded "$branch"; then
