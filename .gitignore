@@ -13,3 +13,6 @@ result
 *credentials*
 *.jsonl
 *.local.*
+
+# In-repo worktrees (see agentsmd/rules/git-flow.md "Working a change")
+.worktrees/

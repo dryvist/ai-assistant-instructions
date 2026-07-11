@@ -42,7 +42,11 @@ work lands.
 
 ## Working a change
 
-1. Create or switch to a fresh worktree based on `origin/develop`.
+1. Create or switch to a fresh worktree based on `origin/develop`. Place it at
+   `./.worktrees/<name>/` inside the repo (create `.worktrees/` if absent; keep
+   it gitignored). The repo root checkout always stays on the default branch
+   (`develop`, or `main` on trunk repos) — never check a feature branch out at
+   the root.
 2. Start the feature branch there: `git flow feature start <name>` — pass the
    name WITHOUT the `feature/` prefix (the tool prepends it; passing it twice
    yields `feature/feature/…`). When a GitHub issue exists, include its number
