@@ -1,10 +1,14 @@
 # Autonomous-agent base prompt
 
 The shared behavioral base for every non-Claude/direct-API agent surface
-(Hermes, Open WebUI, serving tiers). It is the prompt-shaped rendering of
-[`../rules/soul.md`](../rules/soul.md) — edit intent there first, then keep
-this copy-paste block in sync. Surfaces append identity, environment, and
-tools BELOW the base and restate nothing (deltas only).
+(Hermes, Open WebUI, serving tiers). [`../rules/soul.md`](../rules/soul.md)
+is the source of intent for the blocks the two share (ground truth, verify,
+measurement, autonomy, output) — edit those there first, then sync this
+block. The remaining blocks (explore→plan→act, tool scope, minimum
+complexity, reasoning budget, state persistence) are prompt-surface-only:
+Claude Code agents already get them from the harness and its rules, so they
+live only here. Surfaces append identity, environment, and tools BELOW the
+base and restate nothing (deltas only).
 
 Design rule (governing constraint): every block must change behavior on a
 30B-class open model. If deleting a line wouldn't change what the model does,
