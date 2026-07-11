@@ -28,7 +28,7 @@ not the improvisation.
 ## Snippet (bash, reusable)
 
 ```bash
-MARKER="${STATE_DIR}/last-fire"          # durable, per-loop
+MARKER="$STATE_DIR/last-fire"            # durable, per-loop
 MIN_INTERVAL=300                          # seconds — match the system's cadence
 now=$(date +%s); last=$(cat "$MARKER" 2>/dev/null || echo 0)
 (( now - last < MIN_INTERVAL )) && exit 0  # re-fire storms no-op here
@@ -37,7 +37,8 @@ printf '%s\n' "$now" > "$MARKER"           # only after the work succeeded
 ```
 
 The same shape applies in any language: read marker → compare → work →
-write marker.
+write marker. `exit 0` fits the one-tick-per-invocation shape (systemd/launchd
+timers); inside a persistent in-process loop, `continue` past the body instead.
 
 ## Why
 
