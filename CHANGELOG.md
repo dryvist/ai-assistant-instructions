@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.22.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.22.0...v1.22.1) (2026-07-12)
+
+
+### Bug Fixes
+
+* **rules:** anchor worktree placement to repo root, not cwd ([5bed878](https://github.com/dryvist/ai-assistant-instructions/commit/5bed8785cf1a8f3a6a0f12e681309d5b9f574f18))
+* **rules:** use a worktree-stable anchor for the worktree-add example ([343bcee](https://github.com/dryvist/ai-assistant-instructions/commit/343bcee2ceda948716cdd29580db4d51d105fd62))
+
 ## [1.22.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.21.0...v1.22.0) (2026-07-12)
 
 
