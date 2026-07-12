@@ -46,9 +46,12 @@ work lands.
    the repo's top level as `.worktrees/<name>/` — beside the primary checkout,
    never nested inside it. Pass `git worktree add` an **absolute** destination
    path so the current directory cannot change where it lands, e.g.
-   `git worktree add /abs/path/to/<repo>/.worktrees/<name> origin/develop`. A
-   relative `.worktrees/<name>` resolves against your cwd — from inside the
+   `git worktree add "$(dirname "$(git rev-parse --git-common-dir)")/.worktrees/<name>" origin/develop`.
+   A relative `.worktrees/<name>` resolves against your cwd — from inside the
    `main/` checkout it nests as `main/.worktrees/<name>`, which is wrong.
+   `git rev-parse --show-toplevel` does not fix this: run from inside `main/`
+   it returns `main/`'s own root, not the outer repo root — `--git-common-dir`
+   is the anchor that stays stable across every worktree.
    Create `.worktrees/` if absent; keep it gitignored. The repo root checkout
    always stays on the default branch (`develop`, or `main` on trunk repos) —
    never check a feature branch out at the root.
