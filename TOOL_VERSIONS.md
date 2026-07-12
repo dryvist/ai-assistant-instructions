@@ -61,15 +61,6 @@ For markdown linting validation.
 - **Alternative**: `npm install -g markdownlint-cli2`
 - **Verify**: `markdownlint-cli2 --version`
 
-### shellcheck
-
-For shell script validation.
-
-- **Minimum version**: 0.8.0
-- **Nix package**: [`shellcheck`](https://search.nixos.org/packages?query=shellcheck)
-- **Alternative**: `brew install shellcheck`
-- **Verify**: `shellcheck --version`
-
 ### yamllint
 
 For YAML validation.
