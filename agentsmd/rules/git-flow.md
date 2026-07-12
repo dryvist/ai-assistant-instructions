@@ -43,10 +43,15 @@ work lands.
 ## Working a change
 
 1. Create or switch to a fresh worktree based on `origin/develop`. Place it at
-   `./.worktrees/<name>/` inside the repo (create `.worktrees/` if absent; keep
-   it gitignored). The repo root checkout always stays on the default branch
-   (`develop`, or `main` on trunk repos) — never check a feature branch out at
-   the root.
+   the repo's top level as `.worktrees/<name>/` — beside the primary checkout,
+   never nested inside it. Pass `git worktree add` an **absolute** destination
+   path so the current directory cannot change where it lands, e.g.
+   `git worktree add /abs/path/to/<repo>/.worktrees/<name> origin/develop`. A
+   relative `.worktrees/<name>` resolves against your cwd — from inside the
+   `main/` checkout it nests as `main/.worktrees/<name>`, which is wrong.
+   Create `.worktrees/` if absent; keep it gitignored. The repo root checkout
+   always stays on the default branch (`develop`, or `main` on trunk repos) —
+   never check a feature branch out at the root.
 2. Start the feature branch there: `git flow feature start <name>` — pass the
    name WITHOUT the `feature/` prefix (the tool prepends it; passing it twice
    yields `feature/feature/…`). When a GitHub issue exists, include its number
