@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.22.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.21.0...v1.22.0) (2026-07-12)
+
+
+### Features
+
+* **rules:** delegation-trust — denials bind to actions, not requesters ([#733](https://github.com/dryvist/ai-assistant-instructions/issues/733)) ([2fd68bb](https://github.com/dryvist/ai-assistant-instructions/commit/2fd68bb7671cad690697da3dbc26991755679db3))
+* **rules:** loop-cadence — min-interval marker gate for every recurring loop ([#732](https://github.com/dryvist/ai-assistant-instructions/issues/732)) ([45717f9](https://github.com/dryvist/ai-assistant-instructions/commit/45717f92619c34c33b013c85a78b578822987471))
+* **rules:** subagent-resilience — probe before fan-out, bound concurrency, solo fallback ([#731](https://github.com/dryvist/ai-assistant-instructions/issues/731)) ([f515bee](https://github.com/dryvist/ai-assistant-instructions/commit/f515bee110261f426a6395870502677846889696))
+* **soul:** expand into the shared behavioral base + autonomous base prompt ([#735](https://github.com/dryvist/ai-assistant-instructions/issues/735)) ([ae35670](https://github.com/dryvist/ai-assistant-instructions/commit/ae356702626cae9257a691f3d819878d618fa9d0))
+
+
+### Bug Fixes
+
+* **ci:** recompile ci-doctor lock to trigger on develop ([#729](https://github.com/dryvist/ai-assistant-instructions/issues/729)) ([d81fde0](https://github.com/dryvist/ai-assistant-instructions/commit/d81fde0f4dd9a244873b02fbe83d688ec57c4ec4)), closes [#727](https://github.com/dryvist/ai-assistant-instructions/issues/727)
+* **scripts:** resolve default branch in cleanup-stale-branches ([#728](https://github.com/dryvist/ai-assistant-instructions/issues/728)) ([91eb60b](https://github.com/dryvist/ai-assistant-instructions/commit/91eb60b26b677d810058af0405a0a0b6a1785cc5)), closes [#381](https://github.com/dryvist/ai-assistant-instructions/issues/381)
+
 ## [1.21.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.20.0...v1.21.0) (2026-07-09)
 
 
