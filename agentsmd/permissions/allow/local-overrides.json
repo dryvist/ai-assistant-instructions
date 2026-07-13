@@ -137,8 +137,7 @@
     "uv venv *",
     "wdutil info *",
     "wg *",
-    "wg-quick *",
-    "which shellcheck *"
+    "wg-quick *"
   ],
   "_domains": [
     "claudecodecommands.directory",
@@ -385,7 +384,6 @@
     "gh issue list": "git/public/.github-jacobpevans/.claude/settings.local.json",
     "/Users/jevans/git/.github/fix/simplify-renovate-regex/**": "git/public/.github-jacobpevans/main/.claude/settings.local.json",
     "./scripts/check-no-runner-git-commit.sh ~/git/JacobPEvans/main/.github/workflows/snake.yml ~/git/JacobPEvans/main/.github/workflows/3d-contrib.yml": "git/.claude/settings.local.json",
-    "which shellcheck *": "git/dryvist-private/nix-screenpipe/main/.claude/settings.local.json",
     "/Users/jevans/git/public/claude-code-plugins/feat/wrap-up-resume-mode/scripts/**": "git/public/claude-code-plugins/main/.claude/settings.local.json",
     "mkdir -p /Users/jevans/git/claude-code-plugins/feat/add-categories-metadata/.claude-plugin/categories": "git/public/claude-code-plugins/main/.claude/settings.local.json",
     "/Users/jevans/git/dryvist-private/nix-screenpipe/chore/metrics-v2.4.234/**": "git/dryvist-private/nix-screenpipe/main/.claude/settings.local.json",
