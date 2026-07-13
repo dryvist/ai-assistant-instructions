@@ -54,7 +54,7 @@ Example prompt patterns:
 - `Analyze this repo, summarize the workflow contracts, then tell me the safest first edit.`
 - `Implement the smallest change in this worktree, then run the repo's documented validation.`
 - `Review this diff for bugs, regressions, and missing tests.`
-- `For this Terraform repo, use the documented aws-vault + doppler + terragrunt wrapper exactly.`
+- `For this OpenTofu repo, use its documented Terrakube workspace and native OpenBao credential flow exactly.`
 - `If repo docs conflict with your assumptions, trust the repo docs and call out the mismatch.`
 
 ## What To Port Next
