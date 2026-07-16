@@ -14,5 +14,5 @@ result
 *.jsonl
 *.local.*
 
-# In-repo worktrees (see agentsmd/rules/git-flow.md "Working a change")
+# In-repo worktrees (see agentsmd/rules/on-demand/git-flow.md "Working a change")
 .worktrees/
