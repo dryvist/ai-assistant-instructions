@@ -114,7 +114,7 @@ The documentation covers:
 
 - **Code Standards** - Consistency across languages
 - **Documentation Standards** - AI-friendly markdown
-- **Infrastructure Standards** - Terraform/Terragrunt patterns
+- **Infrastructure Standards** - OpenTofu, Terrakube, and OpenBao patterns
 - **DRY Principle** - Why everything symlinks to one place
 - **Memory Bank** - Maintaining AI context across sessions
 - **Remote Commit Workflow** - Making commits via GitHub API without local clone

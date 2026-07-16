@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.22.1...v1.23.0) (2026-07-16)
+
+
+### Features
+
+* **instructions:** tiered rule stack, versioned prompt variants, promptstack gate ([#745](https://github.com/dryvist/ai-assistant-instructions/issues/745)) ([ab3176a](https://github.com/dryvist/ai-assistant-instructions/commit/ab3176a3d3283a2bda8065c13d6634b6212ec533))
+
 ## [1.22.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.22.0...v1.22.1) (2026-07-12)
 
 
