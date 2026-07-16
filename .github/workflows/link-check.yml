@@ -26,7 +26,7 @@ jobs:
           exit 1
 
       - name: Check links in regular files
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2
         with:
           args: >-
             --verbose

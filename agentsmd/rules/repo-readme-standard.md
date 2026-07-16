@@ -1,6 +1,7 @@
 ---
 name: repo-readme-standard
 description: Every repo README is standalone (no cross-repo narrative); one footer link to the docs hub, routed by visibility. Canonical spec on the docs site.
+paths: ["**/README*.md", "**/README*.mdx"]
 ---
 
 # Repo README standard

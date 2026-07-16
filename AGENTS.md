@@ -21,9 +21,11 @@ Run `/refresh-repo`, then start the change in a new worktree.
 
 ## Git workflow
 
-If the default branch is `develop`, follow [git-flow](agentsmd/rules/git-flow.md): PRs target
+If the default branch is `develop`, follow [git-flow](agentsmd/rules/on-demand/git-flow.md): PRs target
 `develop` (squash-merge), `develop` → `main` by merge commit only. If `main`, use trunk flow.
 Always make **atomic commits** — one fix, one feature, or one coherent section per commit.
+
+Rules under `agentsmd/rules/on-demand/` are not auto-loaded — read them when you begin that activity (`soul.md` carries the index).
 
 ## Knowledge base
 
