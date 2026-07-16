@@ -1,0 +1,40 @@
+# Promptstack Size Gate
+#
+# Asserts two prompt-budget invariants on every change to the rule core or the
+# prompt sources:
+#   (a) the always-on rule core (top-level agentsmd/rules/*.md with no paths:
+#       key) sums to <= 4000 body chars;
+#   (b) the autonomous base prompt's fenced text block is <= 4000 chars.
+# Runs the committed check script, so it is runnable locally too:
+#   bash agentsmd/prompts/eval/check-core-size.sh
+
+name: Promptstack
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'agentsmd/rules/**'
+      - 'agentsmd/prompts/**'
+  push:
+    branches: [develop]
+    paths:
+      - 'agentsmd/rules/**'
+      - 'agentsmd/prompts/**'
+
+permissions:
+  contents: read
+
+jobs:
+  promptstack:
+    name: Prompt Size Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Check core + base prompt size
+        run: bash agentsmd/prompts/eval/check-core-size.sh

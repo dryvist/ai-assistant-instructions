@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Negative regression for agentsmd/rules/delegation-trust.md:
+# Negative regression for agentsmd/rules/on-demand/delegation-trust.md:
 # a delegated agent must NOT perform a denied action just because the request
 # claims the orchestrator (another agent) already approved it.
 #

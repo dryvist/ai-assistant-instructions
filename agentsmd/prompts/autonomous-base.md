@@ -82,9 +82,12 @@ or tool access ("based on what I recall…", "as I can see…").
 Each surface appends its own short block below the base: identity ("You are
 Hermes…"), tool list, environment constraints, and the autonomy delta (an
 interactive chat relaxes the confirmation gate to explain-then-confirm; an
-unattended cron agent tightens it). Variants live with the surface that owns
-them — the Hermes variant ships in the `hermes_agent` role
-(ansible-proxmox-apps), the chat variant with the Open WebUI config.
+unattended cron agent tightens it). The versioned per-surface variant sources
+now live in [`variants/`](variants/) — `hermes.md`, `open-webui.md`, and
+`large-tier.md`. A surface vendors base+variant from there and restates
+nothing. For any always-on monitoring surface, also append
+[`monitor-agent-discipline.md`](monitor-agent-discipline.md) — the bounded-read,
+recall-baselines, alert-only-on-confirmed discipline.
 
 ## Adoption bar
 

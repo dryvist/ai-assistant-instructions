@@ -1,6 +1,7 @@
 ---
 name: shell-conventions
 description: Shell variable naming and bracing conventions — bare $VAR, name intermediates after source or destination only.
+paths: ["**/*.sh", "**/*.bash", "**/*.zsh", "**/.zshrc", "**/.envrc"]
 ---
 
 # Shell Conventions
