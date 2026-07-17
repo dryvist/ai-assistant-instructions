@@ -86,14 +86,21 @@ Lock record, one KV entry per resource at `secret/locks/<domain>/<resource>`:
 }
 ```
 
-- **Acquire** = create-if-absent: `bao kv put -cas=0 secret/locks/<d>/<r> ...`.
-  A CAS failure means someone holds it — read the record, report holder and
-  expiry, back off with jitter or pick other work. Never busy-wait.
+- **Acquire.** First-ever use of a path = create-if-absent:
+  `bao kv put -cas=0 secret/locks/<d>/<r> ...`. Once a lock record exists,
+  KV-v2 metadata persists across releases, so `cas=0` fails forever after —
+  acquire a released or expired lock by reading the record, verifying it is
+  released or past `expires_at`, then writing with `-cas=<latest-version>`.
+  A CAS failure means someone holds it (or beat you to it) — read the
+  record, report holder and expiry, back off with jitter or pick other
+  work. Never busy-wait.
 - **Renew** (holder only) = `-cas=<current-version>` with a later
   `expires_at`. Renew before expiry for long work; a session that cannot
   renew has lost the lock and MUST stop the protected work.
 - **Release** (holder only) = `-cas=<current-version>` writing
-  `{"released": true}` (or delete the version). Always release on clean exit.
+  `{"released": true}`. Never delete the version — a deleted version reads
+  back as 404, hiding the version number the next acquirer's CAS write
+  needs. Always release on clean exit.
 - **Steal** — only when `expires_at` is in the past (allow ≥60s clock-skew
   margin): re-read, then write with `-cas=<version-you-read>` and
   `fence: <old fence + 1>`. **Never delete metadata to steal** — a metadata
