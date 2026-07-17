@@ -74,6 +74,7 @@ are **not** auto-loaded — read the file under `agentsmd/rules/on-demand/` when
 you begin that activity:
 
 - Git branch / PR / release → `git-flow.md` (feature/* off develop, squash to develop, merge-commit only to main).
+- Starting work / claiming / locking shared resources → `session-coordination.md` (session identity, claim-before-work, expiring per-resource locks with fencing).
 - Spawning subagents → `subagent-resilience.md` (probe first, bound concurrency, solo fallback).
 - Recurring / heartbeat loop → `loop-cadence.md` (min-interval gate + durable marker).
 - Delegating, or after a denial → `delegation-trust.md` (the full no-laundering contract).
