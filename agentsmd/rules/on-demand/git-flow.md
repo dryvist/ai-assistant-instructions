@@ -57,9 +57,14 @@ work lands.
    never check a feature branch out at the root.
 2. Start the feature branch there: `git flow feature start <name>` — pass the
    name WITHOUT the `feature/` prefix (the tool prepends it; passing it twice
-   yields `feature/feature/…`). When a GitHub issue exists, include its number
-   in the name: `git flow feature start 123-fix-inventory-loader`. Never invent
-   an issue number; for issue-less maintenance use a short descriptive slug.
+   yields `feature/feature/…`). Branch names carry the session id (see the
+   session-coordination rule): `<issue>-<sid8>-<slug>`, e.g.
+   `git flow feature start 123-03a3a401-fix-inventory-loader`, and the
+   worktree dir matches the name. This makes branch and worktree names unique
+   per session — two sessions can never collide on either. Never invent an
+   issue number; for issue-less maintenance drop that segment
+   (`<sid8>-<slug>`). **One session, one branch**: never commit to or push
+   another session's branch.
 3. Commit **atomically**: one fix, one feature, or one coherent section of
    updates per commit — never a grab-bag. Follow Conventional Commits.
    Reference the issue (`#123`) in the commit or PR; use closing keywords
@@ -73,6 +78,15 @@ work lands.
    back-merge `main` into `develop` afterward.
 6. Small direct commits to `develop` are permitted, but prefer a PR for
    anything reviewable.
+
+## Bot-owned files in rebases and merges
+
+release-please owns `CHANGELOG.md` and its manifest files. When a rebase or
+merge onto `develop` conflicts on a bot-owned file, always take the incoming
+`develop` side (`git checkout --theirs <file>` during rebase) — never
+hand-merge bot content, and never add a `merge=ours` gitattribute for it
+(that silently discards release history). Squash your own commits into one
+before rebasing across bot commits to cut the conflict surface.
 
 ## CI and automation on git-flow repos
 
