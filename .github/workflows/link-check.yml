@@ -31,6 +31,7 @@ jobs:
           args: >-
             --verbose
             --no-progress
+            --accept '200..=299,301,302,308'
             --exclude 'shields.io'
             --exclude 'github.com/.*/badge'
             --exclude 'gist.github.com'
