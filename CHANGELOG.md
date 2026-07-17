@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.24.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.23.0...v1.24.0) (2026-07-17)
+
+
+### Features
+
+* **rules:** add session-coordination protocol rule ([#750](https://github.com/dryvist/ai-assistant-instructions/issues/750)) ([c80171c](https://github.com/dryvist/ai-assistant-instructions/commit/c80171c91d19c01d50f53d3e50ca875895274720)), closes [#749](https://github.com/dryvist/ai-assistant-instructions/issues/749)
+
+
+### Bug Fixes
+
+* **rules:** KV-v2 lock acquire semantics for existing keys ([#749](https://github.com/dryvist/ai-assistant-instructions/issues/749)) ([#751](https://github.com/dryvist/ai-assistant-instructions/issues/751)) ([44844cd](https://github.com/dryvist/ai-assistant-instructions/commit/44844cd17dc4bee622e4f8abbf6bd0e318c721b2))
+
 ## [1.23.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.22.1...v1.23.0) (2026-07-16)
 
 
