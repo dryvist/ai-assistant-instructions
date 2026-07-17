@@ -25,7 +25,7 @@ or `git remote show origin`).
 | Branch | Role | Gets changes by |
 | --- | --- | --- |
 | `main` | Production. Protected; no direct pushes. | **Merge commits only** — squash and rebase into `main` are banned, with no exceptions |
-| `develop` | Default integration branch. Protected but direct pushes allowed. | Squash-merged PRs (the default); merge commits where noted below |
+| `develop` | Default integration branch. Protected; no direct pushes. | Squash-merged PRs (the default); merge commits where noted below |
 | `feature/*` | One change's work | Branched from fresh `develop` |
 | `release/*` | Optional final stabilization | Branched from `develop`; merge-committed to `main`; back-merged to `develop` |
 | `hotfix/*` | Urgent production fix | Branched from `main`; PR to `main`, merge commit; back-merged to `develop` |
@@ -39,6 +39,28 @@ Normal promotion is a merge-commit PR from `develop` to `main`. Use
 `release/*` only when final stabilization needs its own branch; then
 merge-commit it to `main` and back-merge to `develop` before more feature
 work lands.
+
+### Promotion is not done at the merge
+
+Merging the promotion PR is step one of three. A promotion to `main` is
+complete only when:
+
+1. **The merge lands** (merge commit; release-please takes over versioning).
+2. **The deployment file moves.** Any consumer that pins this repo (a flake
+   input in another repo's `flake.lock`, an inventory pin, a version file)
+   must pick up the promoted rev on the consumer's own **deploy branch** —
+   not just its default branch. Where a dispatch workflow automates the bump
+   (e.g. `dispatch-flake-consumers`), verify it fired AND the resulting
+   consumer PR merged; if the consumer is itself git-flow, its own
+   develop→main promotion is part of this chain.
+3. **A full e2e deployment validates the promotion.** Deploy from the
+   consumer's deploy branch (e.g. `darwin-rebuild switch`, converge, apply)
+   and verify the promoted change actually works in production shape. A
+   promotion nobody deployed is unvalidated — sessions must not treat
+   `main` as good until this has happened.
+
+Report a promotion as complete only with all three done, and say what the
+e2e deployment was and what it verified.
 
 ## Working a change
 
@@ -76,8 +98,13 @@ work lands.
 5. Hotfix exception to PR targeting: a `hotfix/*` branch starts from `main`
    and its PR targets `main` (merge commit, never squash); immediately
    back-merge `main` into `develop` afterward.
-6. Small direct commits to `develop` are permitted, but prefer a PR for
-   anything reviewable.
+6. **Every change to `develop` goes through a PR** — the org ruleset enforces
+   it, so a direct push is rejected (`GH013: Repository rule violations`).
+   Never plan a "quick direct commit" to `develop`; branch and open a PR.
+7. **Merging**: `gh pr merge <n> --squash` is rejected with "the base branch
+   policy prohibits the merge" while required checks are still settling. Use
+   `gh pr merge <n> --squash --auto` — it merges as soon as the policy is
+   satisfied. The same applies to `--merge` on promotion PRs.
 
 ## Bot-owned files in rebases and merges
 
@@ -100,8 +127,9 @@ before rebasing across bot commits to cut the conflict surface.
 
 - `git flow feature start <name>` / `git flow release start <version>` /
   `git flow hotfix start <name>` create correctly-based branches.
-- `git flow finish` from any topic branch detects the branch type. Prefer
-  finishing via the PR flow above; use `finish` only where a PR is overkill
-  (e.g. local-only cleanup) and the branch target allows direct pushes.
+- `git flow finish` from any topic branch detects the branch type, but it
+  lands work by merging and pushing the target branch directly — which both
+  `main` and `develop` reject here. Always finish through the PR flow above;
+  `finish` is only for local branch cleanup.
 - Config keys live in git config (`gitflow.branch.*`); do not override them
   per-repo without a recorded reason.
