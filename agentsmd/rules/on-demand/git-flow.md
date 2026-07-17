@@ -40,6 +40,28 @@ Normal promotion is a merge-commit PR from `develop` to `main`. Use
 merge-commit it to `main` and back-merge to `develop` before more feature
 work lands.
 
+### Promotion is not done at the merge
+
+Merging the promotion PR is step one of three. A promotion to `main` is
+complete only when:
+
+1. **The merge lands** (merge commit; release-please takes over versioning).
+2. **The deployment file moves.** Any consumer that pins this repo (a flake
+   input in another repo's `flake.lock`, an inventory pin, a version file)
+   must pick up the promoted rev on the consumer's own **deploy branch** —
+   not just its default branch. Where a dispatch workflow automates the bump
+   (e.g. `dispatch-flake-consumers`), verify it fired AND the resulting
+   consumer PR merged; if the consumer is itself git-flow, its own
+   develop→main promotion is part of this chain.
+3. **A full e2e deployment validates the promotion.** Deploy from the
+   consumer's deploy branch (e.g. `darwin-rebuild switch`, converge, apply)
+   and verify the promoted change actually works in production shape. A
+   promotion nobody deployed is unvalidated — sessions must not treat
+   `main` as good until this has happened.
+
+Report a promotion as complete only with all three done, and say what the
+e2e deployment was and what it verified.
+
 ## Working a change
 
 1. Create or switch to a fresh worktree based on `origin/develop`. Place it at
