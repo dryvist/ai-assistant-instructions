@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.24.1...v1.24.2) (2026-07-17)
+
+
+### Bug Fixes
+
+* **ci:** accept HTTP redirects in link check ([#762](https://github.com/dryvist/ai-assistant-instructions/issues/762)) ([51f48dc](https://github.com/dryvist/ai-assistant-instructions/commit/51f48dc5977ce0267354b1b0db26aa8d013d2966)), closes [#761](https://github.com/dryvist/ai-assistant-instructions/issues/761)
+
 ## [1.24.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.24.0...v1.24.1) (2026-07-17)
 
 
