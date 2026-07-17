@@ -98,7 +98,9 @@ Lock record, one KV entry per resource at `secret/locks/<domain>/<resource>`:
   `expires_at`. Renew before expiry for long work; a session that cannot
   renew has lost the lock and MUST stop the protected work.
 - **Release** (holder only) = `-cas=<current-version>` writing
-  `{"released": true}` (or delete the version). Always release on clean exit.
+  `{"released": true}`. Never delete the version — a deleted version reads
+  back as 404, hiding the version number the next acquirer's CAS write
+  needs. Always release on clean exit.
 - **Steal** — only when `expires_at` is in the past (allow ≥60s clock-skew
   margin): re-read, then write with `-cas=<version-you-read>` and
   `fence: <old fence + 1>`. **Never delete metadata to steal** — a metadata
