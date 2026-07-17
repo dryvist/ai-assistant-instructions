@@ -53,11 +53,11 @@ complete only when:
    (e.g. `dispatch-flake-consumers`), verify it fired AND the resulting
    consumer PR merged; if the consumer is itself git-flow, its own
    develop→main promotion is part of this chain.
-3. **A full e2e deployment validates `main`.** Deploy from the consumer's
-   `main` (e.g. `darwin-rebuild switch`, converge, apply) and verify the
-   promoted change actually works in production shape. A promotion nobody
-   deployed is unvalidated — sessions must not treat `main` as good until
-   this has happened.
+3. **A full e2e deployment validates the promotion.** Deploy from the
+   consumer's deploy branch (e.g. `darwin-rebuild switch`, converge, apply)
+   and verify the promoted change actually works in production shape. A
+   promotion nobody deployed is unvalidated — sessions must not treat
+   `main` as good until this has happened.
 
 Report a promotion as complete only with all three done, and say what the
 e2e deployment was and what it verified.
