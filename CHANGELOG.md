@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.24.0...v1.24.1) (2026-07-17)
+
+
+### Bug Fixes
+
+* **rules:** develop requires a PR; document the --auto merge path ([#757](https://github.com/dryvist/ai-assistant-instructions/issues/757)) ([1d64277](https://github.com/dryvist/ai-assistant-instructions/commit/1d64277336ea4dbe302483953ba0ce60ab39ba66)), closes [#749](https://github.com/dryvist/ai-assistant-instructions/issues/749)
+
 ## [1.24.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.23.0...v1.24.0) (2026-07-17)
 
 
