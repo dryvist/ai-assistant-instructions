@@ -138,6 +138,15 @@ Publish steals, overrides, and hand-offs to the existing ntfy topic `coord`
 (`curl -d "<session-id>: stole lock <domain>/<resource> (fence n)" <ntfy>/coord`).
 Advisory only — never a gate.
 
+## Promotion follow-through
+
+A develop→main promotion is a three-step contract (see the git-flow rule):
+merge, deployment-file move in every consumer (on the consumer's deploy
+branch), and a full e2e deployment that validates `main`. For coordination
+this matters twice: the promoting session owns all three steps (do not hand
+back or report done after the merge alone), and other sessions must treat a
+merged-but-undeployed `main` as unvalidated.
+
 ## Crash recovery expectations
 
 - Locks: expire on their own; the next contender steals cleanly.
