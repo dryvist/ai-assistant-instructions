@@ -16,9 +16,6 @@
 extends: default
 
 ignore: |
-  .github/aw/
-  .github/workflows/*.lock.yml
-  .github/workflows/agentics-maintenance.yml
   # SOPS-encrypted files: opaque ciphertext; the recursive glob also
   # catches future encrypted files in any subdirectory.
   **/*.enc.yaml
