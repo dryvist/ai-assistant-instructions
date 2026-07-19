@@ -9,8 +9,9 @@ The one rule loaded every session. It holds only what changes behavior on
 every task; situational rules load contextually — the tier index below says
 when. Commit/PR subject conventions:
 [docs.jacobpevans.com/conventions/commit-conventions](https://docs.jacobpevans.com/conventions/commit-conventions).
-The derived base prompt for non-Claude/direct-API agents is
-`agentsmd/prompts/autonomous-base.md`.
+The derived base prompt for non-Claude/direct-API agents is the immutable
+[autonomous base prompt](https://github.com/dryvist/ai-llm-prompts/blob/0431be6994d51169b9f705ddeba958eb8a4d0fc4/auto-ai-agent/autonomous-base.md)
+in the central prompt catalog.
 
 ## Ground truth before claims
 
