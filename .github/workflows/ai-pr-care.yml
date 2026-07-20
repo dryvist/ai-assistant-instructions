@@ -26,6 +26,7 @@ jobs:
     uses: dryvist/ai-workflows/.github/workflows/cc-dep-review.yml@main
     secrets:
       GH_ACTION_AI_API_KEY: ${{ secrets.GH_ACTION_AI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
   release-notes:
     permissions:
@@ -35,3 +36,4 @@ jobs:
     uses: dryvist/ai-workflows/.github/workflows/cc-release-notes.yml@main
     secrets:
       GH_ACTION_AI_API_KEY: ${{ secrets.GH_ACTION_AI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
