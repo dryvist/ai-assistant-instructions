@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.3](https://github.com/dryvist/ai-assistant-instructions/compare/v1.24.2...v1.24.3) (2026-07-20)
+
+
+### Bug Fixes
+
+* **ci:** pass OPENAI_API_KEY through to the shared AI workflows ([#773](https://github.com/dryvist/ai-assistant-instructions/issues/773)) ([c799d68](https://github.com/dryvist/ai-assistant-instructions/commit/c799d680315fe264c7c9514302a621e201212be3))
+
 ## [1.24.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.24.1...v1.24.2) (2026-07-17)
 
 
