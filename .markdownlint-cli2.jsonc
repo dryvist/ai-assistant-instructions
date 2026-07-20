@@ -7,7 +7,7 @@
     },
     "MD024": false
   },
-  "ignores": ["result/**", "CHANGELOG.md", ".github/aw/**"],
+  "ignores": ["result/**", "CHANGELOG.md"],
   "fix": true,
   "gitignore": true
 }

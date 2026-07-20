@@ -21,12 +21,6 @@ def find_markdown_files(root_dir: Path) -> Generator[Path, None, None]:
         # Skip excluded directories
         dirs[:] = [d for d in dirs if d not in skip_dirs]
 
-        # Skip gh-aw compiled imports (linguist-generated)
-        root_path = Path(root)
-        if root_path.is_relative_to(root_dir / '.github' / 'aw'):
-            dirs.clear()
-            continue
-
         for file in files:
             if file.endswith('.md'):
                 yield Path(root) / file
