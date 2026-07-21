@@ -62,7 +62,7 @@ Docs are descriptive; directives stay in `AGENTS.md`.
 
 ## Orchestration and model routing
 
-For premium-lead sessions, use the `premium-agent-orchestration` skill (`ai-delegation`).
+For complex plans and goals, use the `premium-agent-orchestration` skill (`ai-delegation`).
 
 Treat premium lead context and tokens as scarce, especially when the lead is Claude Fable or GPT Sol. For non-trivial
 work, the lead defaults to pure orchestration: retain user intent, architecture, decomposition, risk and permission
