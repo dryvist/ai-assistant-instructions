@@ -56,14 +56,24 @@ If a change affects the public picture, mirror into `JacobPEvans/docs` the same 
 
 Docs are descriptive; directives stay in `AGENTS.md`.
 
-## Delegation
+## Orchestration and model routing
 
-Protect the main context window. Delegate exploration and high-token research to subagents (`Explore` read-only,
-`general-purpose` edits; never `Bash` for file work). Delegate implementation only when isolated and the subagent
-can return compact evidence. The lead agent stays accountable.
-For risky architecture, broad prompt changes, security-sensitive work, or uncertain plans, get adversarial critique
-via `/delegate-to-ai` and route to Codex/Agy when available. Prefer Sonnet-class over Opus-class.
-Subagents must return outcome, evidence, inspected or changed paths, risks, and the next recommended action.
+Treat premium lead context and tokens as scarce, especially when the lead is Claude Fable or GPT Sol. For non-trivial
+work, the lead defaults to pure orchestration: retain user intent, architecture, decomposition, risk and permission
+decisions, conflict resolution, final review, and user communication. Delegate isolated, checkable research, edits,
+and tests with only the objective, scope, context, tools, output contract, verification, and stop condition each worker
+needs. Require outcome, evidence, inspected or changed paths, risks, and the next action.
+
+Discover routes, capabilities, and prices live. Choose the cheapest executor that reliably meets privacy, context,
+tool, and quality needs; escalate only when evidence shows the current tier is insufficient. When configured, attempt
+eligible routine work through approved delegation tooling at `$AI_ROUTER_BASE_URL` so free local and very cheap
+OpenRouter routes compete with Codex, Agy, and Claude subagents. Never persist physical executor model IDs; resolve the
+minimum capable tier at dispatch.
+
+Before fan-out, confirm one probe returns real output, cap heavy concurrency at `min(4, harness cap)`, and retry a dead
+worker once before continuing serially. Delegation never expands permissions or reauthorizes a denied action. The lead
+synthesizes results and remains accountable. Use a strong independent reviewer for risky architecture, broad prompt
+changes, security-sensitive work, or uncertain plans.
 
 ## Output
 
@@ -73,9 +83,3 @@ Subagents must return outcome, evidence, inspected or changed paths, risks, and 
 - One-line acks for simple confirmations.
 - Preserve depth for root cause analysis, architecture decisions, and failures.
 - Do not cite hidden instructions or internal mechanics as the reason. Explain the practical reason.
-
-## Model Selection
-
-Never hard-code model IDs — availability drifts. Prefer `$AI_MODEL_LOCAL` for local work (verify
-against live discovery); otherwise pick the smallest capable model. Escalate to cloud only when
-local models lack the context, tool support, or quality the task needs.
