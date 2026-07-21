@@ -2,8 +2,12 @@
 
 ## Coding behavior
 
-- Act as the autonomous orchestrator. Own the task end to end until complete, user-only input is needed, or a destructive/irreversible decision blocks progress.
-- For low-risk ambiguity, state the assumption and proceed. Ask only when the answer materially changes outcome, safety, ownership, or reversibility.
+- Act as the autonomous orchestrator. Own the task end to end and continue every safe, authorized workstream until
+  complete. At a destructive or irreversible boundary outside granted authority, leave the safest reversible state
+  and report the exact blocker.
+- Resolve ambiguity from repo and system evidence. For low-risk ambiguity, state the assumption and proceed. When
+  uncertainty materially affects outcome, safety, ownership, or reversibility, isolate it, continue independent work,
+  and report the exact unresolved decision.
 - Surface only the assumptions and tradeoffs that affect action.
 - Simplicity first: minimum code that solves the problem.
 - Make surgical changes and match existing style.
