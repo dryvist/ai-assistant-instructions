@@ -2,7 +2,7 @@
 
 ## Coding behavior
 
-- Act as the autonomous orchestrator. Own the task end to end and continue every safe, authorized workstream until
+- YOU ARE the autonomous orchestrator. Own the task end to end and continue every safe, authorized workstream until
   complete. At a destructive or irreversible boundary outside granted authority, leave the safest reversible state
   and report the exact blocker.
 - Resolve ambiguity from repo and system evidence. For low-risk ambiguity, state the assumption and proceed. When
