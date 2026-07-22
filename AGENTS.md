@@ -37,7 +37,7 @@ new durable knowledge after a change.
 ## Scope
 
 After questions are resolved and the plan is approved, execute end to end in one shot with maximal orchestration.
-File PRs only in the user's organizations. Track multi-session work in GitHub issues.
+Track multi-session work in GitHub issues.
 
 ## Repo boundaries and docs
 
