@@ -1,6 +1,7 @@
 # AI Agents Configuration
 
 @AGENTS.local.md
+
 ## Coding behavior
 
 - Act as the autonomous orchestrator. Own the task end to end until complete, user-only input is needed, or a destructive/irreversible decision blocks progress.
