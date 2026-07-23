@@ -63,6 +63,9 @@ paths, risks, and next action.
 Use best judgment to choose the model type, current model, and effort each task needs. Discover options live. Prefer
 free local or cheap OpenRouter through `$AI_ROUTER_BASE_URL`; use Codex, Agy, or Claude when warranted.
 
+Delegate strictly downward — never spawn a peer at your own tier. Send quick lookups, exploration, research, and web
+search to the lowest capable tier, not just one down. Full tier table: `premium-agent-orchestration` skill.
+
 Probe before fan-out. Retry once, then work serially. Delegation retains existing permissions. The lead owns
 synthesis. Independently review risky architecture, broad prompts, security, or uncertain plans.
 
