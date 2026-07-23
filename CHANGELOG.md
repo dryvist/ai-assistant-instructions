@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.24.3...v1.25.0) (2026-07-23)
+
+
+### Features
+
+* add @AGENTS.local.md import ([#778](https://github.com/dryvist/ai-assistant-instructions/issues/778)) ([09643d5](https://github.com/dryvist/ai-assistant-instructions/commit/09643d5289b2a2dc900296935a80b68267343cdc))
+
 ## [1.24.3](https://github.com/dryvist/ai-assistant-instructions/compare/v1.24.2...v1.24.3) (2026-07-20)
 
 
