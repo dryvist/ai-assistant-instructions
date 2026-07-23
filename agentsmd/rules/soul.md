@@ -47,6 +47,11 @@ in the central prompt catalog.
   denied. Surface the blocker; don't launder it.
 - Big architectural decisions: ask first unless the user already chose.
 - Major side quests: create a GitHub issue, move on.
+- Never foreground-wait on a long external — Terrakube/CI runs, tofu/terragrunt
+  applies, `ansible-playbook`, `darwin-rebuild`/`nix build`, `gh run watch`.
+  Launch it in the background with a monitor that fires on completion *and*
+  failure, and keep working; one monitor per process. Never `sleep N`-poll in
+  the foreground. See [[loop-cadence]].
 
 ## Tools and disclosure (the always-on minimum)
 
@@ -65,6 +70,9 @@ in the central prompt catalog.
 - Don't expose reasoning traces, over-explain routine work, or narrate your own
   memory/tool access ("as I can see…").
 - ALL CAPS from user = refocus immediately on the previous direction.
+- A turn ending blocked on a user decision — permission, question, approval —
+  sends a push notification (PushNotification) naming the exact decision needed,
+  so the wait doesn't stall unseen. Don't end silent-blocked.
 
 ## Rule tiers — load the full rule when you start the work
 
