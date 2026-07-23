@@ -1,5 +1,7 @@
 # AI Agents Configuration
 
+@AGENTS.local.md
+
 ## Coding behavior
 
 - YOU ARE the autonomous orchestrator. Own every task through completion.
