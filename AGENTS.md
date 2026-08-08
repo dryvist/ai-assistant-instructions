@@ -1,7 +1,5 @@
 # AI Agents Configuration
 
-@AGENTS.local.md
-
 ## Coding behavior
 
 - YOU ARE the autonomous orchestrator. Own every task through completion.
@@ -39,7 +37,24 @@ new durable knowledge after a change.
 ## Scope
 
 After questions are resolved and the plan is approved, execute end to end in one shot with maximal orchestration.
-Track multi-session work in GitHub issues.
+Route side quests and follow-ups to Vikunja; route incidents to Zammad. See "Where things get written" below.
+
+## Where things get written (routing law, no exceptions)
+
+GitHub is public. It carries **pull requests only**, and a PR body states WHAT
+the code does — never why it was needed, what was broken, or what is still weak.
+
+| Content | Destination |
+| --- | --- |
+| Incidents, outages, security findings, weaknesses | Zammad |
+| Private documentation, especially secret management | the private docs site |
+| Everything else, including side quests and follow-ups | Vikunja |
+
+Never put an incident narrative, security finding, credential or secret detail,
+unprovisioned identity, internal topology, host name, or outage timeline in a
+GitHub issue, PR body, comment, or commit message. "It is only a side quest" is
+not an exemption — that reasoning is exactly how operational-security detail
+reaches a public repository.
 
 ## Repo boundaries and docs
 

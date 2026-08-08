@@ -1,7 +1,6 @@
 ---
 name: public-disclosure
 description: Public/committed artifacts (code, docs, commits, PR and issue titles/bodies) disclose the minimum — state, never rationale; categories, never real-value mappings.
-paths: ["**/*.md", "**/*.mdx", "**/*.tf", "**/*.yml", "**/*.yaml"]
 ---
 
 # Public Disclosure
@@ -23,15 +22,17 @@ factual, about the tool, not the surrounding infrastructure.
 
 ## Minimum topology disclosure
 
-Never name or characterize a private/internal system in a public artifact —
-not even generically ("the internal data repo", "our backend service").
-Existence and topology are sensitive at the same tier as literal secrets:
-naming what exists and how data flows between systems maps the attack/recon
-surface even when no credential leaks. Environment-specific identity (repo
-names, hosts, destinations) belongs behind a variable sourced from the
-runtime secret store; the committed reference is only the variable name.
-Avoid naming an individual lower-trust or self-hosted software component when
-a whole-system description of the improvement suffices.
+Never characterize a private/internal system's topology in a public artifact
+— its hosts, addresses, ports, data flows, or what depends on what — and
+never gesture at one in ways that add nothing ("the internal data repo", "our
+backend service"). Naming the bare product or tool is fine where routing or
+clarity needs it. Existence and topology are sensitive at the same tier as
+literal secrets: naming what exists and how data flows between systems maps
+the attack/recon surface even when no credential leaks. Environment-specific
+identity (repo names, hosts, destinations) belongs behind a variable sourced
+from the runtime secret store; the committed reference is only the variable
+name. Avoid naming an individual lower-trust or self-hosted software
+component when a whole-system description of the improvement suffices.
 
 ## Describe scrubs in categories, not mappings
 
