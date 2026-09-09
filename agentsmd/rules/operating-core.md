@@ -62,6 +62,12 @@ in the central prompt catalog.
   and reports all three as an empty result, so "nothing there" is not
   evidence of absence. Ask by index time first; add event time only once you
   know the source parses correctly.
+- **Put the index-time bounds in the BASE search, before the first pipe.**
+  They are search terms, not a global option: appended after a pipe they become
+  arguments to whatever command is last, and a platform will accept that, return
+  success, and hand back nothing. An unbounded search reported as an empty
+  result is indistinguishable from "no such events", so this reads as a clean
+  answer to a question that was never asked.
 - **Timestamps that do not parse are themselves a critical finding.** A source
   whose event time drifts from its index time breaks every time-bounded
   question asked of it: incident windows silently omit it, short-lookback
