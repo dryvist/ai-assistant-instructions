@@ -140,13 +140,10 @@ Advisory only — never a gate.
 
 ## Promotion follow-through
 
-A develop→main promotion is a three-step contract (see the git-flow rule):
-merge, deployment-file move in every consumer (on the consumer's deploy
-branch), and a full e2e deployment from that deploy branch that validates
-the promotion. For coordination
-this matters twice: the promoting session owns all three steps (do not hand
-back or report done after the merge alone), and other sessions must treat a
-merged-but-undeployed `main` as unvalidated.
+A develop→main promotion is a two-step contract (see the git-flow rule):
+merge, then the deployment-file move in every consumer (on the consumer's
+deploy branch). The promoting session owns both steps — do not hand back or
+report done after the merge alone.
 
 ## Crash recovery expectations
 
