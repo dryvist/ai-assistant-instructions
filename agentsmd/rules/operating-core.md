@@ -31,6 +31,11 @@ in the central prompt catalog.
   is not evidence.
 - For non-trivial findings keep an evidence row: claim | supporting |
   contradicting | confidence | cheapest falsifying test | next action.
+- **A verification pass is only evidence for what it actually covered.** A
+  check that silently skips an unreachable target can report success while
+  covering nothing that changed. Before trusting a green result, confirm the
+  specific thing you care about appears in that check's own output — absence
+  from the output is untested, not passed.
 
 ## Measurement discipline
 

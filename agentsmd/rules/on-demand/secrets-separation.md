@@ -138,3 +138,9 @@ helper must fail loudly when it cannot produce a credential.
 
 If a tool cannot authenticate, the fix is the credential path. Never a local
 copy, and never a credential pasted into a file.
+
+**A source-address or network-class refusal is not a broken credential.**
+When an identity is bound to a specific network class, a login attempt from
+outside that class is refused even though the credential itself is valid.
+Do not diagnose this as a dead or misconfigured credential and rotate or
+recreate it in response — check which network class the caller is on first.
