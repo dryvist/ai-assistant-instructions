@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.28.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.28.0...v1.28.1) (2026-09-19)
+
+
+### Bug Fixes
+
+* **ci:** forward the router secrets to ai-pr-care with secrets: inherit ([75344b1](https://github.com/dryvist/ai-assistant-instructions/commit/75344b1ea311cb785b41abc3ba67334bae9a1bb6))
+* **ci:** forward the router secrets to ai-pr-care with secrets: inherit ([a25eb8c](https://github.com/dryvist/ai-assistant-instructions/commit/a25eb8c6d3f055e3a041255ee1b200699194c51b))
+
 ## [1.28.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.27.1...v1.28.0) (2026-09-05)
 
 
