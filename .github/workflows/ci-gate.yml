@@ -111,28 +111,34 @@ jobs:
     if: needs.changes.outputs.claude-config == 'true'
     uses: ./.github/workflows/_validate-cclint.yml
 
-  markdownlint:
-    name: Markdown Lint
-    needs: changes
-    if: needs.changes.outputs.markdown == 'true'
-    uses: dryvist/.github/.github/workflows/_markdown-lint.yml@main
-
-  token-limits:
-    name: Token Limit Check
-    needs: changes
-    # Skip for dependency-only PRs (expensive check)
-    if: |
-      needs.changes.outputs.is-deps-only == 'false' &&
-      (needs.changes.outputs.claude-config == 'true' ||
-       needs.changes.outputs.agentsmd == 'true' ||
-       needs.changes.outputs.markdown == 'true')
-    uses: dryvist/.github/.github/workflows/_token-limits.yml@main
-
-  file-size:
-    name: File Size
-    needs: changes
-    if: needs.changes.outputs.markdown == 'true'
-    uses: dryvist/.github/.github/workflows/_file-size.yml@main
+  # Markdown lint, file size and token limits via the org reusable gate. Its
+  # `markdown` filter also lists the AI-config paths so `token_limits` fires
+  # on them; the gate runs `_token-limits.yml` against .token-limits.yaml.
+  shared-gate:
+    permissions:
+      contents: read
+      pull-requests: read
+      # The org gate's queue watchdog cancels stuck sibling jobs via the
+      # Actions API; a called workflow can never exceed the caller's grant, so
+      # actions: write must be granted here or the run fails at graph
+      # validation (startup_failure).
+      actions: write
+    uses: dryvist/.github/.github/workflows/_ci-gate.yml@main
+    with:
+      token_limits: true
+      # Staged: the gate's zizmor run is new for this repo and reports
+      # pre-existing findings in ci-fail-issue.yml (trigger),
+      # copilot-ci-fix.yml (trigger, App token) and issue-auto-resolve.yml
+      # (permissions). Flip this on once those are resolved.
+      zizmor: false
+      filters: |
+        markdown:
+          - '**/*.md'
+          - '.markdownlint-cli2.jsonc'
+          - '.claude/**'
+          - 'CLAUDE.md'
+          - '.cclintrc.jsonc'
+          - 'agentsmd/**'
 
   validate-instructions:
     name: Instruction Validation
@@ -155,9 +161,7 @@ jobs:
       - changes
       - cclint
       - validate-cclint
-      - markdownlint
-      - token-limits
-      - file-size
+      - shared-gate
       - validate-instructions
       - yaml-lint
     if: ${{ !cancelled() }}
@@ -170,9 +174,6 @@ jobs:
           allowed-skips: >-
             cclint,
             validate-cclint,
-            markdownlint,
-            token-limits,
-            file-size,
             validate-instructions,
             yaml-lint
           jobs: ${{ toJSON(needs) }}

@@ -42,7 +42,7 @@ work lands.
 
 ### Promotion is not done at the merge
 
-Merging the promotion PR is step one of three. A promotion to `main` is
+Merging the promotion PR is step one of two. A promotion to `main` is
 complete only when:
 
 1. **The merge lands** (merge commit; release-please takes over versioning).
@@ -53,14 +53,8 @@ complete only when:
    (e.g. `dispatch-flake-consumers`), verify it fired AND the resulting
    consumer PR merged; if the consumer is itself git-flow, its own
    develop→main promotion is part of this chain.
-3. **A full e2e deployment validates the promotion.** Deploy from the
-   consumer's deploy branch (e.g. `darwin-rebuild switch`, converge, apply)
-   and verify the promoted change actually works in production shape. A
-   promotion nobody deployed is unvalidated — sessions must not treat
-   `main` as good until this has happened.
 
-Report a promotion as complete only with all three done, and say what the
-e2e deployment was and what it verified.
+Report a promotion as complete only with both done.
 
 ## Working a change
 
