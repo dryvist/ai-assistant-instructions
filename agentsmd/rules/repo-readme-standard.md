@@ -11,8 +11,6 @@ cross-repo story lives on the docs site, not duplicated across READMEs.
 
 Canonical spec (sections, order, examples):
 [docs.jacobpevans.com/conventions/readme-conventions](https://docs.jacobpevans.com/conventions/readme-conventions).
-Copy-paste template:
-[`dryvist/.github` → `README.template.md`](https://github.com/dryvist/.github/blob/main/README.template.md).
 
 When writing or editing a README, enforce:
 
