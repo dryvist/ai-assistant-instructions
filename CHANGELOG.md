@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.28.1...v1.28.2) (2026-09-21)
+
+
+### Bug Fixes
+
+* **docs:** drop dead README.template.md link (target does not exist) ([a0d2384](https://github.com/dryvist/ai-assistant-instructions/commit/a0d23840362acba13e1b59014386b159d35c4d27))
+
 ## [1.28.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.28.0...v1.28.1) (2026-09-19)
 
 
