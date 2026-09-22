@@ -1,7 +1,6 @@
 ---
 name: okf
 description: Open Knowledge Format — reference for creating, maintaining, and reading OKF bundles
-paths: ["**/*.md"]
 ---
 
 # Open Knowledge Format (OKF)
