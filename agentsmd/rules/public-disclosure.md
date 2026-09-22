@@ -1,58 +1,38 @@
 ---
 name: public-disclosure
-description: Public/committed artifacts (code, docs, commits, PR and issue titles/bodies) disclose the minimum — state, never rationale; categories, never real-value mappings.
+description: Public/committed artifacts disclose the minimum — state, never rationale; categories, never real-value mappings.
 ---
 
 # Public Disclosure
 
-Everything in a public, git-committed artifact is published forever —
-search-indexed, archived, cross-referenced. This applies equally to file
-content, commit messages, and PR/issue titles and bodies; a PR description
-on a public repo is committed text, not a private note to the reviewer.
+A public, git-committed artifact (file content, commit messages, PR/issue titles/bodies) is published forever:
+search-indexed, archived, cross-referenced. A PR description on a public repo is committed text, not a private
+note to the reviewer.
 
 ## State what, never why or unpublished specifics
 
-Committed text describes what the code currently does. It does not restate
-the roadmap, the operational rationale, or specific hardware/vendor names for
-a swappable backend. Use capability-neutral names for infrastructure that
-might change (e.g. a role name, not a machine's make/model) and reach it by a
-stable identifier so the concrete backend behind it can change without a
-rename. A tool evaluation the user explicitly asked for is fine — keep it
-factual, about the tool, not the surrounding infrastructure.
+Committed text states what the code does now — never roadmap, rationale, or hardware/vendor names for a
+swappable backend. Use a capability-neutral name (a role, not a make/model) reached by a stable identifier. A
+tool evaluation the user explicitly asked for is fine — factual, about the tool, not the surrounding infra.
 
 ## Minimum topology disclosure
 
-Never characterize a private/internal system's topology in a public artifact
-— its hosts, addresses, ports, data flows, or what depends on what — and
-never gesture at one in ways that add nothing ("the internal data repo", "our
-backend service"). Naming the bare product or tool is fine where routing or
-clarity needs it. Existence and topology are sensitive at the same tier as
-literal secrets: naming what exists and how data flows between systems maps
-the attack/recon surface even when no credential leaks. Environment-specific
-identity (repo names, hosts, destinations) belongs behind a variable sourced
-from the runtime secret store; the committed reference is only the variable
-name. Avoid naming an individual lower-trust or self-hosted software
-component when a whole-system description of the improvement suffices.
+Never characterize a private system's topology in a public artifact — hosts, addresses, ports, data flows, what
+depends on what — and never gesture at one ("the internal data repo"). The bare product/tool name is fine where
+routing/clarity needs it. Topology is as sensitive as a literal secret: naming what exists and how data flows
+maps the attack surface with no credential leak. Environment-specific identity goes behind a variable sourced
+from the runtime secret store — the committed reference is only the variable name. Avoid naming an individual
+lower-trust/self-hosted component when a whole-system description suffices.
 
-## Documentation goes to the private source, never straight to public
+## Documentation: private source only, never straight to public
 
-All AI-authored documentation is written to the private documentation source.
-An agent does not classify content as public or private and never writes to
-the public documentation site directly — the publisher projection is the only
-authority that turns private source into a generated public-docs pull request.
-Classifying is a disclosure decision, and an agent that makes it is one wrong
-call away from publishing operational detail permanently.
-
-The private source may record sensitive operational facts. It still never
-carries a raw live secret, private key, or recovery code — those live only in
-the secret store.
+All AI-authored documentation goes to the private documentation source. An agent never classifies content as
+public/private and never writes to the public docs site directly — the publisher projection alone turns private
+source into a generated public-docs PR. The private source may record sensitive facts; it never carries a raw
+live secret, private key, or recovery code — those live only in the secret store.
 
 ## Describe scrubs in categories, not mappings
 
-When a PR or commit describes a sanitization/scrub sweep, describe the
-**category** of value removed ("real internal hostnames → placeholder
-values"), never the **real-value → placeholder mapping** ("`prod-db-3` →
-`db-example`"). Spelling out the mapping in the PR body re-leaks exactly what
-the diff was scrubbing. The same applies to verification language — "a scan
-confirms zero real values remain" is fine; pasting the actual grep pattern
-used to find them is not, since the pattern itself can encode the real value.
+A sanitization sweep's PR/commit names the **category** removed ("real hostnames → placeholders"), never the
+**real-value → placeholder mapping** ("`prod-db-3` → `db-example`") — that re-leaks what was scrubbed. Same for
+verification: "a scan confirms zero real values remain" is fine; the grep pattern used is not.
