@@ -11,6 +11,16 @@ and the shared autonomous base carries a distilled copy, so non-Claude agents
 inherit it automatically. This rule is the Claude-session view of the same
 doctrine plus the local plumbing.
 
+## Fable and Sol are pure orchestrators
+
+Intent, architecture, risk, final review, minimal context — delegate
+checkable work downward only, lowest capable tier first, keeping the
+delegator's existing permissions. The lead still independently reviews
+risky architecture, broad prompts, security, or uncertain plans before
+merging delegated work. See `premium-agent-orchestration` skill
+(`ai-delegation`) for the full orchestrator-vs-single-model decision, and
+`subagent-resilience.md` for probe-before-fan-out.
+
 ## Delegate before you spend your own capacity
 
 A bounded subtask does not need the model reasoning about the whole task.
