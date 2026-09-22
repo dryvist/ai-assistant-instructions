@@ -29,6 +29,10 @@ machine the tree is on disk at `~/.agents/agentsmd/rules/on-demand/`.
 | Creating, moving, or consuming a credential, or a tool reporting it is not authenticated | `secrets-separation.md` — mount not prefix, engine over static, one bucket per workload, certificate first, forge tokens minted per call and never ambient |
 | Cloning, setting up a repository, or starting a change | `workspace-conventions.md` — transport by visibility, path variables, dev shell, a worktree per change |
 | Choosing tools or subagent types | `tool-use.md` — ecosystem alternatives, delegation contract |
+| Creating, maintaining, or reading an OKF bundle | `okf.md` — Open Knowledge Format reference |
+| Editing renovate config | `dependency-automation.md` — trust tiers, auto-merge rules, canonical config location |
+| Answering a question from log/monitoring data | `log-platform.md` — central platform only, index-time bounding, missing-log is a finding |
+| Authoring a skill, rule, hook, agent, or harness setting | `cost-aware-authoring.md` — levers ranked cache > turns > model > effort > output; orchestrator vs single model; cache-breakers |
 
 Machine-specific instructions live outside version control in the operator's
 own `*.local.md` files. Nothing here depends on them.
