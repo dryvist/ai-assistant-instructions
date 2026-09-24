@@ -23,8 +23,9 @@ name. Avoid naming an individual lower-trust/self-hosted component when a whole-
 **Documentation: private source only, never straight to public.** All AI-authored documentation goes to the
 private documentation source; an agent never classifies content as public/private and never writes to the
 public docs site directly — the publisher projection alone turns private source into a generated public-docs
-PR. The private source may record sensitive facts; it never carries a raw live secret, private key, or
-recovery code — those live only in the secret store.
+PR. When a change lands in any repo, update the pages that describe it in the private source in the same
+session (its `docs-sync` skill does this). The private source may record sensitive facts; it never carries a
+raw live secret, private key, or recovery code — those live only in the secret store.
 
 **Describe scrubs in categories, not mappings.** A sanitization sweep's PR/commit names the **category**
 removed ("real hostnames → placeholders"), never the **real-value → placeholder mapping**
