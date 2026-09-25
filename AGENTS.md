@@ -11,7 +11,7 @@ Tool choice: use the best-supported native/third-party/community solution; check
 Custom code is the largest anti-pattern — permanent maintenance. Search `grep.app` first: thousands of hits
 means idiomatic, three means a mistake.
 
-Git workflow: start any change with `/refresh-repo`, then a new worktree. `develop` default branch →
+Git workflow: never edit on the default branch — `/refresh-repo`, then a new worktree. `develop` default branch →
 [git-flow](agentsmd/rules/on-demand/git-flow.md): PRs target `develop` (squash-merge), `develop` → `main` by
 merge commit only. Otherwise trunk flow. Always **atomic commits**, one fix/feature/section per commit. Load
 the on-demand rule for the activity — `rule-tiers.md` is the index.
