@@ -8,8 +8,11 @@ description: Offload bounded subtasks to the shared model router at the cheapest
 Canonical doctrine: `prompt://dryvist/auto-ai-agent/model-delegation` in the
 central prompt catalog. That fragment is the public, vendor-neutral statement
 and the shared autonomous base carries a distilled copy, so non-Claude agents
-inherit it automatically. This rule is the Claude-session view of the same
-doctrine plus the local plumbing.
+inherit it automatically. This rule applies across agent harnesses.
+
+A delegate may be any agent CLI the operator runs: a Claude subagent, a
+`codex exec` run, or a local model through the router, chosen by fit and cost.
+The operator's current default executor is a private preference recorded outside this repository.
 
 ## Fable and Sol are pure orchestrators
 
@@ -25,7 +28,8 @@ merging delegated work. See `premium-agent-orchestration` skill
 
 A bounded subtask does not need the model reasoning about the whole task.
 Summaries, classification over a batch, structured extraction, boilerplate
-drafting, a first-pass read of unfamiliar code — send those to the router.
+drafting, a first-pass read of unfamiliar code — delegate those to a capable executor;
+raw model API calls use the router.
 
 Walk the tiers and stop at the first genuinely capable one:
 

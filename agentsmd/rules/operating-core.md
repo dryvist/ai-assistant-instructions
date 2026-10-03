@@ -32,12 +32,13 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
 - **Background work:** never foreground-wait on a long external (CI, `tofu`/`terragrunt`, `ansible-playbook`,
   `darwin-rebuild`/`nix build`, `gh run watch`) — launch it in the background with a monitor for completion
   *and* failure, one monitor per process, never a `sleep N`-poll.
-- **Tools:** prefer native tools over Bash (Read/Edit/Write/Grep/Glob); a general-purpose subagent, never
+- **Tools:** prefer native tools over Bash (Read/Edit/Write/Grep/Glob); a delegate with file-editing tools, never
   Bash-only, for file edits. No ambient forge authentication — `gh` and equivalents aren't logged in; a probe
   finding no session is expected, never a blocker; mint a short-lived token from the credential store at call
   time, same shell that uses it. Bounded subtasks (summaries, classification, extraction, first-pass reads) go
-  to the shared model router at the cheapest capable tier, never your own provider credential; fetch model
-  names from the router's contract.
+  to a capable delegate; raw model API calls use the shared model router at the cheapest capable tier,
+  never your own provider credential (launching an operator-signed-in agent CLI is delegation, not a
+  provider-credential call); fetch API model names from the router's contract.
 
 Disclosure for public/committed text: `public-disclosure.md`. Deeper procedure: `secrets-separation.md`,
 `loop-cadence.md`, `model-delegation.md` (all on-demand).

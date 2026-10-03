@@ -1,6 +1,6 @@
 ---
 name: tool-use
-description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glob). Use general-purpose subagent when files are edited.
+description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glob). Use a delegate with file-editing tools when files are edited.
 ---
 
 # Tool Use
@@ -45,6 +45,9 @@ line-based parsing and can print secret contents into the transcript/log.
 Test for a specific variable's presence with `[[ -n "$VAR" ]]` instead.
 
 ## Subagent type selection
+
+The following `subagent_type` options apply to the Claude harness; other agent CLIs
+are delegates too, selected by fit and cost under `model-delegation.md`.
 
 | `subagent_type` | Use when |
 | --- | --- |
