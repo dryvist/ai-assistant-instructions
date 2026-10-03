@@ -39,4 +39,6 @@ Repo boundaries: `JacobPEvans/ai-assistant-instructions` (rules, `AGENTS.md`, wo
 `dryvist/nix-claude-code` `data/permissions` (tool permissions), `JacobPEvans/claude-code-plugins` (commands,
 skills, agents, hooks). Update the private docs site in the same session; most changes need it.
 
-Orchestration and model routing: `model-delegation.md` (on-demand).
+Coding, refactoring, tests, docs-from-code, and review on public/non-sensitive content default to ZCode:
+load `delegate-to-ai` (`ai-delegation`) for eligibility, jobs/live sessions, and trusted PR verification.
+Other orchestration and model routing: `model-delegation.md` (on-demand).

@@ -5,6 +5,13 @@ description: Offload bounded subtasks to the shared model router at the cheapest
 
 # Model delegation
 
+For public or otherwise non-sensitive coding, refactoring, tests, docs-from-code,
+and review, load `delegate-to-ai` in the `ai-delegation` plugin first. Its ZCode
+route takes precedence over the general tier order below: jobs for batch work,
+native Web/Server for interactive work. That sole authored skill owns the
+allowlist, sensitivity, gate, fallback, and trusted draft-PR verification rules;
+Claude Code and Codex consume the same copy. Subscription coding tokens are free.
+
 Canonical doctrine: `prompt://dryvist/auto-ai-agent/model-delegation` in the
 central prompt catalog. That fragment is the public, vendor-neutral statement
 and the shared autonomous base carries a distilled copy, so non-Claude agents
@@ -114,17 +121,19 @@ tuning spend needs the same information.
 ## Skills
 
 The procedures this rule refers to are shipped as skills, not carried here —
-this repository holds configuration only. Both live in the `ai-delegation`
+this repository holds configuration only. They live in the `ai-delegation`
 plugin of the [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
 marketplace:
 
+- `delegate-to-ai` — ZCode coding eligibility, job/live commands, and trusted
+  draft-PR verification; the default for eligible token-heavy coding work.
 - `local-subagents` — when a step is worth handing off at all, how to read
   the live model menu (speed, quality, best-for, context, price) from the
   router's own contract, and how to place the call.
 - `openrouter-models` — the self-enforced spend budget, the free-tier logging
   caveat, and the lane for requesting a model the router does not serve.
 
-Neither depends on Claude Code: both use only shell, `curl`, and `jq`, so a
+None depends on Claude Code: they use shell commands and available harness tools, so a
 non-Claude harness consumes them straight from that repository. **That copy is
 the only authored one.** A harness adopting either deletes its local version in
 the same change rather than running both — two copies of a skill about spend
