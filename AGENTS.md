@@ -42,3 +42,5 @@ skills, agents, hooks). Update the private docs site in the same session; most c
 Coding, refactoring, tests, docs-from-code, and review on public/non-sensitive content default to ZCode:
 load `delegate-to-ai` (`ai-delegation`) for eligibility, jobs/live sessions, and trusted PR verification.
 Other orchestration and model routing: `model-delegation.md` (on-demand).
+For bounded, routine subtasks, call `~/.agents/skills/fast-subagent/scripts/fast-subagent.sh` with `LLM_ROUTER_URL` and
+`FAST_SUBAGENT_MODEL`; retain consequential judgment and decisions here.
