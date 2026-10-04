@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.28.2...v1.29.0) (2026-10-04)
+
+
+### Features
+
+* **rules:** default eligible coding work to ZCode ([#863](https://github.com/dryvist/ai-assistant-instructions/issues/863)) ([10203e1](https://github.com/dryvist/ai-assistant-instructions/commit/10203e17e5eb7c5e2ef9c35781ba741c70bf45a6))
+
 ## [1.28.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.28.1...v1.28.2) (2026-09-21)
 
 
