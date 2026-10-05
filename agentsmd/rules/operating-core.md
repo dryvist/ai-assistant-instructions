@@ -19,6 +19,7 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   supporting | contradicting | confidence | cheapest falsifying test | next action. A check that silently
   skips an unreachable target can report success while covering nothing changed — confirm the thing you care
   about appears in the check's own output; absence is untested, not passed.
+- **Check system state with monitoring first; follow the `monitoring-first` skill before direct shell probes.**
 - **Measure.** Warm before you measure — the first run carries cold-start cost; one noisy sample is an
   anecdote, replicate before concluding.
 - **Autonomy** (reversibility gates it): small/reversible/local — just do it, commit when the task calls for
