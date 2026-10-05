@@ -5,20 +5,16 @@ description: Read logs from the central log platform, never from a host — inde
 
 # Read logs from the log platform, never from the host
 
-- Every log read and every monitoring query goes through the central log
-  platform. Do not open a shell on a host to run `journalctl`, `tail`, or
-  `dmesg` to answer a question about what happened, even when direct access is
-  faster and you already hold it.
+- Every log read goes through the central log platform. For current system
+  state, use the `monitoring-first` skill to select the right monitoring source.
 - **A log you cannot find in the log platform is a finding, not an
   inconvenience.** It means the pipeline dropped it and nobody knew. Missing
   entirely, landing in the wrong index, or present but lacking the field an
   alert matches on all count. Raise it and fix the pipeline the way you would
   any other defect.
-- Reading a log on the host is allowed for exactly one purpose: diagnosing the
-  ingestion gap itself. The gap still gets fixed. Do not use the host copy to
-  answer the original question and move on — that is what leaves the pipeline
-  broken for the next reader.
-- The point is not the query interface. Routing every investigation through the
+- For missing logs, diagnosis, and any direct probe, follow `monitoring-first`;
+  never use a host copy to answer the original question.
+- The point is not the query interface. Routing every log investigation through the
   shared pipeline is the only thing that keeps it honest: data nobody reads
   rots, and a host you can still log into hides the rot.
 - **Bound the search on index time, not event time.** Event time is whatever
