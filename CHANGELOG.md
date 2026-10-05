@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.29.0...v1.30.0) (2026-10-05)
+
+
+### Features
+
+* **rules:** guide state checks through monitoring-first ([#868](https://github.com/dryvist/ai-assistant-instructions/issues/868)) ([e557b21](https://github.com/dryvist/ai-assistant-instructions/commit/e557b211a049c940bb540f2ca0be1259df57c5eb))
+
 ## [1.29.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.28.2...v1.29.0) (2026-10-04)
 
 
