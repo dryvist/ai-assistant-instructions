@@ -26,7 +26,7 @@ via `paths:` frontmatter. Everything below is **not** auto-loaded — read the f
 | Choosing tools/subagent types | `tool-use.md` |
 | OKF bundle | `okf.md` |
 | Editing renovate config | `dependency-automation.md` |
-| Log/monitoring | `log-platform.md` |
+| Reading logs | `log-platform.md` |
 | Authoring a skill, rule, hook, agent, or harness setting | `cost-aware-authoring.md` |
 | Merging a change to behavior, config, a name, a version, or an endpoint in any repo | the private documentation source's `docs-sync` skill — find the pages that name the changed repo or file and bring them back in line in the same session |
 
