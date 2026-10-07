@@ -1,6 +1,6 @@
 ---
 name: infrastructure-conventions
-description: How managed infrastructure is created, changed, and addressed — rebuild over repair, no manual touches, FQDN never a literal IP. Read before changing any live guest or service.
+description: How managed infrastructure is created, changed, and addressed — rebuild over repair, no manual touches, FQDN never a literal IP, named launchd executables. Read before changing any live guest or service.
 ---
 
 # Infrastructure conventions
@@ -57,6 +57,16 @@ repository's agent instructions.
 
 High-volume network traffic must never traverse a virtualized container
 network.
+
+## macOS: named executables, never a generic interpreter
+
+A launchd job's program is a named, single-purpose executable — never `sh`,
+`bash`, `zsh`, `env`, `python` or `node`, and never the `command`/`script`
+shorthand that renders `/bin/sh -c`. A process that needs a privacy permission
+(screen, microphone, AppleEvents, full disk access, calendar) runs as its own
+binary, spawned with responsibility disclaimed so the grant is filed under that
+binary. Never request, suggest or accept a privacy grant for a shell, terminal
+or temp-path client.
 
 ## Diagnosing a fast connection failure
 
