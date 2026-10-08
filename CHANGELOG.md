@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.30.1...v1.30.2) (2026-10-08)
+
+
+### Bug Fixes
+
+* **ci:** grant actions: read to daily run limit callers ([#883](https://github.com/dryvist/ai-assistant-instructions/issues/883)) ([03d1911](https://github.com/dryvist/ai-assistant-instructions/commit/03d1911adf686387d784a5a9a5324437da4fae34))
+
 ## [1.30.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.30.0...v1.30.1) (2026-10-08)
 
 
