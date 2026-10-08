@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.30.0...v1.30.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* **ci:** run link checks after release publication ([#875](https://github.com/dryvist/ai-assistant-instructions/issues/875)) ([3da6183](https://github.com/dryvist/ai-assistant-instructions/commit/3da6183b57da60ee7e3be91daab212915ed03f2f))
+
 ## [1.30.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.29.0...v1.30.0) (2026-10-05)
 
 
