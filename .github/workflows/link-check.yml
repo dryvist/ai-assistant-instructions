@@ -2,7 +2,9 @@ name: Link Check
 
 on:
   push:
-    branches: [main, develop]
+    branches: [develop]
+  release:
+    types: [published]
 
 permissions:
   contents: read
