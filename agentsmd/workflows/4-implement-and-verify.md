@@ -8,7 +8,8 @@
 - Use structured parsers or project APIs when available.
 - If the plan is wrong, revise it in place and continue.
 - Delegate isolated implementation only when the result can be reviewed with a
-  compact diff and evidence.
+  compact diff and evidence (Codex after `codex-quota`, else `haiku-high`; see
+  `tool-use.md`).
 
 ## Tasks
 

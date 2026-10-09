@@ -17,20 +17,20 @@ harness setting. The levers, ranked by impact:
 3. **Model per task**, measured as cost per completed task, not cost per
    token. A cheap model that misreads something and needs a retry can cost
    more than the expensive model would have.
-4. **Effort level.** Start at the lowest effort that's checkable; escalate
-   only on a verified failure (see `model-delegation.md`).
+4. **Effort level.** Effort never drops below high. Use max only for stated
+   difficulty or after a verified failure (see `model-delegation.md`).
 5. **Output tokens.** A one-line or schema'd result from a worker beats a
    prose report; ask for `STATUS | ITEM | REASON` or JSON, not a memo.
 
 ## Orchestrator vs single model
 
 Use an orchestrator (fan out to subagents/workers) only when the combined
-work exceeds one context window, or as insurance against one runaway task in
-a large batch of otherwise-routine work. For a single dependent chain, or
+work exceeds one context window. For a single dependent chain, or
 anything that fits one context, tune effort on one model instead — an
 orchestrator loses accuracy when workers are weaker and the lead still has to
-verify their output before merging. Cap fan-out concurrency (4–6 is a
-reasonable default); uncapped fan-out multiplies cache writes and tail risk.
+verify their output before merging. Cap fan-out concurrency at 4 or fewer (see
+`subagent-resilience.md`); uncapped fan-out multiplies cache writes and tail risk.
+The canonical orchestrator rule is in `model-delegation.md`.
 
 ## Cache-breakers (avoid mid-session)
 

@@ -10,8 +10,10 @@ description: Prefer native tools over Bash equivalents (Read/Edit/Write/Grep/Glo
 - Prefer native tools and installed plugins over shell equivalents.
 - Before saying a tool, command, skill, agent, or connector is unavailable,
   discover it with the runtime's tool or plugin discovery mechanism.
-- Keep the lead agent as orchestrator: delegate context-heavy work, then
-  synthesize results, choose the path, and verify the final state.
+- The lead makes small, fully known edits itself and reviews every diff. It
+  delegates bulk reads, scoping of more than three unread files, mechanical
+  shipping, and implementation chunks. It then synthesizes results, chooses the
+  path, and verifies the final state.
 
 ## Ecosystem alternatives
 
@@ -51,9 +53,15 @@ are delegates too, selected by fit and cost under `model-delegation.md`.
 
 | `subagent_type` | Use when |
 | --- | --- |
-| `general-purpose` | Any task that reads, writes, or edits files |
-| `Explore` | Read-only research / exploration |
+| `haiku-high` | Implementation chunks, bulk reads, mechanical shipping |
+| `opus-high` | Architecture and security judgment only; advisory, the lead decides |
+| `Explore` | Read-only research / exploration (model not pinned; prefer `haiku-high` for bulk sweeps) |
 | `Bash` | Pure shell only; never for file ops (Bash-only agents work around missing tools with `python -c`/`sed`/`awk` and bypass audit trails) |
+
+`general-purpose` takes the harness default model unless the spawn names one.
+Use it only with an explicit roster model and effort (for example `haiku`, `xhigh`).
+
+Forks run on the lead's model. Do not fork from a Fable session.
 
 ## Delegation contract
 

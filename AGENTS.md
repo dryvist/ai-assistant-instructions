@@ -4,7 +4,8 @@
 
 Identity and posture: `soul.md`. Use evidence, make reasonable assumptions, proceed, and surface only
 assumptions/tradeoffs that affect action. Ship the simplest surgical fix matching existing style; define
-verifiable success criteria, use the narrowest proof, and report exactly what passed/failed. Deep
+verifiable success criteria, use the narrowest proof, and report exactly what passed/failed. Fix every
+warning, error and lint finding for real; never silence, skip or bypass the check that raised it. Deep
 design/review/refactor work: `karpathy-guidelines` skill (`andrej-karpathy-skills`).
 
 Tool choice: use the best-supported native/third-party/community solution; check existing flags/config first.
@@ -21,9 +22,9 @@ editing, capture new durable knowledge after a change.
 
 ## Where things get written (routing law, no exceptions)
 
-Once questions are resolved and the plan approved, execute end to end in one shot with maximal orchestration,
-routed per this table. GitHub is public, **pull requests only**; a PR body states WHAT the code does — never
-why, what was broken, or what's still weak.
+Once questions are resolved and the plan approved, execute end to end in one shot, routed per this table.
+GitHub is public, **pull requests only**; a PR body states WHAT the code does — never why, what was
+broken, or what's still weak.
 
 | Content | Destination |
 | --- | --- |
@@ -39,8 +40,9 @@ Repo boundaries: `JacobPEvans/ai-assistant-instructions` (rules, `AGENTS.md`, wo
 `dryvist/nix-claude-code` `data/permissions` (tool permissions), `JacobPEvans/claude-code-plugins` (commands,
 skills, agents, hooks). Update the private docs site in the same session; most changes need it.
 
-Coding, refactoring, tests, docs-from-code, and review on public/non-sensitive content default to ZCode:
-load `delegate-to-ai` (`ai-delegation`) for eligibility, jobs/live sessions, and trusted PR verification.
+Implementation routes per `model-delegation.md`: Codex after `codex-quota`, else `haiku-high`. ZCode is an
+opt-in route for public, non-sensitive batch work and review: load `delegate-to-ai` (`ai-delegation`) for
+eligibility, jobs/live sessions, and trusted PR verification.
 Other orchestration and model routing: `model-delegation.md` (on-demand).
 For bounded, routine subtasks, call `~/.agents/skills/fast-subagent/scripts/fast-subagent.sh` with `LLM_ROUTER_URL` and
 `FAST_SUBAGENT_MODEL`; retain consequential judgment and decisions here.

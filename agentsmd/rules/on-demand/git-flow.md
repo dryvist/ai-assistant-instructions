@@ -58,6 +58,14 @@ Report a promotion as complete only with both done.
 
 ## Working a change
 
+Before starting a change, check how far the default branches have diverged. Run
+`git fetch origin`, then `git rev-list --left-right --count origin/main...origin/develop`.
+The left number counts commits only on `main`; the right number counts commits only
+on `develop`. If either number is 25 or more, do not start a new PR. Sync first:
+promote `develop` to `main`, back-merge `main` into `develop`, or run `/refresh-repo`.
+Start the change only when both numbers are below 25. This check applies to git-flow
+repos only; a trunk repo has no `develop`.
+
 1. Create or switch to a fresh worktree based on `origin/develop`. Place it at
    the repo's top level as `.worktrees/<name>/` — beside the primary checkout,
    never nested inside it. Pass `git worktree add` an **absolute** destination
