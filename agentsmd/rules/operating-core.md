@@ -37,7 +37,7 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   Bash-only, for file edits. No ambient forge authentication — `gh` and equivalents aren't logged in; a probe
   finding no session is expected, never a blocker; mint a short-lived token from the credential store at call
   time, same shell that uses it. Bounded subtasks (summaries, classification, extraction, first-pass reads) go
-  to a capable delegate; raw model API calls use the shared model router at the cheapest capable tier,
+  to the roster in `tool-use.md`; raw model API calls use the shared model router at the cheapest capable tier,
   never your own provider credential (launching an operator-signed-in agent CLI is delegation, not a
   provider-credential call); fetch API model names from the router's contract.
 

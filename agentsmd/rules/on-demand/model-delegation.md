@@ -5,12 +5,11 @@ description: Offload bounded subtasks to the shared model router at the cheapest
 
 # Model delegation
 
-For public or otherwise non-sensitive coding, refactoring, tests, docs-from-code,
-and review, load `delegate-to-ai` in the `ai-delegation` plugin first. Its ZCode
-route takes precedence over the general tier order below: jobs for batch work,
-native Web/Server for interactive work. That sole authored skill owns the
-allowlist, sensitivity, gate, fallback, and trusted draft-PR verification rules;
-Claude Code and Codex consume the same copy. Subscription coding tokens are free.
+ZCode is an opt-in route for public or otherwise non-sensitive batch work and
+review. Load `delegate-to-ai` in the `ai-delegation` plugin first. That sole
+authored skill owns the allowlist, sensitivity, gate, fallback, and trusted
+draft-PR verification rules; Claude Code and Codex consume the same copy. Codex
+subscription quota is finite, and `codex-quota` gates every Codex call.
 
 Canonical doctrine: `prompt://dryvist/auto-ai-agent/model-delegation` in the
 central prompt catalog. That fragment is the public, vendor-neutral statement
@@ -19,9 +18,14 @@ inherit it automatically. This rule applies across agent harnesses.
 
 A delegate may be any agent CLI the operator runs: a Claude subagent, a
 `codex exec` run, or a local model through the router, chosen by fit and cost.
-The operator's current default executor is a private preference recorded outside this repository.
+Implementation: Codex after `codex-quota`; otherwise `haiku-high`. Lookups and
+bulk reads: the router first, then `haiku-high`.
 
-## Fable and Sol are pure orchestrators
+## Fable is a main-session planning model only
+
+No Fable subagents. Orchestrator-only behavior is for marathon coordination
+sessions; elsewhere the lead makes small, fully known edits and reviews every
+diff.
 
 Intent, architecture, risk, final review, minimal context — delegate
 checkable work downward only, lowest capable tier first, keeping the
@@ -41,12 +45,18 @@ raw model API calls use the router.
 Walk the tiers and stop at the first genuinely capable one:
 
 1. **Locally served models** — no marginal cost, no egress. Default for bulk,
-   repetitive, or privacy-sensitive work.
+   repetitive, or privacy-sensitive lookups and reads. Local tiers never write code.
 2. **Low-cost hosted models** through the router, free-tier endpoints included
-   where the material allows it.
+   where the material allows it. Lookups and reads.
 3. **Subscription-covered capacity exposed as a tool** — another harness made
-   callable, where the work is already paid for.
-4. **Premium hosted models** — only after a weaker tier was actually tried and
+   callable, where the work is already paid for. Codex is the current example,
+   used only after `codex-quota` passes (used_percent below 90, or the window has
+   reset). Implementation chunks go here first.
+4. **`haiku-high`** — implementation, bulk reads, and mechanical shipping, when
+   Codex is unavailable or over quota.
+5. **`opus-high`** — architecture and security judgment only, as advisory input.
+   The lead decides.
+6. **Premium hosted models** — only after a weaker tier was actually tried and
    demonstrably fell short.
 
 "Capable" judges the subtask, not the parent task. Do not escalate a whole job
@@ -67,6 +77,9 @@ the alias is the part promised to keep working.
 This applies to committed text too. A model id written into a rule, skill, doc
 table, or config is a second spelling that will drift from the registry — the
 exact duplication this doctrine exists to remove.
+
+Rules name the roster by agent type: `haiku-high` and `opus-high`. Model families
+appear only in the agent definition files (`agentsmd/agents/`).
 
 ## Know which limits bind you and which you must honour yourself
 
@@ -126,7 +139,8 @@ plugin of the [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code
 marketplace:
 
 - `delegate-to-ai` — ZCode coding eligibility, job/live commands, and trusted
-  draft-PR verification; the default for eligible token-heavy coding work.
+  draft-PR verification. The eligibility gate and draft-PR verification apply to
+  any external executor.
 - `local-subagents` — when a step is worth handing off at all, how to read
   the live model menu (speed, quality, best-for, context, price) from the
   router's own contract, and how to place the call.
