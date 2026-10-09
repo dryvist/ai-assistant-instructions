@@ -37,6 +37,7 @@ only a side quest" is not an exemption.
 Before creating a Vikunja task or Zammad ticket, search the tracker for an open
 item on the same work or fault. If one exists, comment on it or link it instead.
 A recurrence of a closed fault gets a new ticket that links the prior ones.
+Comment on a task once per milestone, never per step, and use bulk-update for multi-task changes.
 
 ## Finding the right project
 
