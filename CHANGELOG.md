@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.30.2...v1.31.0) (2026-10-09)
+
+
+### Features
+
+* haiku-high/opus-high roster, Codex-first delegation, shared PR and window rules ([#887](https://github.com/dryvist/ai-assistant-instructions/issues/887)) ([d8a8035](https://github.com/dryvist/ai-assistant-instructions/commit/d8a8035a5441094a0ccb1b434f7a18ed537d5085))
+
 ## [1.30.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.30.1...v1.30.2) (2026-10-08)
 
 
