@@ -6,7 +6,7 @@ window.
 ## Rules
 
 - Use the smallest useful exploration pass.
-- Delegate broad read-only sweeps to `Explore`.
+- Delegate broad read-only sweeps to `haiku-high`.
 - Ask only when the missing answer would materially change the outcome, safety,
   ownership, or reversibility.
 

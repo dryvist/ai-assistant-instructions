@@ -31,6 +31,8 @@ Open a ticket for any of these, however small:
 A weakness you *did* fix still gets a ticket if the fix is partial or if the
 same shape exists elsewhere.
 
+Search Zammad for an open ticket on the same fault first; see [[task-tracking]].
+
 ## Filing
 
 The first article sets how the ticket closes. Include:

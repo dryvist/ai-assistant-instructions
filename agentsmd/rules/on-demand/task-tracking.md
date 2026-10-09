@@ -34,6 +34,10 @@ a security finding, a credential detail, or internal topology goes to the
 incident tracker or the private docs site, not into a task description. "It is
 only a side quest" is not an exemption.
 
+Before creating a Vikunja task or Zammad ticket, search the tracker for an open
+item on the same work or fault. If one exists, comment on it or link it instead.
+A recurrence of a closed fault gets a new ticket that links the prior ones.
+
 ## Finding the right project
 
 Do not ask which project a task belongs to. Work it out:
@@ -70,16 +74,17 @@ One project, `Maintenance Windows` (project 54). One task equals one window.
 
 The contract:
 
-- **Check before you start.** Before non-trivial work on a live guest or
-  service — a converge, a reboot, a destroy-and-rebuild, any disruptive infra
-  change — look for an active window on that target. One open by someone else
-  means hands off: coordinate, do not barge in.
+- **Check before you start.** Before any prod change — a converge, a reboot, a
+  destroy-and-rebuild, any disruptive infra change — look for an active window
+  on that target. One open by someone else means hands off: coordinate, do not
+  barge in.
 - **An active window is `done == false` AND `due_date` in the future.** Judging
   by `done` alone answers "yes" almost always, because many tasks carry a
   placeholder date and never expire.
-- **Open a window before you start** that class of work, and close it or
-  comment when you finish.
-- **Reversible, local, read-only work needs no window.**
+- **Open a window before every prod change** (converge, apply, a promotion that
+  deploys, a live config edit) and close it after verification.
+- **Read-only work and non-prod changes need no window.**
+- Cluster bring-up and teardown windows are opened by that cluster's own automation.
 - **A window is a lease, and nothing tells you when yours lapses.** An expired
   window still reads `done == false`, so a casual glance says "open" while the
   claim has actually gone. Re-check your own window's `due_date` before you
