@@ -111,3 +111,5 @@ only from the repository's own lockfile or dev shell.
 - Topology is allowed inside the private repository's pages only. It never appears in PR titles, bodies, commits or
   branch names.
 - Never write a raw secret, private key or recovery code anywhere.
+
+Projects pilot probe.
