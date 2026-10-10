@@ -40,7 +40,10 @@ Detect it with `CLAUDE_CODE_REMOTE=true`.
 trusted-local class, even though they run as the operator. The restriction is instruction-only: a local thread
 runs in auto mode with the operator's shell, so the brief is not a boundary. Keep Remote Control off except for a
 named task, and give each connected checkout `.claude/settings.local.json` deny rules for credential CLIs, `ssh`,
-`security` and `sudo`.
+`security`, `/usr/bin/sudo`, `launchctl`, `reboot`, `shutdown`, `fdesetup`, `ifconfig`, `networksetup` and
+`sysctl`, plus an `ask` rule for `sudo`. Bash rules match command text only, so the macOS Touch ID or password
+prompt is the real gate. Approve each `sudo` prompt once; never choose the option that covers the rest of the
+thread.
 
 ## Client-repository fence
 
