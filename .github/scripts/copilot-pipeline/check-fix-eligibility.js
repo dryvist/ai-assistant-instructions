@@ -6,7 +6,7 @@ module.exports = async ({ github, context, core }) => {
 
   if (!run) { core.setOutput('should_run', 'false'); core.info('No workflow_run in payload'); return; }
   if (run.conclusion !== 'failure') { core.setOutput('should_run', 'false'); core.info(`Not a failure: ${run.conclusion}`); return; }
-  if (run.head_branch === 'main') { core.setOutput('should_run', 'false'); core.info('Main branch — handled by ci-doctor/ci-fail-issue'); return; }
+  if (run.head_branch === 'main') { core.setOutput('should_run', 'false'); core.info('Main branch — excluded from Copilot CI fixes'); return; }
   if (run.head_repository?.full_name !== `${owner}/${repo}`) { core.setOutput('should_run', 'false'); core.info('Fork — skipping'); return; }
 
   // Find PR for this branch

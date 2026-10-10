@@ -128,8 +128,8 @@ jobs:
       profile: docs
       token_limits: true
       # Staged: the gate's zizmor run is new for this repo and reports
-      # pre-existing findings in ci-fail-issue.yml (trigger),
-      # copilot-ci-fix.yml (trigger, App token) and issue-auto-resolve.yml
+      # pre-existing findings in copilot-ci-fix.yml (trigger, App token)
+      # and issue-auto-resolve.yml
       # (permissions). Flip this on once those are resolved.
       zizmor: false
       filters: |
