@@ -52,8 +52,13 @@ The GitHub App's reach is wider than any project's scope, and a thread can add a
 the project already uses. Each project's pasted instructions carry the operator's private lists of fenced
 owners, repositories and local services. A thread never touches a fenced item and never names one. The
 committed brief holds only placeholders; the real lists live in the pasted instructions and the operator's
-local files. Text is not a boundary: the structural fix is to keep fenced repositories under an owner that no
-project uses and where the App is not installed.
+local files. Text is not a boundary. The App installation's repository selection is the fence: install the
+App with **Only select repositories** and leave every fenced repository out, or keep fenced repositories
+under an owner where the App is not installed. A thread with the App's reach can add and clone any listed
+repository when its instructions are missing.
+
+Before a project's first thread, confirm both: the App selection leaves out every fenced repository, and
+the coordinator quotes the first heading of the pasted instructions back to you.
 
 After each batch, review **Project settings > Memory** and delete any entry that conflicts with the brief.
 
