@@ -31,7 +31,7 @@ on:
 
 jobs:
   review:
-    uses: JacobPEvans/ai-workflows/.github/workflows/claude-review.yml@main
+    uses: JacobPEvans/ai-workflows/.github/workflows/claude-review.yml@<40-hex-sha> # vX.Y.Z
     secrets: inherit
 ```
 
