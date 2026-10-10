@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.33.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.32.0...v1.33.0) (2026-10-10)
+
+
+### Features
+
+* **projects:** add roster agents and local sudo rule ([#910](https://github.com/dryvist/ai-assistant-instructions/issues/910)) ([c56fabd](https://github.com/dryvist/ai-assistant-instructions/commit/c56fabd4eb43eb66fc22ce1e84d804655fc8aba4))
+
+
+### Bug Fixes
+
+* **ci:** resolve actionlint findings in workflow scripts ([#916](https://github.com/dryvist/ai-assistant-instructions/issues/916)) ([19a61bb](https://github.com/dryvist/ai-assistant-instructions/commit/19a61bb14c215312614d4a02b81516abe84d1fc0))
+
 ## [1.32.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.31.0...v1.32.0) (2026-10-10)
 
 
