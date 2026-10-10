@@ -35,6 +35,8 @@ Search Zammad for an open ticket on the same fault first; see [[task-tracking]].
 
 ## Filing
 
+A Claude project cloud thread cannot file here; see `claude-projects.md`.
+
 The first article sets how the ticket closes. Include:
 
 - `type: outage | weakness | hygiene` — what kind of ticket this is.

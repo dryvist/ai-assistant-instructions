@@ -34,7 +34,8 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   `darwin-rebuild`/`nix build`, `gh run watch`) — launch it in the background with a monitor for completion
   *and* failure, one monitor per process, never a `sleep N`-poll.
 - **Tools:** prefer native tools over Bash (Read/Edit/Write/Grep/Glob); a delegate with file-editing tools, never
-  Bash-only, for file edits. No ambient forge authentication — `gh` and equivalents aren't logged in; a probe
+  Bash-only, for file edits. No ambient forge authentication (sole exception: `claude-projects.md`) — `gh` and
+  equivalents aren't logged in; a probe
   finding no session is expected, never a blocker; mint a short-lived token from the credential store at call
   time, same shell that uses it. Mint once per shell or batch and pass the token to children in memory;
   children never revoke an inherited token; never mint inside a poll or wait loop. Bounded subtasks (summaries, classification, extraction, first-pass reads) go

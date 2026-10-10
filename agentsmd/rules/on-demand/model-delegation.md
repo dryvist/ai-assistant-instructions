@@ -19,7 +19,8 @@ inherit it automatically. This rule applies across agent harnesses.
 A delegate may be any agent CLI the operator runs: a Claude subagent, a
 `codex exec` run, or a local model through the router, chosen by fit and cost.
 Implementation: Codex after `codex-quota`; otherwise `haiku-xhigh`. Lookups and
-bulk reads: the router first, then `haiku-xhigh`.
+bulk reads: the router first, then `haiku-xhigh`. Claude project threads are
+full sessions, not delegates: see `claude-projects.md`.
 
 ## Fable is a main-session planning model only
 
