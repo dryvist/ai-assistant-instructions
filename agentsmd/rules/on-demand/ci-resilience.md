@@ -45,6 +45,18 @@ caller and every template repository. Never patch one repo and leave the class a
 - **Dead references fail at PR time.** The gate resolves every `uses:` reference, so a renamed shared workflow
   breaks the PR that renames it, not a later run.
 
+## The same shapes beyond CI
+
+- **Shared things ship through a release channel and a canary.** That covers workflows, roles, prompt pins and
+  flake inputs. A consumer never tracks another repo's default branch.
+- **No static short-lived credential.** An agent renews it, or it is non-expiring and bound to a network range.
+  Spend budgets alert at 50%.
+- **Timeouts and rails come from measurement:** the measured p95 times a margin, recorded with its evidence.
+- **Contract tests load the inventory with no roles,** so group variables never depend on role defaults.
+- **Every source-of-truth question has a metric.** A decommissioned thing emits a positive signal; silence is not
+  proof.
+- **No required check depends on a single external service without a named fallback.**
+
 ## When a CI failure appears
 
 1. Classify it: is the same failure in other repos? Search the recent failed runs across the organization.
