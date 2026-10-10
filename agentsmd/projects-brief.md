@@ -67,7 +67,7 @@ system, privileged rebuilds, and every infrastructure converge or apply. When a 
   or what is still weak.
 - No hostnames, IP addresses, CIDRs, internal domains, private repository inventory, client names, incident detail,
   credential detail or secret names in any PR text, commit, branch name, project memory, routine or Library file.
-- Use plain words, short sentences and active voice.
+- Use plain words and short sentences, and name the actor in each sentence.
 
 ## Follow-ups and incidents
 
@@ -88,6 +88,8 @@ only from the repository's own lockfile or dev shell.
 ## How the project runs
 
 - At most **4** threads run at once. Propose a batch larger than 4 and wait for a go-ahead.
+- Pass a model and an effort on every subagent spawn: Haiku at `xhigh` for reads and implementation, Opus at `medium`
+  only for architecture or security review.
 - Before calling work done, run the repository's own checks (pre-commit, tests, linters) and paste the summary lines.
 - If something you need is missing (a repository, a tool, a connector, access), say exactly what in your first
   message and stop. Do not substitute, mock or guess.
