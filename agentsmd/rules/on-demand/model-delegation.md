@@ -19,7 +19,8 @@ inherit it automatically. This rule applies across agent harnesses.
 A delegate may be any agent CLI the operator runs: a Claude subagent, a
 `codex exec` run, or a local model through the router, chosen by fit and cost.
 Implementation: Codex after `codex-quota`; otherwise `haiku-xhigh`. Lookups and
-bulk reads: the router first, then `haiku-xhigh`.
+bulk reads: the router first, then `haiku-xhigh`. Claude project threads are
+full sessions, not delegates: see `claude-projects.md`.
 
 ## Fable is a main-session planning model only
 
@@ -109,7 +110,7 @@ A deployment that does enforce spend will say so. Trust what it states over
 this rule, which describes the general case.
 
 Free-tier endpoints frequently log prompt content provider-side. Public or
-synthetic material only — never secrets, credentials, private infrastructure
+made-up material only — never secrets, credentials, private infrastructure
 detail, or anyone's personal data. Anything that must not leave the estate goes
 to a locally served tier or is not delegated at all.
 

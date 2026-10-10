@@ -18,6 +18,7 @@ via `paths:` frontmatter. Everything below is **not** auto-loaded — read the f
 | Running a recurring/heartbeat loop | `loop-cadence.md` |
 | Delegating, or acting after a denial | `delegation-trust.md` |
 | Offloading to another model, or orchestrating/routing work | `model-delegation.md` |
+| Running multi-repo work as a Claude project, or working as a project thread | `claude-projects.md` |
 | Running a `/skill` | `skill-execution-integrity.md` |
 | Side quest, deferred work, maintenance window | `task-tracking.md` |
 | Outage or security weakness | `incident-management.md` |

@@ -132,6 +132,9 @@ To consolidate overlapping work onto one session:
 - Hand-back is the same protocol in reverse. The PR trail is the transfer
   record; no side channel required.
 
+Inside a Claude project, the coordinator handles hand-off: see
+`claude-projects.md`.
+
 ## Notifications (advisory)
 
 Publish steals, overrides, and hand-offs to the existing ntfy topic `coord`

@@ -24,9 +24,9 @@ Open a ticket for any of these, however small:
 - A weakness you noticed but did not fix — a fragile path, a silent failure
   mode, a guard that can be bypassed.
 - A near miss, including one you caused and recovered from.
-- A credential printed into any transcript, log, or session record, on any
+- A credential printed into any session history, log, or record, on any
   harness — a ticket is opened even when it was revoked immediately, because
-  the transcript keeps the value after the credential stops working.
+  the history keeps the value after the credential stops working.
 
 A weakness you *did* fix still gets a ticket if the fix is partial or if the
 same shape exists elsewhere.
@@ -34,6 +34,8 @@ same shape exists elsewhere.
 Search Zammad for an open ticket on the same fault first; see [[task-tracking]].
 
 ## Filing
+
+A Claude project cloud thread cannot file here; see `claude-projects.md`.
 
 The first article sets how the ticket closes. Include:
 

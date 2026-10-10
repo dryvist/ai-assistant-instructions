@@ -27,7 +27,8 @@ in committed text.
 
 Found something worth doing that is not this task? Record it in Vikunja with
 enough context for someone else to pick it up, then continue. Do not widen the
-current change to cover it, and do not silently drop it.
+current change to cover it, and do not silently drop it. A Claude project cloud
+thread hands its follow-ups off instead: see `claude-projects.md`.
 
 Keep the entry free of anything that belongs elsewhere: an incident narrative,
 a security finding, a credential detail, or internal topology goes to the

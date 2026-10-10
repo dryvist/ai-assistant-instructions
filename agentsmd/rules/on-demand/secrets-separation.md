@@ -46,6 +46,7 @@ Classify every harness by capability, and grant to the class:
 | --- | --- |
 | trusted | the credentials its declared work needs, minted per call |
 | untrusted | read-only leaf access to the secret store, and no forge write credential |
+| hosted cloud thread | forge write through the hosting provider's app only; no secret-store access (`claude-projects.md`) |
 
 An untrusted harness is one whose prompt, tool set, or output path is not fully
 controlled by the operator. Read-only *leaf* access means the exact paths it
