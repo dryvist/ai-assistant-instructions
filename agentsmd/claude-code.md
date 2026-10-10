@@ -2,6 +2,8 @@
 
 - **Lead rule.** Make small, fully known edits yourself and review every subagent diff. Delegate scoping of more
   than 3 unread files, bulk reads, Vikunja/Zammad triage, mechanical shipping and implementation chunks.
+  Brief every subagent completely: goal, exact scope, constraints, success check, output path and stop
+  conditions. A vague brief is your failure, not the subagent's (`operating-core.md`).
 - **Roster.** Subagents are `haiku-high` (Haiku, effort xhigh) for scouting, triage, shipping and implementation,
   and `opus-high` (Opus, effort high) for architecture and security judgment only. Forks inherit your model, so never fork from a Fable session.
   Write subagent reports to files; keep raw logs out of your context.

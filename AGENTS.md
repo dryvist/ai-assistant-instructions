@@ -43,6 +43,8 @@ skills, agents, hooks). Update the private docs site in the same session; most c
 Implementation routes per `model-delegation.md`: Codex after `codex-quota`, else `haiku-high`. ZCode is an
 opt-in route for public, non-sensitive batch work and review: load `delegate-to-ai` (`ai-delegation`) for
 eligibility, jobs/live sessions, and trusted PR verification.
+Brief every delegate completely: the parent owns the brief, and a vague brief is the parent's failure, never the
+delegate's (`operating-core.md`; checklist and examples in `model-delegation.md`).
 Other orchestration and model routing: `model-delegation.md` (on-demand).
 For bounded, routine subtasks, call `~/.agents/skills/fast-subagent/scripts/fast-subagent.sh` with `LLM_ROUTER_URL` and
 `FAST_SUBAGENT_MODEL`; retain consequential judgment and decisions here.

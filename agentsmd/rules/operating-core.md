@@ -30,6 +30,18 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   human-account grant. Big architectural decisions: ask first unless already chosen. A turn ending blocked on a
   person sends a push notification naming the decision. Routing law (incidents, private docs, everything
   else): `AGENTS.md`.
+- **Brief delegates completely.** The parent owns every brief, and no hook checks it. A subagent knows only its
+  prompt. It has none of this conversation, the files you read, the user's preferences, or what already failed.
+  What the brief leaves out, the delegate guesses or skips. That is the parent's failure, never the delegate's.
+  Every brief states: the goal and the intent behind it; the exact scope (repo, absolute paths, branch or
+  worktree) and what it must not touch; constraints, patterns to follow (file:line) and decisions already made;
+  the success criterion, with the exact check to run and what it must return; the output contract (report file
+  path, line cap, evidence required); where to stop and report instead of guessing (gates, refusals,
+  ambiguity); and how hard and how risky the task is, in plain words and never a model name. Routing picks the
+  cheapest tier the brief justifies, so a thin brief buys the weakest executor. Test: could a capable
+  contractor with no access to this conversation finish from the brief alone? If not, rewrite it. Never write
+  "as discussed", "the bug we found", "look into X", or "based on your findings, implement it". Handing off
+  your understanding is not handing off the work. Checklist and examples: `model-delegation.md`.
 - **Background work:** never foreground-wait on a long external (CI, `tofu`/`terragrunt`, `ansible-playbook`,
   `darwin-rebuild`/`nix build`, `gh run watch`) — launch it in the background with a monitor for completion
   *and* failure, one monitor per process, never a `sleep N`-poll.
