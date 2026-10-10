@@ -21,7 +21,7 @@ jobs:
     if: >-
       github.event.workflow_run.conclusion == 'failure' &&
       github.event.workflow_run.head_branch != 'main'
-    uses: dryvist/ai-workflows/.github/workflows/cc-ci-fix.yml@d1d335bdb010b47108374e8a6152a7926477a32a # v0.48.1
+    uses: dryvist/ai-workflows/.github/workflows/cc-ci-fix.yml@aa4ed4a4bca92a3094bf4432689ddc5d84b98649 # v0.48.3
     with:
       repo_context: "AI assistant instruction files and CLAUDE.md patterns for multi-model orchestration (Claude, Gemini, Copilot)"
       ci_structure: "ci-gate.yml (alls-green gate aggregating yaml-lint, markdownlint, spellcheck, cclint, token-limits, validate-instructions checks)"
