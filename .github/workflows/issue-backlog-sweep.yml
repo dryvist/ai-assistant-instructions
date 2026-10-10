@@ -1,6 +1,6 @@
 # Backlog activation. On a slow schedule (and on demand), Claude judges the
 # oldest UNTRIAGED open issues and labels the auto-resolvable ones `ai:ready`
-# via the App token, which fires issue-auto-resolve.yml (issues: labeled) to
+# via the App token, which fires copilot-issue-resolve.yml (issues: labeled) to
 # open the resolving PR. This is how the pre-existing backlog shrinks.
 #
 # The schedule is deliberate: a backlog is static state, not an event, so there

@@ -57,7 +57,8 @@ jobs:
 
       - name: Verify schema URL is accessible
         run: |
-          SCHEMA_URL=$(grep -o '"$schema": "[^"]*' .cclintrc.jsonc | cut -d'"' -f4)
+          SCHEMA_PATTERN=$(printf '%s' "\"\$schema\": \"[^\"]*")
+          SCHEMA_URL=$(grep -o "$SCHEMA_PATTERN" .cclintrc.jsonc | cut -d'"' -f4)
           echo "Schema URL: ${SCHEMA_URL}"
           if curl -sf "${SCHEMA_URL}" > /dev/null 2>&1; then
             echo "✅ Schema URL is accessible"
