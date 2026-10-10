@@ -11,11 +11,10 @@ caller and every template repository. Never patch one repo and leave the class a
 
 ## Rules
 
-1. **Never call a shared workflow at `@main`.** A merge to the shared repo's default branch is development, not a
-   release. First-party shared workflows publish a floating major release tag (`v1`). Only a promotion job moves
-   it, and only after a caller canary passes (one fixture caller per stack profile). A tag ruleset stops anyone
-   else from moving it. Rollback is one tag move. A breaking change ships as the next major, and Renovate opens
-   the upgrade PRs. Third-party actions stay pinned by commit SHA, bumped by Renovate's digest manager.
+1. **Pin dryvist workflow refs to a full commit SHA.** Call a dryvist reusable workflow as
+   `uses: dryvist/<repo>/.github/workflows/<file>@<40-hex-sha> # vX.Y.Z`. Never `@main`, `@develop`, or a bare
+   `@vN`. Renovate moves the SHA and the comment together, and a person merges a major bump. Third-party actions
+   stay pinned by commit SHA, bumped by Renovate's digest manager.
 2. **An unmapped path runs the full suite.** A path-scope selector never fails on a path it doesn't know, and never
    silently skips the real checks. Unknown means everything for that stack.
 3. **Assert against the generated set, never a literal count.** A test that pins "95 entries" breaks on every

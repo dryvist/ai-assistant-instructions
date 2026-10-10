@@ -53,9 +53,9 @@ are delegates too, selected by fit and cost under `model-delegation.md`.
 
 | `subagent_type` | Use when |
 | --- | --- |
-| `haiku-high` | Implementation chunks, bulk reads, mechanical shipping |
-| `opus-high` | Architecture and security judgment only; advisory, the lead decides |
-| `Explore` | Read-only research / exploration (model not pinned; prefer `haiku-high` for bulk sweeps) |
+| `haiku-xhigh` | Implementation chunks, bulk reads, mechanical shipping |
+| `opus-medium` | Architecture and security judgment only; advisory, the lead decides |
+| `Explore` | Read-only research / exploration (model not pinned; prefer `haiku-xhigh` for bulk sweeps) |
 | `Bash` | Pure shell only; never for file ops (Bash-only agents work around missing tools with `python -c`/`sed`/`awk` and bypass audit trails) |
 
 `general-purpose` takes the harness default model unless the spawn names one.

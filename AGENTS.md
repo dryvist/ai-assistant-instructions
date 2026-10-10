@@ -36,11 +36,11 @@ Never put an incident narrative, security finding, credential/secret detail, unp
 topology, host name, or outage timeline in a GitHub issue, PR, comment, or commit message — "side quest" is
 not an exemption.
 
-Repo boundaries: `JacobPEvans/ai-assistant-instructions` (rules, `AGENTS.md`, workflows),
-`dryvist/nix-claude-code` `data/permissions` (tool permissions), `JacobPEvans/claude-code-plugins` (commands,
+Repo boundaries: `dryvist/ai-assistant-instructions` (rules, `AGENTS.md`, workflows),
+`dryvist/nix-claude-code` `data/permissions` (tool permissions), `dryvist/claude-code-plugins` (commands,
 skills, agents, hooks). Update the private docs site in the same session; most changes need it.
 
-Implementation routes per `model-delegation.md`: Codex after `codex-quota`, else `haiku-high`. ZCode is an
+Implementation routes per `model-delegation.md`: Codex after `codex-quota`, else `haiku-xhigh`. ZCode is an
 opt-in route for public, non-sensitive batch work and review: load `delegate-to-ai` (`ai-delegation`) for
 eligibility, jobs/live sessions, and trusted PR verification.
 Other orchestration and model routing: `model-delegation.md` (on-demand).

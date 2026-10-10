@@ -18,8 +18,9 @@ inherit it automatically. This rule applies across agent harnesses.
 
 A delegate may be any agent CLI the operator runs: a Claude subagent, a
 `codex exec` run, or a local model through the router, chosen by fit and cost.
-Implementation: Codex after `codex-quota`; otherwise `haiku-high`. Lookups and
-bulk reads: the router first, then `haiku-high`.
+Implementation: Codex after `codex-quota`; otherwise `haiku-xhigh`. Lookups and
+bulk reads: the router first, then `haiku-xhigh`. Claude project threads are
+full sessions, not delegates: see `claude-projects.md`.
 
 ## Fable is a main-session planning model only
 
@@ -50,11 +51,11 @@ Walk the tiers and stop at the first genuinely capable one:
    where the material allows it. Lookups and reads.
 3. **Subscription-covered capacity exposed as a tool** — another harness made
    callable, where the work is already paid for. Codex is the current example,
-   used only after `codex-quota` passes (used_percent below 90, or the window has
+   used only after `codex-quota` passes (used_percent below 95, or the window has
    reset). Implementation chunks go here first.
-4. **`haiku-high`** — implementation, bulk reads, and mechanical shipping, when
+4. **`haiku-xhigh`** — implementation, bulk reads, and mechanical shipping, when
    Codex is unavailable or over quota.
-5. **`opus-high`** — architecture and security judgment only, as advisory input.
+5. **`opus-medium`** — architecture and security judgment only, as advisory input.
    The lead decides.
 6. **Premium hosted models** — only after a weaker tier was actually tried and
    demonstrably fell short.
@@ -78,8 +79,9 @@ This applies to committed text too. A model id written into a rule, skill, doc
 table, or config is a second spelling that will drift from the registry — the
 exact duplication this doctrine exists to remove.
 
-Rules name the roster by agent type: `haiku-high` and `opus-high`. Model families
-appear only in the agent definition files (`agentsmd/agents/`).
+Rules name the roster by agent type: `haiku-xhigh` and `opus-medium`. Model families
+appear only in the agent definition files of the prompt catalog
+(`auto-ai-agent/claude-code/agents/`).
 
 ## Know which limits bind you and which you must honour yourself
 
@@ -108,7 +110,7 @@ A deployment that does enforce spend will say so. Trust what it states over
 this rule, which describes the general case.
 
 Free-tier endpoints frequently log prompt content provider-side. Public or
-synthetic material only — never secrets, credentials, private infrastructure
+made-up material only — never secrets, credentials, private infrastructure
 detail, or anyone's personal data. Anything that must not leave the estate goes
 to a locally served tier or is not delegated at all.
 

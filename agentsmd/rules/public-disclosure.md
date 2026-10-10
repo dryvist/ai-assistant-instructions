@@ -19,6 +19,7 @@ flows, what depends on what — nor gesture at one ("the internal data repo"). T
 where routing/clarity needs it. Topology is as sensitive as a literal secret. Environment-specific identity
 goes behind a variable sourced from the runtime secret store — the committed reference is only the variable
 name. Avoid naming an individual lower-trust/self-hosted component when a whole-system description suffices.
+Claude project settings and memory follow this rule too: `claude-projects.md`.
 
 **Documentation: private source only, never straight to public.** All AI-authored documentation goes to the
 private documentation source; an agent never classifies content as public/private and never writes to the
