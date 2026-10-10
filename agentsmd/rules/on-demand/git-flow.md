@@ -30,10 +30,11 @@ or `git remote show origin`).
 | `release/*` | Optional final stabilization | Branched from `develop`; merge-committed to `main`; back-merged to `develop` |
 | `hotfix/*` | Urgent production fix | Branched from `main`; PR to `main`, merge commit; back-merged to `develop` |
 
-Every merge into `main` produces a release: release-please watches `main`,
-opens the release PR against `main`, and tags on merge. The release PR is
-merge-committed like every other PR into `main` — it is not a squash
-exception. Never merge to `main` without intending a release.
+Every merge into `main` feeds release-please, which watches `main` and opens the
+release PR against `main`. A person merges the release PR when the batch of changes
+is ready; merging it tags the release, and it is never auto-merged. The release PR
+is merge-committed like every other PR into `main` — it is not a squash exception.
+Never merge to `main` without intending a release.
 
 Normal promotion is a merge-commit PR from `develop` to `main`. Use
 `release/*` only when final stabilization needs its own branch; then
@@ -48,11 +49,13 @@ complete only when:
 1. **The merge lands** (merge commit; release-please takes over versioning).
 2. **The deployment file moves.** Any consumer that pins this repo (a flake
    input in another repo's `flake.lock`, an inventory pin, a version file)
-   must pick up the promoted rev on the consumer's own **deploy branch** —
-   not just its default branch. Where a dispatch workflow automates the bump
-   (e.g. `dispatch-flake-consumers`), verify it fired AND the resulting
-   consumer PR merged; if the consumer is itself git-flow, its own
-   develop→main promotion is part of this chain.
+   must pick up the promoted rev through a bump PR on the consumer's own
+   **deploy branch** — not just its default branch. A dispatch workflow
+   (e.g. `dispatch-flake-consumers`) notifies the consumer, which opens that
+   bump PR. Verify the dispatch fired AND the bump PR merged: patch bumps
+   auto-merge after the Merge Gate; a person merges minor and major bumps.
+   If the consumer is itself git-flow, its own develop→main promotion is part
+   of this chain.
 
 Report a promotion as complete only with both done.
 

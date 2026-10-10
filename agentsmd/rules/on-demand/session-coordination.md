@@ -145,7 +145,7 @@ Advisory only — never a gate.
 
 A develop→main promotion is a two-step contract (see the git-flow rule):
 merge, then the deployment-file move in every consumer (on the consumer's
-deploy branch). The promoting session owns both steps — do not hand back or
+deploy branch). The promoting session verifies both steps — do not hand back or
 report done after the merge alone.
 
 ## Crash recovery expectations
