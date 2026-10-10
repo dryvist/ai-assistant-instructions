@@ -31,8 +31,8 @@ in the `secrets-separation.md` sense, because project memory and PR comments rea
 - **No secret-store access.** It never receives an internal credential or secret-zero value. Cloud environment
   variables never hold a secret. A network secret may hold only a scoped token for an external, public service.
 - **No local hooks.** Multi-repository threads run none of the repositories' hooks or permission rules. CI gates
-  are the only enforced checks. A repository whose PRs do not run the disclosure gate is not eligible for a
-  project; make the gate a required check once the org rulesets exist.
+  are the only enforced checks. A public repository whose PRs do not run the disclosure gate is not eligible
+  for a project; make the gate a required check once the org rulesets exist.
 
 Detect it with `CLAUDE_CODE_REMOTE=true`.
 
