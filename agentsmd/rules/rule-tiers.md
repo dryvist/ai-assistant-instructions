@@ -14,7 +14,7 @@ via `paths:` frontmatter. Everything below is **not** auto-loaded — read the f
 | Branching, PR, releasing | `git-flow.md` |
 | Writing or fixing a CI workflow, or a CI run failed | `ci-resilience.md` |
 | Claiming a shared resource | `session-coordination.md` |
-| Spawning subagents | `subagent-resilience.md` |
+| Spawning subagents | `subagent-resilience.md`, and `model-delegation.md` for what every brief must state |
 | Running a recurring/heartbeat loop | `loop-cadence.md` |
 | Delegating, or acting after a denial | `delegation-trust.md` |
 | Offloading to another model, or orchestrating/routing work | `model-delegation.md` |

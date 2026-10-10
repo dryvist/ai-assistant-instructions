@@ -37,7 +37,8 @@ fallback when that happens.
 A live agent producing nothing is a worse failure than a dead one: it looks
 healthy, so the lead keeps waiting. **Silence is no signal, never progress.**
 
-- **Push within 30 minutes, even unfinished.** State it in every brief. A
+- **Push within 30 minutes, even unfinished.** State it in every brief (full brief
+  checklist: `model-delegation.md`, "Brief the delegate"). A
   branch on the remote is the only proof work exists — unpushed work is
   invisible to every PR-based check and indistinguishable from no work.
 - **Verify by artifact, never by asking.** Before sending a status message,

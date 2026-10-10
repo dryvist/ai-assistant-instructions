@@ -35,6 +35,55 @@ merging delegated work. See `premium-agent-orchestration` skill
 (`ai-delegation`) for the full orchestrator-vs-single-model decision, and
 `subagent-resilience.md` for probe-before-fan-out.
 
+## Brief the delegate
+
+The parent owns every brief. No hook checks it. A delegate starts with a blank context: it has not seen this
+conversation, the files you read, the user's preferences, or what already failed. Whatever the brief omits, the
+delegate guesses or skips. When that goes wrong, the parent wrote a bad brief. The delegate did not fail.
+
+This matters more with routing. A router or classifier reads the brief to pick the cheapest tier that fits. A thin
+brief looks easy, so it buys the weakest executor. A Codex delegate sees nothing but the brief.
+
+Every brief states:
+
+1. **Goal and intent.** What to achieve and why, in one or two sentences. The reason lets the delegate make small
+   calls without asking.
+2. **Scope.** The repo, absolute paths, and the branch or worktree. Name what it must not touch.
+3. **Context it cannot see.** Constraints, patterns to follow (`file:line`), decisions already made, and what
+   already failed. Paste the facts. Do not point at the conversation.
+4. **Success criterion.** The exact command to run and the result that means done.
+5. **Output contract.** The report file path, a line cap for the reply, and the evidence required (command plus
+   trimmed output, `file:line`).
+6. **Stop conditions.** When to stop and report instead of guessing: a gate, a refusal, an ambiguity, a second
+   failure. Add the push deadline from `subagent-resilience.md`.
+7. **Difficulty and risk, in plain words.** "Mechanical, one file, low risk" or "needs judgment, touches auth".
+   Never a model name. The router chooses the tier.
+
+The test: could a capable contractor with no access to this conversation finish the task from the brief alone? If
+not, rewrite the brief before you spawn.
+
+Never write "as discussed", "the bug we found", "same as before", "look into X", or "based on your findings,
+implement it". The last one hands off your understanding, which is the part you cannot delegate. Do the
+synthesis, then delegate the work.
+
+A bad brief:
+
+> Fix the failing test we found in auth and push it.
+
+A good brief:
+
+> Goal: make `test_refresh_token_expiry` pass without changing its assertions. It blocks the release PR.
+> Scope: repo `<owner>/<repo>`, worktree `/abs/path/.worktrees/fix-token-expiry`, branch `fix/token-expiry`. Edit
+> only `src/auth/session.py`. Do not touch `tests/` or `pyproject.toml`.
+> Context: the failure is a UTC-versus-local comparison at `src/auth/session.py:88`. `utc_now()` already exists in
+> `src/util/time.py`. Use it. Do not add a dependency.
+> Done when: `pytest tests/auth -q` exits 0 and `git diff --stat` lists only `session.py`.
+> Report: write the diff, the command output, and any assumption to `<scratchpad>/report-token.md`. Reply in 10
+> lines or fewer.
+> Stop and report instead of guessing if another test fails, the fix needs a new dependency, or you need a
+> credential. Push the branch within 30 minutes, even unfinished.
+> Difficulty: mechanical, one file, low risk.
+
 ## Delegate before you spend your own capacity
 
 A bounded subtask does not need the model reasoning about the whole task.
