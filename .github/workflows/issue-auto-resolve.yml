@@ -44,15 +44,6 @@ jobs:
     with:
       issue_number: ${{ inputs.issue_number }}
 
-  resolve-issue:
-    if: false
-    needs: [run-triage]
-    uses: dryvist/ai-workflows/.github/workflows/cc-issue-resolver.yml@d1d335bdb010b47108374e8a6152a7926477a32a # v0.48.1
-    secrets: inherit
-    with:
-      repo_context: "AI assistant instruction files and CLAUDE.md patterns for multi-model orchestration"
-      issue_number: ${{ inputs.issue_number }}
-
   add-ready-label:
     needs: [run-triage]
     if: >-
