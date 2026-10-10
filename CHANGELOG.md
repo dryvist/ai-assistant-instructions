@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.31.0...v1.32.0) (2026-10-10)
+
+
+### Features
+
+* **rules:** add the on-demand ci-resilience rule ([#897](https://github.com/dryvist/ai-assistant-instructions/issues/897)) ([b0e9039](https://github.com/dryvist/ai-assistant-instructions/commit/b0e9039f393e0b34bc84a0ed121690e82108330d))
+
 ## [1.31.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.30.2...v1.31.0) (2026-10-09)
 
 
