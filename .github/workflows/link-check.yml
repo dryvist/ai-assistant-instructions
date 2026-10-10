@@ -33,6 +33,9 @@ jobs:
           args: >-
             --verbose
             --no-progress
+            --max-concurrency 8
+            --max-retries 5
+            --retry-wait-time 10
             --accept '200..=299,301,302,308'
             --exclude 'shields.io'
             --exclude 'github.com/.*/badge'
