@@ -123,7 +123,7 @@ jobs:
       # actions: write must be granted here or the run fails at graph
       # validation (startup_failure).
       actions: write
-    uses: dryvist/.github/.github/workflows/_ci-gate.yml@main
+    uses: dryvist/.github/.github/workflows/_ci-gate.yml@v1
     with:
       token_limits: true
       # Staged: the gate's zizmor run is new for this repo and reports
