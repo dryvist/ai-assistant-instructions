@@ -87,7 +87,8 @@ Project memory, the Library and Overview hold project context only. They are nev
 Never run: `--no-verify` or anything that disables or skips git hooks; `gh auth`, `gh secret`, `gh repo delete`,
 `gh repo archive`; `npm publish`, `cargo publish`; `git push --force` to a shared branch; recursive deletes outside
 the clone. Never read private keys or `.env` files. Never create or edit `.github/workflows/**`,
-`.github/actions/**` or `.github/CODEOWNERS` unless the task names that file. Never add a new dependency; install
+`.github/actions/**` or `.github/CODEOWNERS` unless the task names that file. Never create or edit any
+`.claude/settings.json` or `.claude/settings.local.json`. Never add a new dependency; install
 only from the repository's own lockfile or dev shell.
 
 ## How the project runs
