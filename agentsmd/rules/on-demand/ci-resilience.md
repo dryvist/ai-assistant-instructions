@@ -20,13 +20,18 @@ caller and every template repository. Never patch one repo and leave the class a
    silently skips the real checks. Unknown means everything for that stack.
 3. **Assert against the generated set, never a literal count.** A test that pins "95 entries" breaks on every
    legitimate addition.
-4. **Every job sets `timeout-minutes`.** The gate workflow sets `concurrency` with `cancel-in-progress: true`. A job
-   waiting on a missing runner fails loudly after its timeout instead of leaving the gate pending.
+4. **Every job sets `timeout-minutes`,** and the gate workflow sets `concurrency` with `cancel-in-progress: true`.
+   A timeout bounds run time, not queue time. So the gate's orchestration jobs (change detection, watchdog, the
+   aggregator) run on a runner pool independent of the work pool. A dead pool then fails the work jobs instead of
+   leaving the gate pending.
 5. **Advisory AI jobs never block a merge.** On a gateway, budget or rate-limit error, the job ends neutral and
    raises an ops alert. Each purpose uses its own key with a daily budget; no shared CI key.
 6. **Pre-commit runs exactly the CI hooks,** from one shared configuration, so nothing surprises at CI time.
 7. **No `sudo` in workflows.** Install what a job needs through the runner image or a setup action.
 8. **Never bypass or disable a check to get green.** Fix the root cause, at the shared layer when it is a class.
+9. **CI health is observable.** Every workflow run (repo, workflow, job, conclusion, duration, runner, queue time)
+   flows through the observability pipeline to every sink that can hold it. A new failure class, or a rise in the
+   failure rate per repo or workflow, alerts. CI silence is not CI health.
 
 ## Shape
 
@@ -62,4 +67,5 @@ caller and every template repository. Never patch one repo and leave the class a
 1. Classify it: is the same failure in other repos? Search the recent failed runs across the organization.
 2. A class goes to the shared workflow repository, with a test or a caller run proving the fix. One repo's own
    defect is fixed in that repo.
-3. Roll the fix to every caller and template, and record the lesson in the shared repository's `AGENTS.md`.
+3. Roll the fix to every caller and template. Update this rule if the class is new, and the private docs through
+   `docs-sync`.
