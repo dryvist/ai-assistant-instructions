@@ -1,0 +1,71 @@
+name: Issue Auto-Resolve
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue number to resolve"
+        required: true
+        type: string
+  issues:
+    types: [opened]
+
+permissions:
+  actions: write
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: issue-auto-resolve-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      issues: write
+    steps:
+      - name: Dispatch as workflow_dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUM: ${{ github.event.issue.number }}
+        run: gh workflow run "$WORKFLOW_NAME" --repo "$REPO" -f issue_number="$ISSUE_NUM"
+
+  run-triage:
+    if: github.event_name == 'workflow_dispatch'
+    uses: dryvist/ai-workflows/.github/workflows/issue-triage.yml@d1d335bdb010b47108374e8a6152a7926477a32a # v0.48.1
+    secrets: inherit
+    with:
+      issue_number: ${{ inputs.issue_number }}
+
+  add-ready-label:
+    needs: [run-triage]
+    if: >-
+      always() &&
+      github.event_name == 'workflow_dispatch' &&
+      (needs.run-triage.result == 'success' || needs.run-triage.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout ai-assistant-instructions scripts
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          sparse-checkout: .github/scripts
+          path: .repo-scripts
+
+      - name: Add ai:ready label if eligible
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const run = require('./.repo-scripts/.github/scripts/copilot-pipeline/add-ready-label.js');
+            await run({ github, context, core });
