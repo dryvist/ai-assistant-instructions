@@ -29,7 +29,14 @@ caller and every template repository. Never patch one repo and leave the class a
 6. **Pre-commit runs exactly the CI hooks,** from one shared configuration, so nothing surprises at CI time.
 7. **No `sudo` in workflows.** Install what a job needs through the runner image or a setup action.
 8. **Never bypass or disable a check to get green.** Fix the root cause, at the shared layer when it is a class.
-9. **CI health is observable.** Every workflow run (repo, workflow, job, conclusion, duration, runner, queue time)
+9. **Nested calls stay inside the called release.** A shared workflow calls its own nested workflows as
+   `./.github/workflows/<file>`, which runs at the called commit. `<org>/<repo>/...@main` runs the default branch
+   under every pinned caller and escapes the canary. Reach a composite action in the same repo by sparse-checking
+   that repo out at `job.workflow_sha` into a path, then `uses: ./<path>/.github/actions/<name>`.
+10. **Shared local resources get admission control.** Heavy local hooks (ansible-lint, molecule) take one
+   machine-wide lock, so parallel sessions queue instead of overloading the workstation. A wait loop never polls
+   with a process-name pattern that also matches its own command line.
+11. **CI health is observable.** Every workflow run (repo, workflow, job, conclusion, duration, runner, queue time)
    flows through the observability pipeline to every sink that can hold it. A new failure class, or a rise in the
    failure rate per repo or workflow, alerts. CI silence is not CI health.
 
@@ -54,6 +61,8 @@ caller and every template repository. Never patch one repo and leave the class a
 
 - **Shared things ship through a release channel and a canary.** That covers workflows, roles, prompt pins and
   flake inputs. A consumer never tracks another repo's default branch.
+- **A new secret path ships switched off** until the policy that grants its read is live. A denied read stops
+  every converge that loads that secret domain, not only the role that wanted the path.
 - **No static short-lived credential.** An agent renews it, or it is non-expiring and bound to a network range.
   Spend budgets alert at 50%.
 - **Timeouts and rails come from measurement:** the measured p95 times a margin, recorded with its evidence.
