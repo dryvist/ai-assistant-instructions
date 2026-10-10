@@ -110,7 +110,7 @@ A deployment that does enforce spend will say so. Trust what it states over
 this rule, which describes the general case.
 
 Free-tier endpoints frequently log prompt content provider-side. Public or
-synthetic material only — never secrets, credentials, private infrastructure
+made-up material only — never secrets, credentials, private infrastructure
 detail, or anyone's personal data. Anything that must not leave the estate goes
 to a locally served tier or is not delegated at all.
 
