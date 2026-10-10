@@ -12,6 +12,7 @@ via `paths:` frontmatter. Everything below is **not** auto-loaded — read the f
 | When you are… | Read |
 | --- | --- |
 | Branching, PR, releasing | `git-flow.md` |
+| Writing or fixing a CI workflow, or a CI run failed | `ci-resilience.md` |
 | Claiming a shared resource | `session-coordination.md` |
 | Spawning subagents | `subagent-resilience.md` |
 | Running a recurring/heartbeat loop | `loop-cadence.md` |
