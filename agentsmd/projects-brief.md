@@ -39,9 +39,10 @@ permission or thread limit.
 
 A local thread works only inside its folder and that repository's own dev shell. It never runs a secret-store,
 bootstrap-store or cloud-credential CLI, never mints a forge token, never uses SSH, never reads the keychain or
-any file outside its folder, never calls the task-tracker, incident or log tools, and never runs `sudo`, a
-privileged rebuild, a reboot, or any converge or apply. When a step needs one, report
-`local-only, interactive session needed: <capability>` and stop.
+any file outside its folder, never calls the task-tracker, incident or log tools, and never runs a reboot or any
+converge or apply. It runs `sudo` or a privileged rebuild only after the operator writes in that thread that they
+are at the Mac and asks for that step; the permission prompt and the OS prompt still gate each run. When a step
+needs anything else on this list, report `local-only, interactive session needed: <capability>` and stop.
 
 ## Local-only capabilities
 
@@ -88,8 +89,9 @@ only from the repository's own lockfile or dev shell.
 ## How the project runs
 
 - At most **4** threads run at once. Propose a batch larger than 4 and wait for a go-ahead.
-- Pass a model and an effort on every subagent spawn: Haiku at `xhigh` for reads and implementation, Opus at `medium`
-  only for architecture or security review.
+- Spawn subagents only as the `haiku-xhigh` agent for reads and implementation, or the `opus-medium` agent only for
+  architecture or security review. Both ship in ai-assistant-instructions `.claude/agents/`. Where that repository
+  is not in the project, pass the same model and effort on every spawn: Haiku at `xhigh`, Opus at `medium`.
 - Before calling work done, run the repository's own checks (pre-commit, tests, linters) and paste the summary lines.
 - If something you need is missing (a repository, a tool, a connector, access), say exactly what in your first
   message and stop. Do not substitute, mock or guess.

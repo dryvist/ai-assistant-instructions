@@ -39,8 +39,9 @@ Detect it with `CLAUDE_CODE_REMOTE=true`.
 **Local threads are a restricted class**: repository-local work only, per the brief. They do not inherit the
 trusted-local class, even though they run as the operator. The restriction is instruction-only: a local thread
 runs in auto mode with the operator's shell, so the brief is not a boundary. Keep Remote Control off except for a
-named task, and give each connected checkout `.claude/settings.local.json` deny rules for credential CLIs, `ssh`,
-`security` and `sudo`.
+named task, and give each connected checkout `.claude/settings.local.json` deny rules for credential CLIs, `ssh`
+and `security`, plus an `ask` rule for `sudo`. A local thread runs `sudo` only after the operator confirms in the
+thread that they are at the Mac, so the `ask` prompt is the real gate.
 
 ## Client-repository fence
 
