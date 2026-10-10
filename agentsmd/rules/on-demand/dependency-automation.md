@@ -12,26 +12,30 @@ diverge from it per repo without a recorded reason. Canonical, fuller docs:
 
 ## The model
 
-**Minor/patch updates auto-merge publisher-agnostically** — any package, any ecosystem,
-any publisher — after a 3-day stabilization + green CI. **Trust tiers gate ONLY majors and
-PR-creation cadence, never minor/patch.**
+**Minor/patch updates auto-merge publisher-agnostically** — any non-dryvist package, any
+ecosystem, any publisher — after a 3-day stabilization + green CI. **Trust tiers gate ONLY
+majors and PR-creation cadence, never minor/patch.** `dryvist/**` bumps follow the first-party
+rows below.
 
 | Update | Scope | PR cadence | Auto-merge |
 | --- | --- | --- | --- |
-| Minor / patch | ANY package, ANY ecosystem | twice-weekly (Mon/Thu), 3d age | **yes** — publisher-agnostic, after green CI |
-| First-party (any type) | `dryvist/**`, `JacobPEvans*/**` | immediate | yes, incl. major |
+| Minor / patch | ANY non-dryvist package, ANY ecosystem | twice-weekly (Mon/Thu), 3d age | **yes** — publisher-agnostic, after green CI |
+| First-party (any type) | `dryvist/**` | immediate | patch only, after the Merge Gate; minor and major: a person merges |
+| First-party (any type) | `JacobPEvans*/**` | immediate | yes, incl. major |
 | Trusted-org major | curated ~50-org allowlist | twice-weekly (Mon/Thu), 3d age | no — 3-day review PR (`dep:review`) |
 | Other major | everything else | weekly, 30d age | no — 30-day hold, review |
 | Security / CVE | any vulnerability alert | immediate (0-day PR) | minor/patch: yes; **major: review** |
 
 ## Rules of thumb
 
-- **Never ship old versions** — freshness is the default; a stale pin is drift to eliminate.
-- **Minor/patch is publisher-agnostic** — a non-major SemVer bump + green CI (the Merge Gate,
-  plus the deterministic `dependency-review` supply-chain scan on public repos) is sufficient;
-  trust is not required to auto-merge minor/patch.
-- **Majors never auto-merge except first-party** — a compatible-looking version is not a
-  compatible API. Trusted-org majors get a 3-day review PR; all others a 30-day hold.
+- **Bumps arrive as pull requests.** Renovate opens a PR for each new release; a pin stays on
+  its current version until that PR merges.
+- **Minor/patch is publisher-agnostic** for non-dryvist packages — a non-major SemVer bump +
+  green CI (the Merge Gate, plus the deterministic `dependency-review` supply-chain scan on
+  public repos) is sufficient; trust is not required to auto-merge minor/patch.
+- **Majors never auto-merge, except `JacobPEvans*` first-party** — a compatible-looking version
+  is not a compatible API. Trusted-org majors get a 3-day review PR; all others a 30-day hold.
+  `dryvist/**` majors wait for a person.
 - **Security majors open for review** — `vulnerabilityAlerts` surfaces a 0-day PR, but a
   security *major* is still reviewed (only non-major security auto-merges fast).
 - **Supply-chain safety = the deterministic `dependency-review` native-gate** inside the
@@ -46,7 +50,9 @@ PR-creation cadence, never minor/patch.**
   version tag, do not invent one — pick an action that has release tags, or record an explicit
   exception; (2) an explicit Renovate tag when Renovate cannot infer the pin from context
   (non-`uses:` pins) — e.g. `# renovate: datasource=github-tags depName=owner/repo
-  versioning=semver`. First-party `dryvist/*` self-refs are the exception and ride `@main`.
+  versioning=semver`. First-party `dryvist/*` refs are not exempt: GitHub Actions refs pin to a
+  SHA as above, and Nix flake inputs, Ansible git sources and Tofu module sources use the
+  floating major tag (`?ref=vN`, `version: vN`) with the lock file holding the exact revision.
   Older guidance allowing semver tags for "trusted" actions is retired — delete it on sight.
 - **Renovate PRs target the repo's default branch.** On git-flow repos that is `develop`
   (see the `git-flow` rule); never add a repo-level `baseBranches` forcing `main`.
