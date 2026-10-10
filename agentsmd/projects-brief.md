@@ -98,6 +98,8 @@ only from the repository's own lockfile or dev shell.
   architecture or security review. Both ship in ai-assistant-instructions `.claude/agents/`. Where that repository
   is not in the project, pass the same model and effort on every spawn: Haiku at `xhigh`, Opus at `medium`.
 - Before calling work done, run the repository's own checks (pre-commit, tests, linters) and paste the summary lines.
+  A cloud thread cannot fetch Nix flake inputs, so it runs the same checks with the tools it has, says which ran
+  outside the dev shell, and leaves the dev-shell run to CI.
 - If something you need is missing (a repository, a tool, a connector, access), say exactly what in your first
   message and stop. Do not substitute, mock or guess.
 - Usage credits stay off. If a thread hits the usage limit, it waits.

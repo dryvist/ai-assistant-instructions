@@ -27,7 +27,8 @@ in the `secrets-separation.md` sense, because project memory and PR comments rea
 - **Forge write through the App only.** It pushes and opens PRs through the Claude GitHub App, bounded by the
   App's repository selection and by org branch rulesets on `develop` and `main`. Until those rulesets exist, the
   human **Merge it** is the only merge control. This is the one exception to "no ambient forge authentication"
-  in `operating-core.md`.
+  in `operating-core.md`. Commits and PRs are attributed to the operator's own GitHub account, so on a branch
+  that requires approval from someone other than the last pusher, the operator cannot approve a thread's PR.
 - **No secret-store access.** It never receives an internal credential or secret-zero value. Cloud environment
   variables never hold a secret. A network secret may hold only a scoped token for an external, public service.
 - **No local hooks.** Multi-repository threads run none of the repositories' hooks or permission rules. CI gates
