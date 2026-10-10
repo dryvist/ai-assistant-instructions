@@ -125,6 +125,7 @@ jobs:
       actions: write
     uses: dryvist/.github/.github/workflows/_ci-gate.yml@v1
     with:
+      profile: docs
       token_limits: true
       # Staged: the gate's zizmor run is new for this repo and reports
       # pre-existing findings in ci-fail-issue.yml (trigger),
