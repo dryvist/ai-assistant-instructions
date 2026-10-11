@@ -24,7 +24,7 @@ rows below.
 | First-party (any type) | `JacobPEvans*/**` | immediate | yes, incl. major |
 | Trusted-org major | curated ~50-org allowlist | twice-weekly (Mon/Thu), 3d age | no — 3-day review PR (`dep:review`) |
 | Other major | everything else | weekly, 30d age | no — 30-day hold, review |
-| Security / CVE | any vulnerability alert | immediate (0-day PR) | minor/patch: yes; **major: review** |
+| Security / CVE | any vulnerability alert | immediate (0-day PR) | non-dryvist minor/patch and `dryvist/**` patch: yes; **majors and `dryvist/**` minor: review** |
 
 ## Rules of thumb
 
@@ -37,7 +37,8 @@ rows below.
   is not a compatible API. Trusted-org majors get a 3-day review PR; all others a 30-day hold.
   `dryvist/**` majors wait for a person.
 - **Security majors open for review** — `vulnerabilityAlerts` surfaces a 0-day PR, but a
-  security *major* is still reviewed (only non-major security auto-merges fast).
+  security *major* (or a `dryvist/**` security minor) is still reviewed (only other non-major
+  security updates auto-merge fast).
 - **Supply-chain safety = the deterministic `dependency-review` native-gate** inside the
   (non-AI) Merge Gate; the AI dependency review (`dryvist/ai-workflows`) is **advisory only**,
   under the separate **AI Merge Gate**. The two gates are always distinct and both required.
