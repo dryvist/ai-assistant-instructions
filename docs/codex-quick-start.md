@@ -9,7 +9,7 @@ you already use with Claude, not when it invents a new workflow.
 - [`AGENTS.md`](../AGENTS.md) is the canonical behavior layer for the workspace.
 - [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins) is the source for workflow ideas that can be translated into Codex habits.
 - `nix-ai/modules/codex.nix` is the declarative Codex config hook. It is still a placeholder today.
-- [`nix-darwin/modules/darwin/homebrew.nix`](https://github.com/JacobPEvans/nix-darwin/blob/main/modules/darwin/homebrew.nix) installs the Codex CLI.
+- [`nix-darwin/modules/darwin/homebrew.nix`](https://github.com/dryvist/nix-darwin/blob/main/modules/darwin/homebrew.nix) installs the Codex CLI.
 - Repo-local docs in `terraform-*`, `ansible-*`, and `nix-*` are authoritative for command wrappers and placement rules.
 
 Do not assume `~/AGENTS.md` is a guaranteed fallback. In practice, rely on the active repo’s instruction files and your trust configuration.
