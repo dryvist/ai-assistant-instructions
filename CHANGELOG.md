@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.33.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.33.0...v1.33.1) (2026-10-11)
+
+
+### Bug Fixes
+
+* **link-check:** check GitHub blob links through raw.githubusercontent.com ([#928](https://github.com/dryvist/ai-assistant-instructions/issues/928)) ([c0660d1](https://github.com/dryvist/ai-assistant-instructions/commit/c0660d100c9bf9e826062a4c6940308a0bb8b31b))
+* **link-check:** lower lychee concurrency and lengthen retries ([#922](https://github.com/dryvist/ai-assistant-instructions/issues/922)) ([7c3ecc3](https://github.com/dryvist/ai-assistant-instructions/commit/7c3ecc38cadbfe24e170fb86590a9a985fe03989))
+
 ## [1.33.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.32.0...v1.33.0) (2026-10-10)
 
 
