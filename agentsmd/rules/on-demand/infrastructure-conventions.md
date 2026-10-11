@@ -1,6 +1,6 @@
 ---
 name: infrastructure-conventions
-description: How managed infrastructure is created, changed, and addressed — rebuild over repair, no manual touches, FQDN never a literal IP, named launchd executables. Read before changing any live guest or service.
+description: How managed infrastructure is created, changed, named and addressed — rebuild over repair, no manual touches, guest names carry the guest ID, FQDN never a literal IP, named launchd executables. Read before changing any live guest or service.
 ---
 
 # Infrastructure conventions
@@ -37,6 +37,17 @@ In code, in documentation, and in interactive commands. Addresses are derived
 from the network segment plus a host identifier, so a literal breaks silently
 the moment a host moves segments. The only legitimate address literal is the
 DNS record itself.
+
+## Guest names carry the guest ID
+
+Every guest is named `<app>-<guest-id>`: the hypervisor name, the hostname,
+the configuration-management inventory name and the DNS label. The name is
+generated from the infrastructure-as-code entry, never hand-picked. Never add an
+ordinal name (`-1`, `-2`, `-01`) to a new guest.
+
+An existing guest with an ordinal name moves to the generated name in its own
+rename wave. Re-address it in state (a `moved` block, never a destroy and
+recreate), and re-pin its SSH host key in the same change.
 
 ## Credentials at the least-shared tier
 
