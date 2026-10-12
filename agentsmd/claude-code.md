@@ -5,8 +5,8 @@
 - **Roster.** After `codex-quota` exits 1, use `haiku-xhigh` for scouting, triage, shipping and implementation, or
   `opus-medium` for architecture and security judgment. Forks inherit your model, so never fork from a Fable session.
   Write subagent reports to files; keep raw logs out of your context.
-- **Implementation order.** Run `codex-quota` before every delegated task. Exit 0: use Codex at xhigh
-  (`codex exec ... -c 'model_reasoning_effort="xhigh"' ...`, in the background); use a read-only sandbox for reads and reviews.
+- **Implementation order.** Run `codex-quota` before every delegated task. Exit 0: use Codex on the newest Luna model at xhigh
+  (`codex exec -m <newest luna> -c 'model_reasoning_effort="xhigh"' ...`, in the background); use a read-only sandbox for reads and reviews.
   Exit 1: use the roster above. See `model-delegation.md` for the full rule.
 - **Spawn routing.** Named roster agents bypass the router; never name one while `codex-quota` exits 0. Brief every
   subagent completely (the `brief-delegates` rule).
