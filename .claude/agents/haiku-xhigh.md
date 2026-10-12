@@ -1,6 +1,6 @@
 ---
 name: haiku-xhigh
-description: "Default executor for scoping, bulk reads, triage, mechanical shipping and implementation chunks delegated by a lead session. Runs at xhigh effort, never below high; reports evidence to the file the prompt names. Brief it completely: it knows only its prompt."
+description: "Fallback executor, used only when codex-quota exits 1 (Codex runs first otherwise), for scoping, bulk reads, triage, mechanical shipping and implementation chunks delegated by a lead session. Runs at xhigh effort, never below high; reports evidence to the file the prompt names. Brief it completely: it knows only its prompt."
 model: haiku
 effort: xhigh
 ---
