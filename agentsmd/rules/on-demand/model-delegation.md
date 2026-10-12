@@ -19,8 +19,10 @@ inherit it automatically. This rule applies across agent harnesses.
 Before every delegated task — scouting, bulk reads, triage, reviews (including
 security and architecture), mechanical shipping, or implementation — run
 `codex-quota`. Exit 0 means every usage window is below 95% used: delegate to
-Codex at xhigh with `codex exec ... -c 'model_reasoning_effort="xhigh"' ...` in
-the background. Use a read-only sandbox for reads and reviews. Only on exit 1,
+Codex on the newest Luna-family model at xhigh, `codex exec -m <newest luna>
+-c 'model_reasoning_effort="xhigh"' ...`, in the background. Take the model from
+Codex's own model cache (the listed `-luna` slug with the lowest `priority`),
+never from memory. Use a read-only sandbox for reads and reviews. Only on exit 1,
 use the Claude roster: `haiku-xhigh` for scouting, triage, shipping, and
 implementation; `opus-medium` for architecture and security judgment. A named
 roster agent bypasses the router, so never name one while `codex-quota` exits 0.
