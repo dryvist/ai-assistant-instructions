@@ -39,6 +39,21 @@ full-price rewrite: effort level, model, which MCP servers are connected, and
 anything injected into the system prompt (hook output, tool availability).
 Decide these at session start, not partway through.
 
+## Autonomous-agent context budgets
+
+An autonomous agent (Hermes and similar) resends its persona, tool schemas,
+skills index and MCP listings on every call. Its always-on context has hard
+budgets:
+
+- Count with the serving model's own tokenizer, never an estimate.
+- A budget is never raised to fit content. Dedupe, defer a tool, move a
+  procedure into a skill, or move a duty to another profile.
+- Every lever is in scope (persona, tool schemas, skills index, MCP servers),
+  ranked by measured tokens.
+- Workstation rules never enter an agent persona. The agent needs no budget
+  text either: limits live in its config, and model facts come from the
+  router at runtime.
+
 ## Other practices
 
 - **Topic-scoped loading.** A skill that isn't installed for this repo costs
