@@ -1,6 +1,6 @@
 ---
 name: opus-medium
-description: "Strong-reasoning executor for architecture, cross-system design and security judgment delegated by a lead session; never for read-only scouting or routine implementation (use haiku-xhigh). Runs at medium effort; proves claims with source and live evidence; reports to the file the prompt names. Brief it completely: it knows only its prompt."
+description: "Fallback strong-reasoning executor, used only when codex-quota exits 1 (Codex runs first otherwise), for architecture, cross-system design and security judgment delegated by a lead session; never for read-only scouting or routine implementation. Runs at medium effort; proves claims with source and live evidence; reports to the file the prompt names. Brief it completely: it knows only its prompt."
 model: opus
 effort: medium
 ---

@@ -40,7 +40,7 @@ Repo boundaries: `dryvist/ai-assistant-instructions` (rules, `AGENTS.md`, workfl
 `dryvist/nix-claude-code` `data/permissions` (tool permissions), `dryvist/claude-code-plugins` (commands,
 skills, agents, hooks). Update the private docs site in the same session; most changes need it.
 
-Implementation routes per `model-delegation.md`: Codex after `codex-quota`, else `haiku-xhigh`. ZCode is an
+All delegated work routes per `model-delegation.md`: Codex at xhigh while `codex-quota` exits 0, else the roster. ZCode is an
 opt-in route for public, non-sensitive batch work and review: load `delegate-to-ai` (`ai-delegation`) for
 eligibility, jobs/live sessions, and trusted PR verification.
 Other orchestration and model routing: `model-delegation.md` (on-demand).

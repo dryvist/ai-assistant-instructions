@@ -94,9 +94,8 @@ only from the repository's own lockfile or dev shell.
 ## How the project runs
 
 - At most **4** threads run at once. Propose a batch larger than 4 and wait for a go-ahead.
-- Spawn subagents only as the `haiku-xhigh` agent for reads and implementation, or the `opus-medium` agent only for
-  architecture or security review. Both ship in ai-assistant-instructions `.claude/agents/`. Where that repository
-  is not in the project, pass the same model and effort on every spawn: Haiku at `xhigh`, Opus at `medium`.
+- Follow `model-delegation.md` for delegated work and roster selection. Both agents ship in ai-assistant-instructions
+  `.claude/agents/`; where that repository is not in the project, pass the selected model and effort per that rule.
 - Before calling work done, run the repository's own checks (pre-commit, tests, linters) and paste the summary lines.
   A cloud thread cannot fetch Nix flake inputs, so it runs the same checks with the tools it has, says which ran
   outside the dev shell, and leaves the dev-shell run to CI.

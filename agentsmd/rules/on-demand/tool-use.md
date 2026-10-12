@@ -48,18 +48,18 @@ Test for a specific variable's presence with `[[ -n "$VAR" ]]` instead.
 
 ## Subagent type selection
 
-The following `subagent_type` options apply to the Claude harness; other agent CLIs
-are delegates too, selected by fit and cost under `model-delegation.md`.
+The following `subagent_type` options apply to the Claude harness; route all
+delegated work through `model-delegation.md`.
 
 | `subagent_type` | Use when |
 | --- | --- |
-| `haiku-xhigh` | Implementation chunks, bulk reads, mechanical shipping |
-| `opus-medium` | Architecture and security judgment only; advisory, the lead decides |
-| `Explore` | Read-only research / exploration (model not pinned; prefer `haiku-xhigh` for bulk sweeps) |
+| `haiku-xhigh` | See fallback policy in `model-delegation.md` |
+| `opus-medium` | See fallback policy in `model-delegation.md` |
+| `Explore` | Read-only research / exploration (model not pinned; follow `model-delegation.md` for routing) |
 | `Bash` | Pure shell only; never for file ops (Bash-only agents work around missing tools with `python -c`/`sed`/`awk` and bypass audit trails) |
 
-`general-purpose` takes the harness default model unless the spawn names one.
-Use it only with an explicit roster model and effort (for example `haiku`, `xhigh`).
+`general-purpose` takes the harness default model. See `model-delegation.md`
+before delegating to it.
 
 Forks run on the lead's model. Do not fork from a Fable session.
 
@@ -71,6 +71,6 @@ Forks run on the lead's model. Do not fork from a Fable session.
   checked with a compact diff or test result.
 - For risky architecture, broad prompt changes, security-sensitive changes, or
   plans that feel under-specified, request adversarial critique via
-  `/delegate-to-ai`; route to Codex/Agy directly when available.
+  `/delegate-to-ai`; follow `model-delegation.md` for routing.
 - Require every delegated result to include outcome, evidence, inspected or
   changed paths, risks, and the next recommended action.

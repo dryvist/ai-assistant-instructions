@@ -6,7 +6,7 @@ window.
 ## Rules
 
 - Use the smallest useful exploration pass.
-- Delegate broad read-only sweeps to `haiku-xhigh`.
+- For delegated read-only sweeps, follow `model-delegation.md`.
 - Ask only when the missing answer would materially change the outcome, safety,
   ownership, or reversibility.
 
