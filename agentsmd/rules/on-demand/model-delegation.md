@@ -5,8 +5,9 @@ description: Routing rules for delegated work across Codex, Claude, and the mode
 
 # Model delegation
 
-ZCode is an opt-in route for public or otherwise non-sensitive batch work and
-review. Load `delegate-to-ai` in the `ai-delegation` plugin first. That sole
+ZCode is the route for public batch work and review once Codex has no quota;
+`agent-route <kind> [owner/repo]` prints the executor. Load `delegate-to-ai` in
+the `ai-delegation` plugin first. That sole
 authored skill owns the allowlist, sensitivity, gate, fallback, and trusted
 draft-PR verification rules; Claude Code and Codex consume the same copy. Codex
 subscription quota is finite, and `codex-quota` gates every Codex call.
