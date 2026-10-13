@@ -40,9 +40,9 @@ Repo boundaries: `dryvist/ai-assistant-instructions` (rules, `AGENTS.md`, workfl
 `dryvist/nix-claude-code` `data/permissions` (tool permissions), `dryvist/claude-code-plugins` (commands,
 skills, agents, hooks). Update the private docs site in the same session; most changes need it.
 
-All delegated work routes per `model-delegation.md`: Codex on the newest Luna model at xhigh while `codex-quota` exits 0, else the roster. ZCode is an
-opt-in route for public, non-sensitive batch work and review: load `delegate-to-ai` (`ai-delegation`) for
-eligibility, jobs/live sessions, and trusted PR verification.
+All delegated work routes per `model-delegation.md`: Codex on the newest Luna model at xhigh while `codex-quota` exits 0,
+else the roster. Public coding, review and triage go to ZCode before the roster: load `delegation-ladder`
+(`jpe-ai-delegation`) for the ladder, eligibility, and trusted PR verification.
 Other orchestration and model routing: `model-delegation.md` (on-demand).
 For bounded, routine subtasks, call `~/.agents/skills/fast-subagent/scripts/fast-subagent.sh` with `LLM_ROUTER_URL` and
 `FAST_SUBAGENT_MODEL`; retain consequential judgment and decisions here.
