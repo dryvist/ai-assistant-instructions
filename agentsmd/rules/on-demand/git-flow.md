@@ -32,15 +32,12 @@ or `git remote show origin`).
 `main` is never merged back into `develop`. Stabilization fixes land on `develop` through
 ordinary PRs.
 
-release-please keeps one release PR open against `develop`, carrying the version bump,
-CHANGELOG and release notes. The release PR is set to auto-merge and merges itself when
-its checks pass; every release PR in every repo does. The PR that opened the work owns the
-release: after the work's PRs merge, confirm the release PR merged (squash-merge it only
-when it is green and still open), confirm every check on `develop`'s head is green, then
-promote. Commits that merged after the release commit ship in the promotion and are
-versioned by the next release. The tag and GitHub Release are created by the push to
-`main` for that release commit, which is already on `main`. Never merge to `main` without
-intending a release.
+release-please keeps one release PR open against `develop` with the version bump, CHANGELOG and
+release notes; every release PR auto-merges when its checks pass. The PR that opened the work owns the
+release: confirm the release PR merged (merge it only if green and open), confirm `develop`'s head
+checks are green, then promote. Later commits take the next version. The push to
+`main` tags and releases that commit, already on `main`. Never merge to
+`main` without intending a release.
 
 Promotion is a merge-commit PR from `develop` to `main`. While a promotion PR is open,
 nothing else merges into `develop` (the `release-freeze` status enforces it).
