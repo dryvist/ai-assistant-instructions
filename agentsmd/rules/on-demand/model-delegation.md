@@ -5,9 +5,8 @@ description: Routing rules for delegated work across Codex, Claude, and the mode
 
 # Model delegation
 
-ZCode is the route for public batch work and review once Codex has no quota;
-`agent-route <kind> [owner/repo]` prints the executor. Load `delegate-to-ai` in
-the `ai-delegation` plugin first. That sole
+ZCode is the route for public batch work and review once Codex has no quota.
+Load `delegation-ladder` in the `jpe-ai-delegation` plugin first. That sole
 authored skill owns the allowlist, sensitivity, gate, fallback, and trusted
 draft-PR verification rules; Claude Code and Codex consume the same copy. Codex
 subscription quota is finite, and `codex-quota` gates every Codex call.
@@ -128,12 +127,13 @@ tuning spend needs the same information.
 
 The procedures this rule refers to are shipped as skills, not carried here —
 this repository holds configuration only. They live in the `ai-delegation`
-plugin of the [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
+and `jpe-ai-delegation` plugins of the [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
 marketplace:
 
-- `delegate-to-ai` — ZCode coding eligibility, job/live commands, and trusted
-  draft-PR verification. The eligibility gate and draft-PR verification apply to
-  any external executor.
+- `delegate-to-ai` — executor-neutral checks: classify the task, keep sensitive
+  content away from third parties, verify the exact result.
+- `delegation-ladder` (`jpe-ai-delegation`) — the ladder (Codex, ZCode, OpenCode
+  Go, roster), ZCode eligibility, and trusted draft-PR verification.
 - `local-subagents` — when a step is worth handing off at all, how to read
   the live model menu (speed, quality, best-for, context, price) from the
   router's own contract, and how to place the call.
