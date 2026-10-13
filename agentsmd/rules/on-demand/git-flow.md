@@ -25,9 +25,9 @@ or `git remote show origin`).
 | Branch | Role | Gets changes by |
 | --- | --- | --- |
 | `main` | Production. Protected; no direct pushes. | **Merge commits only** — squash and rebase into `main` are banned, with no exceptions |
-| `develop` | Default integration branch. Protected; no direct pushes. | Squash-merged PRs, including the release PR; a merge commit only for a hotfix branch |
+| `develop` | Default integration branch. Protected; no direct pushes. | Squash-merged PRs, including the release PR; a merge commit only for a PR from a hotfix branch |
 | `feature/*` | One change's work | Branched from fresh `develop` |
-| `hotfix/*` | Urgent production fix | Branched from `main`; PR to `main`, merge commit; the hotfix branch (never `main`) is then merge-committed into `develop` |
+| `hotfix/*` | Urgent production fix | Branched from `main`; PR to `main`, merge commit; then a PR from the hotfix branch (never `main`) to `develop`, merge commit |
 
 `main` is never merged back into `develop`. Stabilization fixes land on `develop` through
 ordinary PRs.
@@ -101,8 +101,9 @@ signal. This check applies to git-flow repos only; a trunk repo has no `develop`
    matters: stacked work, coordinated multi-commit changes, and hotfix
    branches.
 5. Hotfix exception to PR targeting: a `hotfix/*` branch starts from `main`
-   and its PR targets `main` (merge commit, never squash); afterward merge
-   the hotfix branch (not `main`) into `develop` with a merge commit.
+   and its PR targets `main` (merge commit, never squash); afterward open a
+   PR from the hotfix branch (not `main`) to `develop` and merge it with a
+   merge commit.
 6. **Every change to `develop` goes through a PR** — the org ruleset enforces
    it, so a direct push is rejected (`GH013: Repository rule violations`).
    Never plan a "quick direct commit" to `develop`; branch and open a PR.
