@@ -1,12 +1,12 @@
 ---
 name: model-delegation
-description: Offload bounded subtasks to the shared model router at the cheapest capable tier — model names fetched from the router's published contract, budgets enforced at the router, honest reporting instead of silent fallback
+description: Routing rules for delegated work across Codex, Claude, and the model router
 ---
 
 # Model delegation
 
-ZCode is an opt-in route for public or otherwise non-sensitive batch work and
-review. Load `delegate-to-ai` in the `ai-delegation` plugin first. That sole
+ZCode is the route for public batch work and review once Codex has no quota.
+Load `delegation-ladder` in the `jpe-ai-delegation` plugin first. That sole
 authored skill owns the allowlist, sensitivity, gate, fallback, and trusted
 draft-PR verification rules; Claude Code and Codex consume the same copy. Codex
 subscription quota is finite, and `codex-quota` gates every Codex call.
@@ -16,11 +16,18 @@ central prompt catalog. That fragment is the public, vendor-neutral statement
 and the shared autonomous base carries a distilled copy, so non-Claude agents
 inherit it automatically. This rule applies across agent harnesses.
 
-A delegate may be any agent CLI the operator runs: a Claude subagent, a
-`codex exec` run, or a local model through the router, chosen by fit and cost.
-Implementation: Codex after `codex-quota`; otherwise `haiku-xhigh`. Lookups and
-bulk reads: the router first, then `haiku-xhigh`. Claude project threads are
-full sessions, not delegates: see `claude-projects.md`.
+Before every delegated task — scouting, bulk reads, triage, reviews (including
+security and architecture), mechanical shipping, or implementation — run
+`codex-quota`. Exit 0 means every usage window is below 95% used: delegate to
+Codex on the newest Luna-family model at xhigh, `codex exec -m <newest luna>
+-c 'model_reasoning_effort="xhigh"' ...`, in the background. Take the model from
+Codex's own model cache (the listed `-luna` slug with the lowest `priority`),
+never from memory. Use a read-only sandbox for reads and reviews. Only on exit 1,
+use the Claude roster: `haiku-xhigh` for scouting, triage, shipping, and
+implementation; `opus-medium` for architecture and security judgment. A named
+roster agent bypasses the router, so never name one while `codex-quota` exits 0.
+Claude project threads are full sessions, not delegates: see
+`claude-projects.md`.
 
 ## Fable is a main-session planning model only
 
@@ -29,8 +36,8 @@ sessions; elsewhere the lead makes small, fully known edits and reviews every
 diff.
 
 Intent, architecture, risk, final review, minimal context — delegate
-checkable work downward only, lowest capable tier first, keeping the
-delegator's existing permissions. The lead still independently reviews
+checkable work according to the order above, keeping the delegator's existing
+permissions. The lead still independently reviews
 risky architecture, broad prompts, security, or uncertain plans before
 merging delegated work. See `premium-agent-orchestration` skill
 (`ai-delegation`) for the full orchestrator-vs-single-model decision, and
@@ -40,25 +47,8 @@ merging delegated work. See `premium-agent-orchestration` skill
 
 A bounded subtask does not need the model reasoning about the whole task.
 Summaries, classification over a batch, structured extraction, boilerplate
-drafting, a first-pass read of unfamiliar code — delegate those to a capable executor;
-raw model API calls use the router.
-
-Walk the tiers and stop at the first genuinely capable one:
-
-1. **Locally served models** — no marginal cost, no egress. Default for bulk,
-   repetitive, or privacy-sensitive lookups and reads. Local tiers never write code.
-2. **Low-cost hosted models** through the router, free-tier endpoints included
-   where the material allows it. Lookups and reads.
-3. **Subscription-covered capacity exposed as a tool** — another harness made
-   callable, where the work is already paid for. Codex is the current example,
-   used only after `codex-quota` passes (used_percent below 95, or the window has
-   reset). Implementation chunks go here first.
-4. **`haiku-xhigh`** — implementation, bulk reads, and mechanical shipping, when
-   Codex is unavailable or over quota.
-5. **`opus-medium`** — architecture and security judgment only, as advisory input.
-   The lead decides.
-6. **Premium hosted models** — only after a weaker tier was actually tried and
-   demonstrably fell short.
+drafting, and a first-pass read of unfamiliar code can be delegated; follow the
+order above. Use the router for raw model API calls.
 
 "Capable" judges the subtask, not the parent task. Do not escalate a whole job
 because one step inside it is hard; split the job.
@@ -79,8 +69,8 @@ This applies to committed text too. A model id written into a rule, skill, doc
 table, or config is a second spelling that will drift from the registry — the
 exact duplication this doctrine exists to remove.
 
-Rules name the roster by agent type: `haiku-xhigh` and `opus-medium`. Model families
-appear only in the agent definition files of the prompt catalog
+Rules name the roster by agent type. Model families appear only in the agent
+definition files of the prompt catalog
 (`auto-ai-agent/claude-code/agents/`).
 
 ## Know which limits bind you and which you must honour yourself
@@ -137,12 +127,13 @@ tuning spend needs the same information.
 
 The procedures this rule refers to are shipped as skills, not carried here —
 this repository holds configuration only. They live in the `ai-delegation`
-plugin of the [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
+and `jpe-ai-delegation` plugins of the [`claude-code-plugins`](https://github.com/JacobPEvans/claude-code-plugins)
 marketplace:
 
-- `delegate-to-ai` — ZCode coding eligibility, job/live commands, and trusted
-  draft-PR verification. The eligibility gate and draft-PR verification apply to
-  any external executor.
+- `delegate-to-ai` — executor-neutral checks: classify the task, keep sensitive
+  content away from third parties, verify the exact result.
+- `delegation-ladder` (`jpe-ai-delegation`) — the ladder (Codex, ZCode, OpenCode
+  Go, roster), ZCode eligibility, and trusted draft-PR verification.
 - `local-subagents` — when a step is worth handing off at all, how to read
   the live model menu (speed, quality, best-for, context, price) from the
   router's own contract, and how to place the call.

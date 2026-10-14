@@ -25,28 +25,29 @@ or `git remote show origin`).
 | Branch | Role | Gets changes by |
 | --- | --- | --- |
 | `main` | Production. Protected; no direct pushes. | **Merge commits only** — squash and rebase into `main` are banned, with no exceptions |
-| `develop` | Default integration branch. Protected; no direct pushes. | Squash-merged PRs (the default); merge commits where noted below |
+| `develop` | Default integration branch. Protected; no direct pushes. | Squash-merged PRs, including the release PR; a merge commit only for a PR from a hotfix branch |
 | `feature/*` | One change's work | Branched from fresh `develop` |
-| `release/*` | Optional final stabilization | Branched from `develop`; merge-committed to `main`; back-merged to `develop` |
-| `hotfix/*` | Urgent production fix | Branched from `main`; PR to `main`, merge commit; back-merged to `develop` |
+| `hotfix/*` | Urgent production fix | Branched from `main`; PR to `main`, merge commit; then a PR from the hotfix branch (never `main`) to `develop`, merge commit |
 
-Every merge into `main` feeds release-please, which watches `main` and opens the
-release PR against `main`. A person merges the release PR when the batch of changes
-is ready; merging it tags the release, and it is never auto-merged. The release PR
-is merge-committed like every other PR into `main` — it is not a squash exception.
-Never merge to `main` without intending a release.
+`main` is never merged back into `develop`. Stabilization fixes land on `develop` through
+ordinary PRs.
 
-Normal promotion is a merge-commit PR from `develop` to `main`. Use
-`release/*` only when final stabilization needs its own branch; then
-merge-commit it to `main` and back-merge to `develop` before more feature
-work lands.
+release-please keeps one release PR open against `develop` with the version bump, CHANGELOG and
+release notes; every release PR auto-merges when its checks pass. The PR that opened the work owns the
+release: confirm the release PR merged (merge it only if green and open), confirm `develop`'s head
+checks are green, then promote. Later commits take the next version. The push to
+`main` tags and releases that commit, already on `main`. Never merge to
+`main` without intending a release.
+
+Promotion is a merge-commit PR from `develop` to `main`. While a promotion PR is open,
+nothing else merges into `develop` (the `release-freeze` status enforces it).
 
 ### Promotion is not done at the merge
 
 Merging the promotion PR is step one of two. A promotion to `main` is
 complete only when:
 
-1. **The merge lands** (merge commit; release-please takes over versioning).
+1. **The merge lands** (merge commit; release-please then tags the release commit).
 2. **The deployment file moves.** Any consumer that pins this repo (a flake
    input in another repo's `flake.lock`, an inventory pin, a version file)
    must pick up the promoted rev through a bump PR on the consumer's own
@@ -61,13 +62,12 @@ Report a promotion as complete only with both done.
 
 ## Working a change
 
-Before starting a change, check how far the default branches have diverged. Run
-`git fetch origin`, then `git rev-list --left-right --count origin/main...origin/develop`.
-The left number counts commits only on `main`; the right number counts commits only
-on `develop`. If either number is 25 or more, do not start a new PR. Sync first:
-promote `develop` to `main`, back-merge `main` into `develop`, or run `/refresh-repo`.
-Start the change only when both numbers are below 25. This check applies to git-flow
-repos only; a trunk repo has no `develop`.
+Before starting a change, check how far `develop` is ahead of `main`. Run
+`git fetch origin`, then `git rev-list --count origin/main..origin/develop`. If the
+number is 25 or more, do not start a new PR: promote `develop` to `main` first (or run
+`/refresh-repo`). Start the change only when the number is below 25. `main` carries
+only promotion merge commits that `develop` lacks, so its side of the count is not a
+signal. This check applies to git-flow repos only; a trunk repo has no `develop`.
 
 1. Create or switch to a fresh worktree based on `origin/develop`. Place it at
    the repo's top level as `.worktrees/<name>/` — beside the primary checkout,
@@ -98,11 +98,12 @@ repos only; a trunk repo has no `develop`.
    (`fixes #123`) when the change closes it.
 4. Open the PR against `develop`. **Squash-merge ordinary feature PRs.** Use a
    merge commit into `develop` only when preserving multiple atomic commits
-   matters: stacked work, coordinated multi-commit changes, and release or
-   hotfix back-merges.
+   matters: stacked work, coordinated multi-commit changes, and hotfix
+   branches.
 5. Hotfix exception to PR targeting: a `hotfix/*` branch starts from `main`
-   and its PR targets `main` (merge commit, never squash); immediately
-   back-merge `main` into `develop` afterward.
+   and its PR targets `main` (merge commit, never squash); afterward open a
+   PR from the hotfix branch (not `main`) to `develop` and merge it with a
+   merge commit.
 6. **Every change to `develop` goes through a PR** — the org ruleset enforces
    it, so a direct push is rejected (`GH013: Repository rule violations`).
    Never plan a "quick direct commit" to `develop`; branch and open a PR.

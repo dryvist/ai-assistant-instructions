@@ -19,6 +19,9 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   supporting | contradicting | confidence | cheapest falsifying test | next action. A check that silently
   skips an unreachable target can report success while covering nothing changed — confirm the thing you care
   about appears in the check's own output; absence is untested, not passed.
+- **A PR you open is yours until it is merged and, on a git-flow repo, promoted.** Every comment, review body
+  (including Request changes with no thread), review-bot finding and coverage gap is review feedback: fix it or
+  answer it with evidence, then keep the PR moving (conflicts, `BEHIND`, failed or never-reported checks).
 - **Check system state with monitoring first; follow the `monitoring-first` skill before direct shell probes.**
 - **Measure.** Warm before you measure — the first run carries cold-start cost; one noisy sample is an
   anecdote, replicate before concluding.
@@ -37,8 +40,8 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   Bash-only, for file edits. No ambient forge authentication (sole exception: `claude-projects.md`) — `gh` and
   equivalents aren't logged in; a probe finding no session is expected, never a blocker; mint a short-lived token from the credential store at call
   time, same shell that uses it. Mint once per shell or batch and pass the token to children in memory;
-  children never revoke an inherited token; never mint inside a poll or wait loop. Bounded subtasks (summaries, classification, extraction, first-pass reads) go
-  to the roster in `tool-use.md`; raw model API calls use the shared model router at the cheapest capable tier,
+  children never revoke an inherited token; never mint inside a poll or wait loop. Bounded subtasks (summaries, classification, extraction, first-pass reads) follow
+  `model-delegation.md`; raw model API calls use the shared model router at the cheapest capable tier,
   never your own provider credential (launching an operator-signed-in agent CLI is delegation, not a
   provider-credential call); fetch API model names from the router's contract.
 
