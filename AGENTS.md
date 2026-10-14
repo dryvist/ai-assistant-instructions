@@ -8,9 +8,18 @@ verifiable success criteria, use the narrowest proof, and report exactly what pa
 warning, error and lint finding for real; never silence, skip or bypass the check that raised it. Deep
 design/review/refactor work: `karpathy-guidelines` skill (`andrej-karpathy-skills`).
 
-Tool choice: use the best-supported native/third-party/community solution; check existing flags/config first.
-Custom code is the largest anti-pattern — permanent maintenance. Search `grep.app` first: thousands of hits
-means idiomatic, three means a mistake.
+Tool choice — **no new custom scripts.** Custom code is the largest anti-pattern: permanent maintenance.
+Before writing or extending a script, climb this ladder and stop at the first rung that works:
+
+1. Existing flags, config, or an installed skill, command, plugin or MCP server.
+2. A native or built-in feature of the platform or tool.
+3. A maintained third-party tool or app.
+4. Community content: Ansible collections, Terraform modules, Renovate presets, pre-commit hooks, Actions.
+5. Prior art: `/github-code-search` (grep MCP) — thousands of hits means idiomatic, three means a mistake;
+   context7 docs; package, Terraform and Hugging Face registries.
+6. A formal gap: a standardized public repo that fits our use case and helps the community.
+
+Only then write code, naming why each rung failed. Delete or replace an existing script before editing it.
 
 Git workflow: never edit on the default branch — `/refresh-repo`, then a new worktree. `develop` default branch →
 [git-flow](agentsmd/rules/on-demand/git-flow.md): PRs target `develop` (squash-merge), `develop` → `main` by
