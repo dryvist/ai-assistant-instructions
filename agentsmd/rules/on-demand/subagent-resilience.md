@@ -1,6 +1,6 @@
 ---
 name: subagent-resilience
-description: Subagent fan-outs need a health probe first, bounded concurrency, and a solo fallback — the orchestration substrate is allowed to fail without killing the mission
+description: Subagent fan-outs need a health probe first and a solo fallback — the orchestration substrate is allowed to fail without killing the mission
 ---
 
 # Subagent Resilience
@@ -18,11 +18,9 @@ fallback when that happens.
   trivial probe agent and confirm it returns real output. A dead or phantom
   substrate must be discovered by a 10-second probe, not by losing a 10-agent
   fan-out.
-- **Bound concurrency.** Cap concurrent subagents explicitly (default ≤4
-  in-flight for heavy agents per orchestrating session; harness caps still
-  apply). Count only your own session's agents, never other sessions'. Never
-  gate spawning on machine load. Excess work queues behind finished slots.
-  Never fire an unbounded `.map(spawn)`.
+- **Parallelize ready work.** Launch all independent, ready tasks in parallel;
+  sequence only for real dependencies or same-file conflicts. Never gate
+  spawning on machine load.
 - **Verify liveness, not just launch.** A spawn that returns an id is not a
   working agent. Treat "no transcript/output within a sane deadline" as a
   failed spawn and retry once — then fall back.

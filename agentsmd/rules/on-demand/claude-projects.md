@@ -76,8 +76,9 @@ Threads are full sessions, not subagents. The delegation CLIs and `fast-subagent
 thread reports `local-only, skipped` and continues. Set the thread model below the top tier by default.
 Set coordinator effort to high; this is a deliberate exception to the low-effort default.
 
-Usage credits are never enabled. Run at most 4 threads at once; the limit is a preference, so check Overview.
-Pause the project to stop all spend at once.
+Usage credits are never enabled. Launch all independent, ready threads in parallel; sequence only for real
+dependencies or same-file conflicts. Confirm thread creation works before the first fan-out; if it fails, work
+solo. Pause the project to stop all spend at once.
 
 ## Disclosure
 
