@@ -23,6 +23,9 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   (including Request changes with no thread), review-bot finding and coverage gap is review feedback: fix it or
   answer it with evidence, then keep the PR moving (conflicts, `BEHIND`, failed or never-reported checks).
 - **Check system state with monitoring first; follow the `monitoring-first` skill before direct shell probes.**
+- **Environment output.** Never print, dump, or pipe the environment (`env`, `printenv`, `set`, `export -p`)
+  or the output of a command that injects credentials into its environment; filtering does not make that
+  output safe. Check a variable with a presence test, or print names only.
 - **Measure.** Warm before you measure — the first run carries cold-start cost; one noisy sample is an
   anecdote, replicate before concluding.
 - **Autonomy** (reversibility gates it): small/reversible/local — just do it, commit when the task calls for

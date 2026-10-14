@@ -7,6 +7,11 @@ description: Read logs from the central log platform, never from a host — inde
 
 - Every log read goes through the central log platform. For current system
   state, use the `monitoring-first` skill to select the right monitoring source.
+- **Project only needed fields before printing.** Put the projection in the
+  query itself; do not fetch full records and filter them afterward.
+- **Never redact a record by position** (column index, fixed offset, or
+  `cut`/`awk` field number). A record with a missing optional field or a shorter
+  layout shifts the positions, and the sensitive value then prints unredacted.
 - **A log you cannot find in the log platform is a finding, not an
   inconvenience.** It means the pipeline dropped it and nobody knew. Missing
   entirely, landing in the wrong index, or present but lacking the field an
