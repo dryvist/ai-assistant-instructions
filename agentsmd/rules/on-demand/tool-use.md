@@ -41,10 +41,7 @@ or poorly reinvents what packaged tools already do. If a desired refinement
 can't be done through the tool's native config, drop that refinement rather
 than scripting around the gap.
 
-**Never pipe or dump a bare `env`** (or `printenv`), even through a filter
-like `cut -d'=' -f1`. Multi-line values (private keys, license blobs) break
-line-based parsing and can print secret contents into the transcript/log.
-Test for a specific variable's presence with `[[ -n "$VAR" ]]` instead.
+For the environment-output prohibition, follow `operating-core.md`.
 
 ## Subagent type selection
 
