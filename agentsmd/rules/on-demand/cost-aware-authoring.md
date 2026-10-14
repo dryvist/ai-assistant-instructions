@@ -28,8 +28,10 @@ Use an orchestrator (fan out to subagents/workers) only when the combined
 work exceeds one context window. For a single dependent chain, or
 anything that fits one context, tune effort on one model instead — an
 orchestrator loses accuracy when workers are weaker and the lead still has to
-verify their output before merging. Cap fan-out concurrency at 4 or fewer (see
-`subagent-resilience.md`); uncapped fan-out multiplies cache writes and tail risk.
+verify their output before merging. Launch all independent, ready work in
+parallel; sequence only for real dependencies or same-file conflicts. Probe
+the spawn substrate before the first fan-out; if spawning fails, take the solo
+path.
 The canonical orchestrator rule is in `model-delegation.md`.
 
 ## Cache-breakers (avoid mid-session)
