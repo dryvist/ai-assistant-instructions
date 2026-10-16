@@ -3,7 +3,6 @@
 > Teaching AI assistants how to help you better. Yes, it's AI instructions written with AI assistance. We've come full circle.
 
 [![License][license-badge]][license-url]
-[![Markdown Lint][markdownlint-badge]][markdownlint-url]
 [![pre-commit][precommit-badge]][precommit-url]
 
 ## What Is This?
@@ -142,8 +141,6 @@ Found a vulnerability? Please report it responsibly. See [SECURITY.md](SECURITY.
 
 [license-badge]: https://img.shields.io/badge/License-Apache_2.0-blue.svg
 [license-url]: LICENSE
-[markdownlint-badge]: https://github.com/JacobPEvans/ai-assistant-instructions/actions/workflows/markdownlint.yml/badge.svg
-[markdownlint-url]: https://github.com/JacobPEvans/ai-assistant-instructions/actions/workflows/markdownlint.yml
 [precommit-badge]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
 [precommit-url]: https://github.com/pre-commit/pre-commit
 
