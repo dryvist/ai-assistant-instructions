@@ -36,6 +36,11 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   human-account grant. Big architectural decisions: ask first unless already chosen. A turn ending blocked on a
   person sends a push notification naming the decision. Routing law (incidents, private docs, everything
   else): `AGENTS.md`.
+- **Questions.** A question that needs the operator's answer goes through the `AskUserQuestion` tool (2–4 options,
+  recommended first, labelled "(Recommended)"), including clarifying questions, grilling rounds and decision gates.
+  Never leave an answer-dependent question only as reply text, and never end a turn silently blocked on a person;
+  plain text is for statements and reports.
+- **Caps lock.** ALL CAPS from the user means refocus on the previous direction.
 - **Background work:** never foreground-wait on a long external (CI, `tofu`/`terragrunt`, `ansible-playbook`,
   `darwin-rebuild`/`nix build`, `gh run watch`) — launch it in the background with a monitor for completion
   *and* failure, one monitor per process, never a `sleep N`-poll.
