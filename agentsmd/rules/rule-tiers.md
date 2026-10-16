@@ -6,7 +6,8 @@ description: Index of the on-demand rule tier.
 # Rule tiers
 
 `AGENTS.md`, `soul.md`, `operating-core.md`, `public-disclosure.md` load every session; other rules self-load
-via `paths:` frontmatter. Everything below is **not** auto-loaded — read the file under
+via `paths:` frontmatter. Roles: `soul.md` is identity and tone only; behavior rules go in `operating-core.md`;
+routing and the workflow index go in `AGENTS.md`. Everything below is **not** auto-loaded — read the file under
 `agentsmd/rules/on-demand/` when you begin that activity.
 
 | When you are… | Read |

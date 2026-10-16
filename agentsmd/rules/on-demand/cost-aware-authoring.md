@@ -22,6 +22,12 @@ harness setting. The levers, ranked by impact:
 5. **Output tokens.** A one-line or schema'd result from a worker beats a
    prose report; ask for `STATUS | ITEM | REASON` or JSON, not a memo.
 
+## Where a rule goes
+
+Pick the file by role before writing. Identity, tone and posture: `soul.md`, nothing else. Behavior rules:
+`operating-core.md`. Routing and the workflow index: `AGENTS.md`. Activity-specific rules: `on-demand/`, listed in
+`rule-tiers.md`. No agent adds a rule, tool name, command, path or workflow to `soul.md`.
+
 ## Orchestrator vs single model
 
 Use an orchestrator (fan out to subagents/workers) only when the combined
