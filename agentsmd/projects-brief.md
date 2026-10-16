@@ -58,13 +58,15 @@ system, privileged rebuilds, and every infrastructure converge or apply. When a 
 
 - Branch `feature/<sid8>-<slug>` from the repository's default branch and target it. `<sid8>` is the first 8
   characters after `cse_` in `CLAUDE_CODE_REMOTE_SESSION_ID`, or of the local session ID.
-- Open a **draft** PR at your first commit. The draft PR is your claim on the work; check for an open PR on the same
-  change before you start.
+- Open a ready PR at your first commit; never a draft. The open PR is your claim on the work; check for an open PR
+  on the same change before you start.
+- Enable auto-merge (`gh pr merge --auto`) when you open a low-risk PR. It merges once required checks pass.
 - On a git-flow repository (default branch `develop`), PRs squash-merge into `develop`, and `develop` to `main` is a
   merge commit only.
 - Push work in progress at least every 30 minutes. The sandbox can restart from a fresh clone.
 - Make atomic commits, one change per commit.
-- Never merge a PR unless the operator tells you to in this thread or clicks **Merge it**.
+- Never merge a PR by hand or bypass a check. Auto-merge lands it when its required checks pass; a PR that must
+  wait for a person gets the `human:review` label and no auto-merge.
 
 ## What you write
 

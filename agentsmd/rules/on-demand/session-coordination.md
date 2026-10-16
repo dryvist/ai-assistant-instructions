@@ -39,11 +39,11 @@ out who holds what.
 
 Before starting on an issue, bug, or feature:
 
-1. **Look for an existing claim.** An open draft PR or an assigned issue that
+1. **Look for an existing claim.** An open PR or an assigned issue that
    covers the same work is a claim:
 
    ```bash
-   gh pr list --state open --json number,isDraft,headRefName,title,body
+   gh pr list --state open --json number,headRefName,title,body
    gh issue view <n> --json assignees
    ```
 
@@ -51,12 +51,13 @@ Before starting on an issue, bug, or feature:
    (comment on the PR/issue with your session id and intent; the earliest
    claim wins unless its session is dead).
 
-2. **Claim.** Self-assign the issue (when one exists) and open a **draft PR
-   at first commit**, not at completion. The draft PR is the presence signal
-   every runtime can read. Put the session id in the PR body.
+2. **Claim.** Self-assign the issue (when one exists) and open a ready PR
+   **at first commit**, not at completion; never a draft. The open PR is the
+   presence signal every runtime can read. Put the session id in the PR body,
+   and enable auto-merge when the change is low risk.
 
-3. **Release.** Marking the PR ready / merging / closing releases the claim.
-   An abandoned claim is steal-able: a draft PR with no new commits and no
+3. **Release.** Merging or closing releases the claim.
+   An abandoned claim is steal-able: an open PR with no new commits and no
    author activity for 24h, or whose session is known dead, may be taken over
    — comment first, then continue on a **new branch** (never push to another
    session's branch).
@@ -124,11 +125,11 @@ announce it (see notifications). Details live in the infra skills.
 
 To consolidate overlapping work onto one session:
 
-- The yielding session pushes its branch, notes state in the draft PR
+- The yielding session pushes its branch, notes state in the open PR
   (done / remaining / gotchas), unassigns itself, and comments
   `handing off to <session-id>`.
 - The receiving session self-assigns, continues on its **own** branch (based
-  on the yielded branch if useful), and closes or supersedes the old draft PR.
+  on the yielded branch if useful), and closes or supersedes the old PR.
 - Hand-back is the same protocol in reverse. The PR trail is the transfer
   record; no side channel required.
 
@@ -151,6 +152,6 @@ report done after the merge alone.
 ## Crash recovery expectations
 
 - Locks: expire on their own; the next contender steals cleanly.
-- Claims: draft PRs persist; the 24h-stale rule above unblocks them.
+- Claims: open PRs persist; the 24h-stale rule above unblocks them.
 - Worktrees: a dead session's worktree is reaped by the normal sweep once its
   branch's PR is closed/merged — session-id naming ties the two together.
