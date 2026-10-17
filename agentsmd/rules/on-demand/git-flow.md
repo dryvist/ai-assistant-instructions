@@ -48,15 +48,13 @@ Merging the promotion PR is step one of two. A promotion to `main` is
 complete only when:
 
 1. **The merge lands** (merge commit; release-please then tags the release commit).
-2. **The deployment file moves.** Any consumer that pins this repo (a flake
-   input in another repo's `flake.lock`, an inventory pin, a version file)
-   must pick up the promoted rev through a bump PR on the consumer's own
-   **deploy branch** — not just its default branch. A dispatch workflow
-   (e.g. `dispatch-flake-consumers`) notifies the consumer, which opens that
-   bump PR. Verify the dispatch fired AND the bump PR merged: patch bumps
-   auto-merge after the Merge Gate; a person merges minor and major bumps.
-   If the consumer is itself git-flow, its own develop→main promotion is part
-   of this chain.
+2. **The major tag moves.** The release moves this repo's `vN` tag, so
+   consumers that reference `@vN` (actions, reusable workflows), `?ref=vN`
+   (flake inputs) or a `>=N,<N+1` range pick up the release with no bump PR.
+   Verify the tag points at the release commit. Consumers' `flake.lock` files
+   catch up in Renovate's weekend lock maintenance; nothing pushes into
+   another repo. A breaking change ships as a new major (`vN+1`), which
+   consumers adopt through their own Renovate PR.
 
 Report a promotion as complete only with both done.
 
