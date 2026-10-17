@@ -15,7 +15,7 @@ repos. Do not re-derive or diverge from it per repo.
 | Update | Who opens it | PR cadence | Auto-merge |
 | --- | --- | --- | --- |
 | Minor / patch / digest | Renovate | Sat/Sun only, 7-day release age | **yes**, after required checks |
-| First-party (`JacobPEvans*/**`, `dryvist/**`, `jpe-*/**`, `vct-*/**`) | Renovate | Sat/Sun only, 7-day age | yes, incl. major |
+| First-party (`JacobPEvans*/**`, `dryvist/**`, `jpe-*/**`) | Renovate | Sat/Sun only, 7-day age | yes, incl. major |
 | Third-party major | Renovate | Sat/Sun only, 30-day age | no — review |
 | `flake.lock` | Renovate nix `lockFileMaintenance` | Sat/Sun only, one PR per repo | yes |
 | Security / CVE | Dependabot security updates | immediate | per the repo's merge rules |
