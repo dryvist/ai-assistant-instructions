@@ -11,10 +11,10 @@ caller and every template repository. Never patch one repo and leave the class a
 
 ## Rules
 
-1. **Pin dryvist workflow refs to a full commit SHA.** Call a dryvist reusable workflow as
-   `uses: dryvist/<repo>/.github/workflows/<file>@<40-hex-sha> # vX.Y.Z`. Never `@main`, `@develop`, or a bare
-   `@vN`. Renovate moves the SHA and the comment together, and a person merges a major bump. Third-party actions
-   stay pinned by commit SHA, bumped by Renovate's digest manager.
+1. **First-party shared workflow refs float on the major tag.** Call a reusable workflow from
+   `JacobPEvans/.github` or `JacobPEvans/.github-ai` at `@v1`, with no trailing version comment.
+   Renovate keeps these refs on the major tag. Third-party actions stay pinned by commit SHA,
+   bumped by Renovate's digest manager.
 2. **An unmapped path runs the full suite.** A path-scope selector never fails on a path it doesn't know, and never
    silently skips the real checks. Unknown means everything for that stack.
 3. **Assert against the generated set, never a literal count.** A test that pins "95 entries" breaks on every

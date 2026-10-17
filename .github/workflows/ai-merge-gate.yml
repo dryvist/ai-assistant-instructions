@@ -3,5 +3,5 @@ on: pull_request
 permissions: read-all
 jobs:
   gate:
-    uses: dryvist/ai-workflows/.github/workflows/_ai-merge-gate.yml@286459bf39f4c269e10d6b28e8c29ba225faed5e # v0.49.0
+    uses: JacobPEvans/.github-ai/.github/workflows/_ai-merge-gate.yml@v1
     secrets: inherit
