@@ -123,7 +123,7 @@ jobs:
       # actions: write must be granted here or the run fails at graph
       # validation (startup_failure).
       actions: write
-    uses: dryvist/.github/.github/workflows/_ci-gate.yml@aeab7c1ac2a9dc807e468fc507ad5b5c1c93df8c # v1.11.4
+    uses: JacobPEvans/.github/.github/workflows/_ci-gate.yml@v1
     with:
       profile: docs
       token_limits: true

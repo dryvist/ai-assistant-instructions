@@ -1,16 +1,20 @@
-name: Release Please
+# Shared release-please, major-tag and release-freeze caller.
+name: Release
 
 on:
   push:
     branches: [main, develop]
+  pull_request:
 
 permissions: {}
 
 jobs:
-  release-please:
+  release:
+    uses: JacobPEvans/.github/.github/workflows/_release.yml@v1
     permissions:
       contents: write
       pull-requests: write
-    uses: dryvist/.github/.github/workflows/_release-please.yml@26e6933fbebcf11bfbe6d675f9ce7b322ffd7de9 # v1.17.0
+      statuses: write
+      checks: read
     secrets:
       GH_ACTION_RELEASE_PLEASE_PRIVATE_KEY: ${{ secrets.GH_ACTION_RELEASE_PLEASE_PRIVATE_KEY }}
