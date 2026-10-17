@@ -61,6 +61,9 @@ system, privileged rebuilds, and every infrastructure converge or apply. When a 
 - Open a ready PR at your first commit; never a draft. The open PR is your claim on the work; check for an open PR
   on the same change before you start.
 - Enable auto-merge (`gh pr merge --auto`) when you open a low-risk PR. It merges once required checks pass.
+- A PR under 15 changed lines and under 5 files gets `--label fast-path` at `gh pr create`. The gate then skips
+  the heavy test jobs and still runs the secret scan and commit checks. Add it at creation; a later label does not
+  rerun the gate.
 - On a git-flow repository (default branch `develop`), PRs squash-merge into `develop`, and `develop` to `main` is a
   merge commit only.
 - Push work in progress at least every 30 minutes. The sandbox can restart from a fresh clone.
