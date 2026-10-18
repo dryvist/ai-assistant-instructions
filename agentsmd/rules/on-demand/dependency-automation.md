@@ -1,61 +1,44 @@
 ---
 name: dependency-automation
-description: Org dependency-freshness policy — trust tiers, auto-merge rules, and where the canonical config lives
+description: Org dependency-freshness policy — weekend cadence, auto-merge rules, and where the canonical config lives
 ---
 
-# Dependency automation (trust tiers)
+# Dependency automation
 
-Every dryvist/JacobPEvans repo inherits ONE Renovate policy from `dryvist/.github`
-(`renovate-presets.json` + `renovate-grouping.json`, the master). Do not re-derive or
-diverge from it per repo without a recorded reason. Canonical, fuller docs:
-<https://docs.jacobpevans.com/infrastructure/cicd/dependency-automation>.
+Every enterprise repo inherits ONE Renovate policy from `JacobPEvans/.github`
+(`renovate-presets.json` + `renovate-grouping.json`). A repo's Renovate file only extends it:
+`{"extends": ["github>JacobPEvans/.github"]}`, or `github>JacobPEvans/.github:renovate-nix` for nix
+repos. Do not re-derive or diverge from it per repo.
 
 ## The model
 
-**Minor/patch updates auto-merge publisher-agnostically** — any non-dryvist package, any
-ecosystem, any publisher — after a 3-day stabilization + green CI. **Trust tiers gate ONLY
-majors and PR-creation cadence, never minor/patch.** `dryvist/**` bumps follow the first-party
-rows below.
-
-| Update | Scope | PR cadence | Auto-merge |
+| Update | Who opens it | PR cadence | Auto-merge |
 | --- | --- | --- | --- |
-| Minor / patch | ANY non-dryvist package, ANY ecosystem | twice-weekly (Mon/Thu), 3d age | **yes** — publisher-agnostic, after green CI |
-| First-party (any type) | `dryvist/**` | immediate | patch only, after the Merge Gate; minor and major: a person merges |
-| First-party (any type) | `JacobPEvans*/**` | immediate | yes, incl. major |
-| Trusted-org major | curated ~50-org allowlist | twice-weekly (Mon/Thu), 3d age | no — 3-day review PR (`dep:review`) |
-| Other major | everything else | weekly, 30d age | no — 30-day hold, review |
-| Security / CVE | any vulnerability alert | immediate (0-day PR) | non-dryvist minor/patch and `dryvist/**` patch: yes; **majors and `dryvist/**` minor: review** |
+| Minor / patch / digest | Renovate | Sat/Sun only, 7-day release age | **yes**, after required checks |
+| First-party (`JacobPEvans*/**`, `dryvist/**`, `jpe-*/**`) | Renovate | Sat/Sun only, 7-day age | yes, incl. major |
+| Third-party major | Renovate | Sat/Sun only, 30-day age | no — review |
+| `flake.lock` | Renovate nix `lockFileMaintenance` | Sat/Sun only, one PR per repo | yes |
+| Security / CVE | Dependabot security updates | immediate | per the repo's merge rules |
 
 ## Rules of thumb
 
-- **Bumps arrive as pull requests.** Renovate opens a PR for each new release; a pin stays on
-  its current version until that PR merges.
-- **Minor/patch is publisher-agnostic** for non-dryvist packages — a non-major SemVer bump +
-  green CI (the Merge Gate, plus the deterministic `dependency-review` supply-chain scan on
-  public repos) is sufficient; trust is not required to auto-merge minor/patch.
-- **Majors never auto-merge, except `JacobPEvans*` first-party** — a compatible-looking version
-  is not a compatible API. Trusted-org majors get a 3-day review PR; all others a 30-day hold.
-  `dryvist/**` majors wait for a person.
-- **Security majors open for review** — `vulnerabilityAlerts` surfaces a 0-day PR, but a
-  security *major* (or a `dryvist/**` security minor) is still reviewed (only other non-major
-  security updates auto-merge fast).
-- **Supply-chain safety = the deterministic `dependency-review` native-gate** inside the
-  (non-AI) Merge Gate; the AI dependency review (`dryvist/ai-workflows`) is **advisory only**,
-  under the separate **AI Merge Gate**. The two gates are always distinct and both required.
+- **Weekdays stay quiet.** No non-security update PR opens Monday–Friday. Security fixes come from
+  Dependabot security updates, enabled per repo in `tofu-github`; no `dependabot.yml` exists, and
+  Renovate `vulnerabilityAlerts` is off.
+- **Native auto-merge.** `platformAutomerge: true`: GitHub merges once required checks pass. There is
+  no sweep workflow.
+- **One `flake.lock` writer.** Renovate's nix `lockFileMaintenance` relocks the whole flake on
+  weekends. No workflow writes another repo's lock file.
+- **First-party refs float on major tags.** Actions and reusable workflows from our own orgs use
+  `@vN` (for example `@v1`), never a SHA or `@main`; a release moves the tag, so consumers need no
+  bump PR. Flake inputs use `?ref=vN`; Ansible collections use a range such as `>=1,<2`.
+- **Third-party refs are SHA-pinned** with the exact released version as a trailing comment
+  (`uses: actions/checkout@<sha> # v4.2.2`). If the project publishes no immutable version tag,
+  pick another action or record an explicit exception. Non-`uses:` pins carry an explicit
+  `# renovate:` annotation.
+- **Majors never auto-merge except first-party.** A compatible-looking version is not a compatible API.
 - **Prefer native Renovate capability over custom scripts/workflows** — debug the config.
-- **`platformAutomerge` stays false** (GitHub's merge-queue stalls; Renovate merges via API).
-- **Pin all third-party GitHub Actions (and other pinnable third-party refs) to a full commit
-  SHA** — Renovate bumps SHAs by default, so tags add risk without saving work. Every SHA pin
-  carries: (1) the exact released version tag as a trailing comment
-  (`uses: actions/checkout@<sha> # v4.2.2`) — always; if the project publishes no immutable
-  version tag, do not invent one — pick an action that has release tags, or record an explicit
-  exception; (2) an explicit Renovate tag when Renovate cannot infer the pin from context
-  (non-`uses:` pins) — e.g. `# renovate: datasource=github-tags depName=owner/repo
-  versioning=semver`. First-party `dryvist/*` refs are not exempt: GitHub Actions refs pin to a
-  SHA as above, and Nix flake inputs, Ansible git sources and Tofu module sources use the
-  floating major tag (`?ref=vN`, `version: vN`) with the lock file holding the exact revision.
-  Older guidance allowing semver tags for "trusted" actions is retired — delete it on sight.
-- **Renovate PRs target the repo's default branch.** On git-flow repos that is `develop`
-  (see the `git-flow` rule); never add a repo-level `baseBranches` forcing `main`.
-- When you touch trust tiers, auto-merge, or schedules, update `dryvist/.github` `SECURITY.md`
-  AND the canonical docs page in the same change — they must not drift.
+- **Renovate PRs target the repo's default branch.** On git-flow repos that is `develop`; never add a
+  repo-level `baseBranches` forcing `main`.
+- When you change cadence or auto-merge, update `JacobPEvans/.github` `SECURITY.md` and the
+  canonical docs page in the same change.

@@ -53,9 +53,9 @@ These are the check names that appear in GitHub PR status:
 | CI Gate / Detect Changes | Identifies which file categories changed |
 | CI Gate / Claude Code Lint | Validates Claude Code configuration |
 | CI Gate / Schema Validation | Validates cclint schema/config |
-| CI Gate / Markdown Lint | Checks markdown formatting (shared: `dryvist/.github`) |
-| CI Gate / Token Limit Check | Enforces token usage limits (shared: `dryvist/.github`) |
-| CI Gate / File Size | Enforces file size limits (shared: `dryvist/.github`) |
+| CI Gate / Markdown Lint | Checks markdown formatting (shared: `JacobPEvans/.github`) |
+| CI Gate / Token Limit Check | Enforces token usage limits (shared: `JacobPEvans/.github`) |
+| CI Gate / File Size | Enforces file size limits (shared: `JacobPEvans/.github`) |
 | CI Gate / Instruction Validation | Validates required instruction files |
 | CI Gate / YAML Lint | Validates YAML syntax |
 | CI Gate / Merge Gate | Aggregates all check results (REQUIRED) |
@@ -84,7 +84,7 @@ These are the check names that appear in GitHub PR status:
 └─────────────────────────────────────────────────────────────┘
               │
 ┌─────────────────────────────────────────────────────────────┐
-│         SHARED REUSABLE WORKFLOWS (dryvist/.github)          │
+│         SHARED REUSABLE WORKFLOWS (JacobPEvans/.github)          │
 ├─────────────────────────────────────────────────────────────┤
 │  _markdown-lint.yml       │ Markdown Lint                   │
 │  _token-limits.yml        │ Token Limit Check                │
@@ -108,7 +108,7 @@ These are the check names that appear in GitHub PR status:
 ```
 
 Markdown Lint, Token Limit Check, and File Size call the shared reusable
-workflows in `dryvist/.github` (`_markdown-lint.yml`, `_token-limits.yml`,
+workflows in `JacobPEvans/.github` (`_markdown-lint.yml`, `_token-limits.yml`,
 `_file-size.yml`) instead of a local implementation, so lint/token/size
 policy stays identical across every dryvist repo. Token Limit Check no
 longer needs an `ANTHROPIC_API_KEY` secret — the shared workflow counts
@@ -120,7 +120,7 @@ activates automatically if either file type is added.
 ## Adding New Checks
 
 1. Create reusable workflow: `_your-check.yml` with `on: workflow_call`
-   (local, or in `dryvist/.github` if other repos will share it)
+   (local, or in `JacobPEvans/.github` if other repos will share it)
 2. Add filter pattern under `changes.steps.filter.with.filters` in `ci-gate.yml`
 3. Add job that calls the reusable workflow with appropriate `if:` condition
 4. Add job name to `gate.needs` array and `allowed-skips`

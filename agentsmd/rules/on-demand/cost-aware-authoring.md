@@ -38,7 +38,7 @@ verify their output before merging. Launch all independent, ready work in
 parallel; sequence only for real dependencies or same-file conflicts. Probe
 the spawn substrate before the first fan-out; if spawning fails, take the solo
 path.
-The canonical orchestrator rule is in `model-delegation.md`.
+Delegation routing is in [`AGENTS.md`](../../../AGENTS.md).
 
 ## Cache-breakers (avoid mid-session)
 

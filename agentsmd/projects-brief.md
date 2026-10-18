@@ -58,13 +58,18 @@ system, privileged rebuilds, and every infrastructure converge or apply. When a 
 
 - Branch `feature/<sid8>-<slug>` from the repository's default branch and target it. `<sid8>` is the first 8
   characters after `cse_` in `CLAUDE_CODE_REMOTE_SESSION_ID`, or of the local session ID.
-- Open a **draft** PR at your first commit. The draft PR is your claim on the work; check for an open PR on the same
-  change before you start.
+- Open a ready PR at your first commit; never a draft. The open PR is your claim on the work; check for an open PR
+  on the same change before you start.
+- Enable auto-merge (`gh pr merge --auto`) when you open a low-risk PR. It merges once required checks pass.
+- A PR under 15 changed lines and under 5 files gets `--label fast-path` at `gh pr create`. The gate then skips
+  the heavy test jobs and still runs the secret scan and commit checks. Add it at creation; a later label does not
+  rerun the gate.
 - On a git-flow repository (default branch `develop`), PRs squash-merge into `develop`, and `develop` to `main` is a
   merge commit only.
 - Push work in progress at least every 30 minutes. The sandbox can restart from a fresh clone.
 - Make atomic commits, one change per commit.
-- Never merge a PR unless the operator tells you to in this thread or clicks **Merge it**.
+- Never merge a PR by hand or bypass a check. Auto-merge lands it when its required checks pass; a PR that must
+  wait for a person gets the `human:review` label and no auto-merge.
 
 ## What you write
 
@@ -95,8 +100,7 @@ only from the repository's own lockfile or dev shell.
 
 - Launch all independent, ready threads in parallel; sequence only for real dependencies or same-file conflicts.
   Confirm thread creation works before the first fan-out; if it fails, take the solo path.
-- Follow `model-delegation.md` for delegated work and roster selection. Both agents ship in ai-assistant-instructions
-  `.claude/agents/`; where that repository is not in the project, pass the selected model and effort per that rule.
+- Follow [`AGENTS.md`](../AGENTS.md) for delegated-work routing.
 - Before calling work done, run the repository's own checks (pre-commit, tests, linters) and paste the summary lines.
   A cloud thread cannot fetch Nix flake inputs, so it runs the same checks with the tools it has, says which ran
   outside the dev shell, and leaves the dev-shell run to CI.

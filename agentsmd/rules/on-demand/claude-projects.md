@@ -25,8 +25,8 @@ A cloud thread is its own harness class, beside trusted-local sessions and sandb
 in the `secrets-separation.md` sense, because project memory and PR comments reach its prompt:
 
 - **Forge write through the App only.** It pushes and opens PRs through the Claude GitHub App, bounded by the
-  App's repository selection and by org branch rulesets on `develop` and `main`. Until those rulesets exist, the
-  human **Merge it** is the only merge control. This is the one exception to "no ambient forge authentication"
+  App's repository selection and by org branch rulesets on `develop` and `main`; required checks plus auto-merge
+  are the merge control. This is the one exception to "no ambient forge authentication"
   in `operating-core.md`. Commits and PRs are attributed to the operator's own GitHub account, so on a branch
   that requires approval from someone other than the last pusher, the operator cannot approve a thread's PR.
 - **No secret-store access.** It never receives an internal credential or secret-zero value. Cloud environment
@@ -65,7 +65,7 @@ After each batch, review **Project settings > Memory** and delete any entry that
 ## Coordination
 
 Inside a project, the coordinator owns claims and hand-off: it reuses the thread already working in an area.
-Across runtimes, the draft PR at first commit stays the claim, per `session-coordination.md`.
+Across runtimes, the PR opened at first commit stays the claim, per `session-coordination.md`.
 
 Cloud threads cannot reach the task tracker or the incident system. They end each report with `FOLLOW-UPS` and
 `INCIDENTS` lists. A local session files them under the routing law in `AGENTS.md`.

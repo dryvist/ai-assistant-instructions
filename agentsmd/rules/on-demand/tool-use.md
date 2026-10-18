@@ -45,20 +45,13 @@ For the environment-output prohibition, follow `operating-core.md`.
 
 ## Subagent type selection
 
-The following `subagent_type` options apply to the Claude harness; route all
-delegated work through `model-delegation.md`.
+Route all delegated work per [`AGENTS.md`](../../../AGENTS.md). Forks run on the lead's model; never fork from Fable.
 
 | `subagent_type` | Use when |
 | --- | --- |
-| `haiku-xhigh` | See fallback policy in `model-delegation.md` |
-| `opus-medium` | See fallback policy in `model-delegation.md` |
-| `Explore` | Read-only research / exploration (model not pinned; follow `model-delegation.md` for routing) |
-| `Bash` | Pure shell only; never for file ops (Bash-only agents work around missing tools with `python -c`/`sed`/`awk` and bypass audit trails) |
-
-`general-purpose` takes the harness default model. See `model-delegation.md`
-before delegating to it.
-
-Forks run on the lead's model. Do not fork from a Fable session.
+| `executor` | Default delegate (model-neutral) |
+| `Explore` | Read-only research |
+| `Bash` | Pure shell only; never for file ops (Bash-only agents work around missing tools with `python -c`/`sed`/`awk`) |
 
 ## Delegation contract
 

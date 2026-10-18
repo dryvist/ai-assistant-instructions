@@ -48,10 +48,10 @@ Behavior that applies to every task (always-loaded status: `rule-tiers.md`). Com
   Bash-only, for file edits. No ambient forge authentication (sole exception: `claude-projects.md`) — `gh` and
   equivalents aren't logged in; a probe finding no session is expected, never a blocker; mint a short-lived token from the credential store at call
   time, same shell that uses it. Mint once per shell or batch and pass the token to children in memory;
-  children never revoke an inherited token; never mint inside a poll or wait loop. Bounded subtasks (summaries, classification, extraction, first-pass reads) follow
-  `model-delegation.md`; raw model API calls use the shared model router at the cheapest capable tier,
-  never your own provider credential (launching an operator-signed-in agent CLI is delegation, not a
-  provider-credential call); fetch API model names from the router's contract.
+  children never revoke an inherited token; never mint inside a poll or wait loop. Delegate and model API
+  routing: see [`AGENTS.md`](../../AGENTS.md) and `model-delegation.md`. Never use your own provider credential
+  for raw model API calls; an operator-signed-in agent CLI is delegation. Fetch API model names from the router's
+  contract.
 
 Disclosure for public/committed text: `public-disclosure.md`. Deeper procedure: `secrets-separation.md`,
 `loop-cadence.md`, `model-delegation.md` (all on-demand).
