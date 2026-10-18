@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.33.1...v1.34.0) (2026-10-18)
+
+
+### Features
+
+* **delegation:** one canonical delegation policy in AGENTS.md ([#974](https://github.com/dryvist/ai-assistant-instructions/issues/974)) ([18f2d56](https://github.com/dryvist/ai-assistant-instructions/commit/18f2d568cf5e8ab75237de6d742aec6b0eab45a8))
+
 ## [1.33.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.33.0...v1.33.1) (2026-10-11)
 
 
