@@ -100,8 +100,7 @@ only from the repository's own lockfile or dev shell.
 
 - Launch all independent, ready threads in parallel; sequence only for real dependencies or same-file conflicts.
   Confirm thread creation works before the first fan-out; if it fails, take the solo path.
-- Follow `model-delegation.md` for delegated work and roster selection. Both agents ship in ai-assistant-instructions
-  `.claude/agents/`; where that repository is not in the project, pass the selected model and effort per that rule.
+- Follow [`AGENTS.md`](../AGENTS.md) for delegated-work routing.
 - Before calling work done, run the repository's own checks (pre-commit, tests, linters) and paste the summary lines.
   A cloud thread cannot fetch Nix flake inputs, so it runs the same checks with the tools it has, says which ran
   outside the dev shell, and leaves the dev-shell run to CI.
