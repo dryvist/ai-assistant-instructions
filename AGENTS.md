@@ -8,23 +8,19 @@ verifiable success criteria, use the narrowest proof, and report exactly what pa
 warning, error and lint finding for real; never silence, skip or bypass the check that raised it. Deep
 design/review/refactor work: `karpathy-guidelines` skill (`andrej-karpathy-skills`).
 
-Tool choice — **no new custom scripts.** Custom code is the largest anti-pattern: permanent maintenance.
-Before writing or extending a script, climb this ladder and stop at the first rung that works:
-
-1. Existing flags, config, or an installed skill, command, plugin or MCP server.
-2. A native or built-in feature of the platform or tool.
-3. A maintained third-party tool or app.
-4. Community content: Ansible collections, Terraform modules, Renovate presets, pre-commit hooks, Actions.
-5. Prior art: `/github-code-search` (grep MCP) — thousands of hits means idiomatic, three means a mistake;
-   context7 docs; package, Terraform and Hugging Face registries.
-6. A formal gap: a standardized public repo that fits our use case and helps the community.
-
-Only then write code, naming why each rung failed. Delete or replace an existing script before editing it.
+Tool choice — **no new custom scripts** (custom code is permanent maintenance). Before writing or extending one, stop at
+the first rung that works: (1) existing flags, config, or an installed skill, command, plugin or MCP server; (2) a
+native feature of the platform or tool; (3) a maintained third-party tool; (4) community content: Ansible
+collections, Terraform modules, Renovate presets, pre-commit hooks, Actions; (5) prior art: `/github-code-search`
+(thousands of hits means idiomatic, three means a mistake), context7, package/Terraform/Hugging Face registries; (6) a
+formal gap: a standardized public repo that fits our use case. Only then write code, naming why each rung failed.
+Delete or replace an existing script before editing it.
 
 Git workflow: never edit on the default branch — `/refresh-repo`, then a new worktree. `develop` default branch →
 [git-flow](agentsmd/rules/on-demand/git-flow.md): PRs target `develop` (squash-merge), `develop` → `main` by
 merge commit only. Otherwise trunk flow. Always **atomic commits**, one fix/feature/section per commit. Load
-the on-demand rule for the activity — `rule-tiers.md` is the index.
+the on-demand rule for the activity — `rule-tiers.md` is the index. Behavior changes to instructions are
+`feat:`/`fix:`, never `docs:` (docs commits never release).
 
 Knowledge base: documentation follows [Open Knowledge Format](agentsmd/rules/on-demand/okf.md) — search before
 editing, capture new durable knowledge after a change.
@@ -49,9 +45,10 @@ Repo boundaries: `dryvist/ai-assistant-instructions` (rules, `AGENTS.md`, workfl
 `dryvist/nix-claude-code` `data/permissions` (tool permissions), `dryvist/claude-code-plugins` (commands,
 skills, agents, hooks). Update the private docs site in the same session; most changes need it.
 
-All delegated work routes per `model-delegation.md`: Codex on the newest Luna model at xhigh while `codex-quota` exits 0,
-else the roster. Public coding, review and triage go to ZCode before the roster: load `delegation-ladder`
-(`jpe-ai-delegation`) for the ladder, eligibility, and trusted PR verification.
-Other orchestration and model routing: `model-delegation.md` (on-demand).
+**Delegation (binding).** Session start reports `codex-quota`. While it exits 0, every delegate runs on Codex, newest
+Luna, xhigh (scouting, reads, triage, review, implementation); never Haiku. Architecture, security and planning
+judgment → Sonnet latest (Opus latest only when truly needed). Codex exhausted: public-repo code, implementation and
+review → ZCode → Haiku; everything else → Haiku; ZCode takes nothing else. The `jpe-ai-delegation` router enforces
+this; brief per `brief-delegates`; details in `model-delegation.md`.
 For bounded, routine subtasks, call `~/.agents/skills/fast-subagent/scripts/fast-subagent.sh` with `LLM_ROUTER_URL` and
 `FAST_SUBAGENT_MODEL`; retain consequential judgment and decisions here.
