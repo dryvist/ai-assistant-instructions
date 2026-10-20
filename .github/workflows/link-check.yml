@@ -41,6 +41,7 @@ jobs:
             --exclude 'shields.io'
             --exclude 'github.com/.*/badge'
             --exclude 'gist.github.com'
+            --exclude 'github\.com/[^/]+/[^/]+/compare/'
             ${{ steps.identify.outputs.regular_files }}
           output: lychee/out.md
           fail: true
