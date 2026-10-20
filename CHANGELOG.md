@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.34.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.0...v1.34.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* **ci:** add a gitleaks ignore entry for one historical fingerprint ([2b164c9](https://github.com/dryvist/ai-assistant-instructions/commit/2b164c945156f2a45f93f645615bd4625c889f39))
+* **ci:** add a gitleaks ignore entry for one historical fingerprint ([#977](https://github.com/dryvist/ai-assistant-instructions/issues/977)) ([cfdec37](https://github.com/dryvist/ai-assistant-instructions/commit/cfdec374009a10373409232f0e372fe9565be57a))
+
 ## [1.34.0](https://github.com/dryvist/ai-assistant-instructions/compare/v1.33.1...v1.34.0) (2026-10-18)
 
 
