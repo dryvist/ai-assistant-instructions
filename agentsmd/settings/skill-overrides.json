@@ -89,7 +89,6 @@
     "feature-dev:feature-dev": "user-invocable-only",
     "fewer-permission-prompts": "user-invocable-only",
     "gh-cli-patterns": "user-invocable-only",
-    "git-flow-next": "user-invocable-only",
     "git-standards:git-workflow-standards": "user-invocable-only",
     "git-workflow-standards": "user-invocable-only",
     "git-workflows:troubleshoot-rebase": "user-invocable-only",

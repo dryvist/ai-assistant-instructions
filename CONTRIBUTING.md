@@ -12,7 +12,7 @@ First off, thanks for considering contributing to this project. It's just me her
 4. Push to the branch (`git push origin feature/cool-thing`)
 5. Open a Pull Request
 
-For more details, see the `/refresh-repo`, `/sync-main`, and `/troubleshoot-worktree`
+For more details, see the `/refresh-repo` and `/troubleshoot-worktree`
 commands in the `git-workflows` plugin at
 [JacobPEvans/claude-code-plugins](https://github.com/JacobPEvans/claude-code-plugins).
 
