@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.1...v1.34.2) (2026-10-24)
+
+
+### Bug Fixes
+
+* **rules:** point git-flow at the canonical rule in ai-llm-prompts ([#982](https://github.com/dryvist/ai-assistant-instructions/issues/982)) ([c2964f7](https://github.com/dryvist/ai-assistant-instructions/commit/c2964f7b77e9b87af33d7a3b41e7f29e989915c5))
+
 ## [1.34.1](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.0...v1.34.1) (2026-10-20)
 
 
