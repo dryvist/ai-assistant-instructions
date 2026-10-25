@@ -51,10 +51,11 @@ Before starting on an issue, bug, or feature:
    (comment on the PR/issue with your session id and intent; the earliest
    claim wins unless its session is dead).
 
-2. **Claim.** Self-assign the issue (when one exists) and open a ready PR
-   **at first commit**, not at completion; never a draft. The open PR is the
-   presence signal every runtime can read. Put the session id in the PR body,
-   and enable auto-merge when the change is low risk.
+2. **Claim.** Self-assign the issue (when one exists) and open a PR **at first
+   commit**. Open it ready for review unless it must wait; use a draft or
+   `human:review` for a hold. The open PR is the presence signal every runtime
+   can read. Put the session id in the PR body. The org workflow arms eligible
+   PRs; agents never arm auto-merge.
 
 3. **Release.** Merging or closing releases the claim.
    An abandoned claim is steal-able: an open PR with no new commits and no

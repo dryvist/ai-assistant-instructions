@@ -58,9 +58,9 @@ system, privileged rebuilds, and every infrastructure converge or apply. When a 
 
 - Branch `feature/<sid8>-<slug>` from the repository's default branch and target it. `<sid8>` is the first 8
   characters after `cse_` in `CLAUDE_CODE_REMOTE_SESSION_ID`, or of the local session ID.
-- Open a ready PR at your first commit; never a draft. The open PR is your claim on the work; check for an open PR
-  on the same change before you start.
-- Enable auto-merge (`gh pr merge --auto`) when you open a low-risk PR. It merges once required checks pass.
+- Open a PR at your first commit; it is your claim on the work. If it must wait, keep it as a draft or add `human:review`.
+  Check for an open PR on the same change before you start.
+- The org `pr-automerge` workflow arms non-draft PRs without `human:review`; agents never arm auto-merge.
 - A PR under 15 changed lines and under 5 files gets `--label fast-path` at `gh pr create`. The gate then skips
   the heavy test jobs and still runs the secret scan and commit checks. Add it at creation; a later label does not
   rerun the gate.
@@ -68,8 +68,7 @@ system, privileged rebuilds, and every infrastructure converge or apply. When a 
   merge commit only.
 - Push work in progress at least every 30 minutes. The sandbox can restart from a fresh clone.
 - Make atomic commits, one change per commit.
-- Never merge a PR by hand or bypass a check. Auto-merge lands it when its required checks pass; a PR that must
-  wait for a person gets the `human:review` label and no auto-merge.
+- Never merge a PR by hand or bypass a check. The org workflow waits for required checks; a draft or `human:review` holds a PR for a person.
 
 ## What you write
 
