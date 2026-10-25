@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.3](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.2...v1.34.3) (2026-10-25)
+
+
+### Bug Fixes
+
+* agents hold PRs with draft or human:review and never arm auto-merge ([#985](https://github.com/dryvist/ai-assistant-instructions/issues/985)) ([eb1cb9b](https://github.com/dryvist/ai-assistant-instructions/commit/eb1cb9b64e95109b8115d4c6d0eb26613c155942))
+
 ## [1.34.2](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.1...v1.34.2) (2026-10-24)
 
 
