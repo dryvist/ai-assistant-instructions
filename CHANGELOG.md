@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.4](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.3...v1.34.4) (2026-11-04)
+
+
+### Bug Fixes
+
+* update commit-push-pr.md link in remote-commit-workflow.md ([#990](https://github.com/dryvist/ai-assistant-instructions/issues/990)) ([dfe6bb8](https://github.com/dryvist/ai-assistant-instructions/commit/dfe6bb8ee642c4193daba5f80418dd4655ba0964))
+
 ## [1.34.3](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.2...v1.34.3) (2026-10-25)
 
 
