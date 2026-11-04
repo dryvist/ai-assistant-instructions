@@ -1,7 +1,7 @@
 # Remote Commit Workflow (DECOMMISSIONED)
 
 > This workflow is decommissioned. Use the official commit-push-pr plugin instead:
-> <https://github.com/anthropics/claude-code/blob/main/plugins/commit-commands/commands/commit-push-pr.md>
+> <https://github.com/anthropics/claude-code/blob/main/.claude/commands/commit-push-pr.md>
 >
 > The `commit-commands` plugin (`/commit-push-pr`) handles committing, pushing, and
 > PR creation with proper variable support.
