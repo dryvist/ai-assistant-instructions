@@ -23,7 +23,7 @@ jobs:
       contents: read
       id-token: write
       pull-requests: write
-    uses: JacobPEvans/.github-ai/.github/workflows/cc-dep-review.yml@v1
+    uses: JacobPEvans/.github-ai/.github/workflows/cc-dep-review.yml@v2
     secrets: inherit
 
   release-notes:
@@ -31,5 +31,5 @@ jobs:
       contents: read
       id-token: write
       pull-requests: write
-    uses: JacobPEvans/.github-ai/.github/workflows/cc-release-notes.yml@v1
+    uses: JacobPEvans/.github-ai/.github/workflows/cc-release-notes.yml@v2
     secrets: inherit
