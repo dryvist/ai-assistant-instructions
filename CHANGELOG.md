@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.5](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.4...v1.34.5) (2026-11-07)
+
+
+### Bug Fixes
+
+* **ci:** run the AI merge gate on the review runner ([#1000](https://github.com/dryvist/ai-assistant-instructions/issues/1000)) ([7dac8ca](https://github.com/dryvist/ai-assistant-instructions/commit/7dac8ca255cd0d42f39e6dff15094e58a92af665))
+
 ## [1.34.4](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.3...v1.34.4) (2026-11-04)
 
 
