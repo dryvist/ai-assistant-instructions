@@ -39,7 +39,7 @@ jobs:
 
   run-triage:
     if: github.event_name == 'workflow_dispatch'
-    uses: JacobPEvans/.github-ai/.github/workflows/issue-triage.yml@v1
+    uses: JacobPEvans/.github-ai/.github/workflows/issue-triage.yml@v2
     secrets: inherit
     with:
       issue_number: ${{ inputs.issue_number }}
