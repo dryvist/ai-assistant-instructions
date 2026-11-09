@@ -20,11 +20,16 @@ jobs:
   fix:
     if: >-
       github.event.workflow_run.conclusion == 'failure' &&
-      github.event.workflow_run.head_branch != 'main'
+      github.event.workflow_run.head_branch != 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     uses: JacobPEvans/.github-ai/.github/workflows/cc-ci-fix.yml@v2
     with:
       runner_label: ${{ github.event.workflow_run.head_repository.full_name == github.repository && 'review' || 'ubuntu-latest' }}
       local_model: review-local
       repo_context: "AI assistant instruction files and CLAUDE.md patterns for multi-model orchestration (Claude, Gemini, Copilot)"
       ci_structure: "ci-gate.yml (alls-green gate aggregating yaml-lint, markdownlint, spellcheck, cclint, token-limits, validate-instructions checks)"
-    secrets: inherit
+    secrets:
+      LLM_ROUTER_BASE_URL: ${{ secrets.LLM_ROUTER_BASE_URL }}
+      LLM_ROUTER_API_KEY: ${{ secrets.LLM_ROUTER_API_KEY }}
+      OPENBAO_ADDR: ${{ secrets.OPENBAO_ADDR }}
+      GH_APP_CLAUDE_BOT_PRIVATE_KEY: ${{ secrets.GH_APP_CLAUDE_BOT_PRIVATE_KEY }}
