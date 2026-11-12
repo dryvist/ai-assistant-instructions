@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.6](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.5...v1.34.6) (2026-11-12)
+
+
+### Bug Fixes
+
+* **ci:** cancel superseded merge gate runs ([#1004](https://github.com/dryvist/ai-assistant-instructions/issues/1004)) ([f8ee8e3](https://github.com/dryvist/ai-assistant-instructions/commit/f8ee8e376dbcddc350e09bc6c3c02574e40df5ad))
+
 ## [1.34.5](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.4...v1.34.5) (2026-11-07)
 
 
