@@ -1,0 +1,63 @@
+# Canonical push-to-base PR Reconcile caller for JacobPEvans/.github-ai
+#
+# Copy this file to .github/workflows/pr-reconcile.yml. A push to the base branch
+# reconciles every open pull request on it: BEHIND gets update-branch, DIRTY gets the
+# merge-conflict label. With conflict_fix: true, each eligible conflicted pull request
+# (head commit at least 15 minutes old, not Renovate, not a promotion, not a v2, no
+# workflow files) is queued once per head commit, and the conflict-fix job below opens
+# a v2 of it on the current base. No workflow_dispatch and no actions permission.
+#
+# Per-repository text comes from repository variables (both optional):
+#   - var CI_FIX_REPO_CONTEXT  what the repository is and how it builds
+#   - var CI_FIX_CI_STRUCTURE  which checks CI runs and how to run them locally
+#
+# Secrets (repository or organization): GH_APP_CLAUDE_BOT_PRIVATE_KEY,
+# LLM_ROUTER_BASE_URL, LLM_ROUTER_API_KEY, OPENBAO_ADDR.
+
+---
+name: PR Reconcile
+
+on:
+  push:
+    branches: [develop, main]
+
+permissions: {}
+
+jobs:
+  reconcile:
+    permissions:
+      contents: read
+    uses: JacobPEvans/.github-ai/.github/workflows/pr-reconcile.yml@v2
+    secrets:
+      GH_APP_CLAUDE_BOT_PRIVATE_KEY: ${{ secrets.GH_APP_CLAUDE_BOT_PRIVATE_KEY }}
+    with:
+      base_ref: ${{ github.ref_name }}
+      conflict_fix: true
+
+  conflict-fix:
+    needs: reconcile
+    if: needs.reconcile.outputs.conflict_prs != '[]'
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        pr: ${{ fromJSON(needs.reconcile.outputs.conflict_prs) }}
+    # The called workflow's jobs request exactly these scopes; a caller that grants
+    # less fails at graph validation.
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+    uses: JacobPEvans/.github-ai/.github/workflows/cc-conflict-fix.yml@v2
+    secrets:
+      LLM_ROUTER_BASE_URL: ${{ secrets.LLM_ROUTER_BASE_URL }}
+      LLM_ROUTER_API_KEY: ${{ secrets.LLM_ROUTER_API_KEY }}
+      OPENBAO_ADDR: ${{ secrets.OPENBAO_ADDR }}
+    with:
+      conflict_pr: ${{ matrix.pr }}
+      # Hosted runners cannot reach the model router; the review pool can.
+      runner_label: review
+      agent: openhands
+      local_model: medium
+      repo_context: ${{ vars.CI_FIX_REPO_CONTEXT }}
+      ci_structure: ${{ vars.CI_FIX_CI_STRUCTURE }}
