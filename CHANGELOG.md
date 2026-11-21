@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.7](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.6...v1.34.7) (2026-11-21)
+
+
+### Bug Fixes
+
+* **ci:** scope ci-gate concurrency per trigger and add job timeouts ([#1005](https://github.com/dryvist/ai-assistant-instructions/issues/1005)) ([7f5cd60](https://github.com/dryvist/ai-assistant-instructions/commit/7f5cd606beea03e3859ad566a8878669bb1250dc))
+
 ## [1.34.6](https://github.com/dryvist/ai-assistant-instructions/compare/v1.34.5...v1.34.6) (2026-11-12)
 
 
